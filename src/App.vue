@@ -15,9 +15,7 @@ export default {
     provide('asideVisible', asideVisible)
 
     router.afterEach(() => {
-      if (isMobile) {
-        asideVisible.value = false
-      }
+      asideVisible.value = !isMobile
     })
   }
 }

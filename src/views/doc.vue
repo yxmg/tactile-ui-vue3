@@ -1,6 +1,6 @@
 <template>
   <div class="page-doc">
-    <top-nav/>
+    <top-nav class="nav"/>
     <div class="top-nav">
       <div class="logo"></div>
       <div class="menu"></div>
@@ -46,13 +46,39 @@ export default {
 
 <style lang="scss" scoped>
 .page-doc {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  > .nav {
+    flex-shrink: 0;
+  }
+
+  > .content {
+    display: flex;
+    flex-grow: 1;
+    padding-top: 60px;
+    padding-left: 156px;
+    @media (max-width: 600px) {
+      padding-left: 0;
+    }
+  }
+
+  main {
+    flex-grow: 1;
+    padding: 16px;
+    background-color: lightgreen;
+  }
+
   aside {
+    flex-shrink: 0;
     background: lightblue;
     width: 150px;
     position: fixed;
     top: 64px;
     left: 0;
     padding: 16px;
+    height: 100%;
 
     > h2 {
       margin-bottom: 4px;
