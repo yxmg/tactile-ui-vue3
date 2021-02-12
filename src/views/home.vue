@@ -6,7 +6,7 @@
       <h2 class="desc">The UI library for Vue3 study</h2>
       <p class="actions">
         <a class="action-item" href="">Github</a>
-        <a class="action-item" href="">开始</a>
+        <router-link to="/doc" class="action-item">开始</router-link>
       </p>
     </div>
   </div>
