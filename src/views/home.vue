@@ -1,7 +1,6 @@
 <template>
   <div class="page-home">
-    <div class="logo"></div>
-    <div class="menu"></div>
+    <top-nav/>
     <div class="banner">
       <h1>Tiny UI</h1>
       <h2>The UI library for Vue3 study</h2>
@@ -14,12 +13,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import TopNav from '../components/top-nav.vue'
+
 export default {
-  name: "home"
+  name: "home",
+  components: {TopNav}
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.page-home {
+  text-align: center;
+}
 </style>
