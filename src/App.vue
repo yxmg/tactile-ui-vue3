@@ -3,12 +3,14 @@
 </template>
 
 <script lang="ts">
-import { ref, provide } from 'vue'
+import {ref, provide} from 'vue'
 
 export default {
   name: 'App',
   setup() {
-    const asideVisible = ref(false)
+    const width = document.documentElement.clientWidth
+    const isMobile = width <= 600
+    const asideVisible = ref(!isMobile)
     provide('asideVisible', asideVisible)
   }
 }

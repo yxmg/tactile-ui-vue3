@@ -1,6 +1,11 @@
 <template>
   <div class="top-nav">
-    <div class="logo" @click="toggleMenu">
+    <span class="toggle-aside-btn" @click="toggleMenu">
+      <i class="stroke"></i>
+      <i class="stroke"></i>
+      <i class="stroke"></i>
+    </span>
+    <div class="logo">
       <img class="img-logo" src="../assets/logo.png" alt="">
     </div>
     <div class="menu">
@@ -20,6 +25,7 @@ export default {
     const asideVisible = inject<Ref<boolean>>('asideVisible')
     const toggleMenu = () => {
       asideVisible.value = !asideVisible.value
+      console.log(asideVisible, "asideVisible")
     }
     return {asideVisible, toggleMenu}
   }
@@ -40,6 +46,33 @@ export default {
   .img-logo {
     width: 48px;
     height: 48px;
+  }
+
+  .toggle-aside-btn {
+    display: none;
+    cursor: pointer;
+
+    > .stroke {
+      display: block;
+      width: 24px;
+      height: 2px;
+      border-radius: 2px;
+      background-color: #000;
+
+      & ~ .stroke {
+        margin-top: 6px;
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    > .logo {
+      margin: 0 auto;
+    }
+
+    > .toggle-aside-btn {
+      display: inline-block;
+    }
   }
 }
 </style>
