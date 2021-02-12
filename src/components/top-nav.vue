@@ -5,9 +5,12 @@
       <i class="stroke"></i>
       <i class="stroke"></i>
     </span>
-    <div class="logo">
-      <img class="img-logo" src="../assets/logo.png" alt="">
-    </div>
+    <router-link to="/">
+      <div class="logo">
+        <img class="img-logo" src="../assets/logo.png" alt="">
+      </div>
+    </router-link>
+
     <div class="menu">
       <a href="">菜单1</a>
       |
@@ -25,7 +28,6 @@ export default {
     const asideVisible = inject<Ref<boolean>>('asideVisible')
     const toggleMenu = () => {
       asideVisible.value = !asideVisible.value
-      console.log(asideVisible, "asideVisible")
     }
     return {asideVisible, toggleMenu}
   }
