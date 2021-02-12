@@ -1,9 +1,9 @@
 <template>
   <div class="top-nav">
-    <div class="logo">
+    <div class="logo" @click="toggleMenu">
       <img class="img-logo" src="../assets/logo.png" alt="">
     </div>
-    <div class="menu">
+    <div class="menu" v-if="asideVisible">
       <a href="">菜单1</a>
       |
       <a href="">菜单2</a>
@@ -12,13 +12,25 @@
 </template>
 
 <script lang="ts">
+import {inject, Ref} from 'vue'
+
 export default {
-  name: "top-nav"
+  name: "top-nav",
+  setup() {
+    const asideVisible = inject<Ref<boolean>>('asideVisible')
+    const toggleMenu = () => {
+      asideVisible.value = !asideVisible.value
+      console.log(asideVisible)
+    }
+    return {asideVisible, toggleMenu}
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .top-nav {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;

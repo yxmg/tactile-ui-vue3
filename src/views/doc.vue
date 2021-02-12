@@ -37,6 +37,25 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.page-doc {
+  aside {
+    background: lightblue;
+    width: 150px;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    padding: 16px;
 
+    > h2 {
+      margin-bottom: 4px;
+    }
+
+    > ul {
+      > li {
+        padding: 4px 0;
+      }
+    }
+  }
+}
 </style>
