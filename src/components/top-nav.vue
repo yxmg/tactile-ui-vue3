@@ -3,7 +3,7 @@
     <div class="logo" @click="toggleMenu">
       <img class="img-logo" src="../assets/logo.png" alt="">
     </div>
-    <div class="menu" v-if="asideVisible">
+    <div class="menu">
       <a href="">菜单1</a>
       |
       <a href="">菜单2</a>
