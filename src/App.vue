@@ -1,13 +1,17 @@
 <template>
-  <div>hi</div>
-  <custom-component></custom-component>
+  <div>导航栏</div>
+  <div>
+    <router-link to="/">Custom Component</router-link>
+    |
+    <router-link to="/xxx">Second Component</router-link>
+  </div>
+  <hr />
+  <router-view></router-view>
 </template>
 
 <script>
-import CustomComponent from "./components/custom-component.vue";
 
 export default {
-  name: 'App',
-  components: { CustomComponent }
+  name: 'App'
 }
 </script>
