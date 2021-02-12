@@ -2,12 +2,11 @@
   <div class="page-home">
     <top-nav/>
     <div class="banner">
-      <h1>Tiny UI</h1>
-      <h2>The UI library for Vue3 study</h2>
+      <h1 class="title">Tiny UI</h1>
+      <h2 class="desc">The UI library for Vue3 study</h2>
       <p class="actions">
-        <a href="">Github</a>
-        |
-        <a href="">开始</a>
+        <a class="action-item" href="">Github</a>
+        <a class="action-item" href="">开始</a>
       </p>
     </div>
   </div>
@@ -25,5 +24,23 @@ export default {
 <style lang="scss" scoped>
 .page-home {
   text-align: center;
+
+  .banner {
+    padding: 300px 0;
+  }
+
+  .title {
+    margin-bottom: 24px;
+  }
+  .desc {
+    margin-bottom: 24px;
+  }
+
+  .action-item {
+    & ~ .action-item {
+      margin-left: 24px;
+    }
+  }
+
 }
 </style>
