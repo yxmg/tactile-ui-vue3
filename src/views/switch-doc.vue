@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Switch></Switch>
+    <Switch/>
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import Switch from "../lib/switch.vue"
 
 export default {
   name: "switch-doc",
-  components: { Switch }
+  components: {Switch}
 }
 </script>
 
