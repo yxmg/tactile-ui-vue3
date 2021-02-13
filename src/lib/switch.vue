@@ -29,13 +29,27 @@ button {
   height: $switchHeight;
   width: $switchHeight*2;
   border: none;
-  background: gray;
+  background: #bfbfbf;
   border-radius: $switchHeight / 2;
   position: relative;
   outline: none;
+  transition: background-color 0.25s linear;
+
+  &:active {
+    > span {
+      width: $ballHeight + 4px;
+    }
+  }
 
   &.checked {
     background-color: blue;
+
+    &:active {
+      > span {
+        width: $ballHeight + 4px;
+        margin-left: -4px;
+      }
+    }
 
     > span {
       left: calc(100% - #{$ballHeight} - 2px);
@@ -51,6 +65,6 @@ span {
   width: $ballHeight;
   background: white;
   border-radius: $ballHeight / 2;
-  transition: left 0.25s linear;
+  transition: left 0.25s linear, width 0.25s linear, margin 0.25s linear;
 }
 </style>
