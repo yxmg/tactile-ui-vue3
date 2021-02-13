@@ -1,13 +1,13 @@
 <template>
-  <div>Switch组件</div>
+  <button><span></span></button>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "switch"
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
