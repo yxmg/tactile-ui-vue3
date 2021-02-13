@@ -5,16 +5,19 @@
 </template>
 
 <script lang="ts">
-import {ref} from 'vue'
-
 export default {
-  name: "switch",
-  setup() {
-    const checked = ref(false)
-    const toggleChecked = () => {
-      checked.value = !checked.value
+  name: "Switch",
+  props: {
+    checked: {
+      type: Boolean,
+      default: false
     }
-    return {checked, toggleChecked}
+  },
+  setup(props, context) {
+    const toggleChecked = () => {
+      context.emit('update:checked', !props.checked)
+    }
+    return {toggleChecked}
   }
 }
 </script>
