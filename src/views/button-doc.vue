@@ -36,8 +36,8 @@
     <h1 style="margin-bottom: 12px;">示例5-loading</h1>
     <div style="margin-bottom: 24px;">
       <Button theme="primary" shape="rect" loading>Rect</Button>
-      <Button theme="primary" loading>Round</Button>
-      <Button theme="primary" shape="circle" loading>Cir</Button>
+      <Button loading>Round</Button>
+      <Button theme="primary" shape="circle" loading></Button>
       <Button theme="primary" link loading>Link</Button>
     </div>
   </div>

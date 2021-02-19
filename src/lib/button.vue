@@ -3,7 +3,9 @@
     class="t-button"
     :class="classes"
   >
-    <slot/>
+    <span class="loading-indicator"></span>
+    <slot name="icon"/>
+    <span v-if="$slots.default"><slot/></span>
   </button>
 </template>
 
@@ -48,23 +50,17 @@ export default {
       type: Boolean,
       default: false
     },
-    // 幽灵按钮
-    ghost: {
-      type: Boolean,
-      default: false
-    },
-    // TODO：图标，支持内置ICON、RF
+    // TODO：图标，支持内置ICON、RF、slot
     icon: {}
   },
   setup(props) {
-    const {theme, size, shape, link, ghost, loading, block, disabled} = props
+    const {theme, size, shape, link, loading, block, disabled} = props
     const classes = computed(() => {
       return {
         [`t-theme-${theme}`]: theme,
         [`t-size-${size}`]: size,
         [`t-shape-${shape}`]: shape,
         't-link-button': link,
-        't-ghost-button': ghost,
         't-loading-button': loading,
         't-block-button': block,
         't-disabled-button': disabled,
@@ -105,6 +101,10 @@ $danger-color: #f5222d;
   background-color: #fff;
   border: 1px solid #d9d9d9;
 
+  .content {
+    margin-left: 4px;
+  }
+
   &,
   &:active,
   &:focus {
@@ -136,6 +136,11 @@ $danger-color: #f5222d;
 
   &.t-theme-default {
     background-color: #fff;
+
+
+    &.t-loading-button .loading-indicator {
+      border-right-color: $primary-color;
+    }
   }
 
   &.t-theme-primary {
@@ -211,6 +216,36 @@ $danger-color: #f5222d;
     &:focus,
     &:hover {
       border-color: transparent;
+    }
+  }
+
+  &.t-block-button {
+    width: 100%;
+  }
+
+  &.t-loading-button {
+    > .loading-indicator {
+      display: inline-block;
+      vertical-align: middle;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-left: 2px solid #fff;
+      animation: spin 1s linear infinite;
+
+      & + span {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 }
