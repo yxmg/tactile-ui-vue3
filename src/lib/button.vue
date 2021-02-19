@@ -192,5 +192,26 @@ $danger-color: #f5222d;
     padding: 0;
     border-radius: 50%;
   }
+
+  &.t-link-button {
+    color: #1890ff;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+
+    &::after {
+      display: none;
+    }
+
+    &:hover {
+      opacity: .8;
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+      border-color: transparent;
+    }
+  }
 }
 </style>
