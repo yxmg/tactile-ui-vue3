@@ -76,7 +76,12 @@ export default {
 </script>
 
 <style lang="scss">
+$primary-color: #1890ff;
+$success-color: #52c41a;
+$danger-color: #f5222d;
+
 .t-button {
+  min-width: 64px;
   display: inline-block;
   position: relative;
   line-height: 1.5;
@@ -105,6 +110,51 @@ export default {
   &:active,
   &:focus {
     outline: none;
+  }
+
+  &::after {
+    background-color: currentColor;
+    border-radius: inherit;
+    bottom: 0;
+    color: inherit;
+    content: "";
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity .2s cubic-bezier(.4, 0, .6, 1);
+  }
+
+  &:active::after {
+    background-color: #000000;
+  }
+
+  &:hover::after {
+    opacity: .08;
+  }
+
+  &.t-theme-default {
+    background-color: #fff;
+  }
+
+  &.t-theme-primary {
+    color: #ffffff;
+    background-color: $primary-color;
+    border-color: $primary-color
+  }
+
+  &.t-theme-danger {
+    color: #ffffff;
+    background-color: $danger-color;
+    border-color: $danger-color;
+  }
+
+  &.t-theme-success {
+    color: #ffffff;
+    background-color: $success-color;
+    border-color: $success-color;
   }
 }
 </style>
