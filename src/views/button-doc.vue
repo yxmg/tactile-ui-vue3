@@ -3,7 +3,7 @@
     <div>Button示例</div>
     <h1>示例1</h1>
     <div>
-      <Button>你好</Button>
+      <Button theme="">你好</Button>
     </div>
   </div>
 </template>
@@ -12,8 +12,14 @@
 import Button from '../lib/button.vue'
 
 export default {
-  name: "button",
-  components: {Button}
+  name: "button-doc",
+  components: {Button},
+  setup() {
+    const onClick = () => {
+      console.log('hi')
+    }
+    return {onClick}
+  }
 }
 </script>
 

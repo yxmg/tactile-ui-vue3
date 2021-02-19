@@ -1,15 +1,23 @@
 <template>
-  <button>
-    <slot />
+  <button
+    class="t-button"
+    :class="{ [`theme-${theme}`]: theme, }"
+  >
+    <slot/>
   </button>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: "button"
+  name: "Button",
+  props: {
+    theme: {
+      type: String,
+      default: 'default'
+    }
+  }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
 </style>
