@@ -1,5 +1,9 @@
 <template>
-  <button :class="{ checked }" @click="toggleChecked">
+  <button
+    class="t-switch"
+    :class="{ checked }"
+    @click="toggleChecked"
+  >
     <span></span>
   </button>
 </template>
@@ -22,10 +26,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $switchHeight: 22px;
 $ballHeight: $switchHeight - 4px;
-button {
+.t-switch {
   height: $switchHeight;
   width: $switchHeight*2;
   border: none;
