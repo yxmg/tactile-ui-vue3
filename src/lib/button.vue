@@ -81,7 +81,6 @@ $success-color: #52c41a;
 $danger-color: #f5222d;
 
 .t-button {
-  min-width: 64px;
   display: inline-block;
   position: relative;
   line-height: 1.5;
@@ -155,6 +154,43 @@ $danger-color: #f5222d;
     color: #ffffff;
     background-color: $success-color;
     border-color: $success-color;
+  }
+
+  &.t-size-large {
+    height: 52px;
+    padding: 0 20px;
+    font-size: 18px;
+  }
+
+  &.t-size-small {
+    padding: 0 12px;
+    font-size: 14px;
+    height: 36px;
+  }
+
+  &.t-disabled-button {
+    background-color: #f5f5f5;
+    color: rgba(0, 0, 0, .25);
+    border-color: #d9d9d9;
+    cursor: not-allowed;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &.t-shape-rect {
+    border-radius: 0;
+  }
+
+  &.t-shape-round {
+    border-radius: 4px
+  }
+
+  &.t-shape-circle {
+    min-width: 44px;
+    padding: 0;
+    border-radius: 50%;
   }
 }
 </style>
