@@ -1,16 +1,16 @@
 <template>
   <template v-if="visible">
-    <div class="t-dialog-overlay"></div>
+    <div class="t-dialog-overlay" @click="close"></div>
     <div class="t-dialog-wrapper">
       <div class="t-dialog">
         <div class="t-dialog-header">
           <span class="t-dialog-title">标题</span>
-          <span class="t-dialog-close"></span>
+          <span class="t-dialog-close" @click="close"></span>
         </div>
         <div class="t-dialog-content">内容</div>
         <div class="t-dialog-footer">
           <Button theme="primary">确认</Button>
-          <Button>取消</Button>
+          <Button @click="close">取消</Button>
         </div>
       </div>
     </div>
@@ -28,7 +28,13 @@ export default {
       default: false
     }
   },
-  components: { Button }
+  components: { Button },
+  setup(props, context) {
+    const close = () => {
+      context.emit('update:visible', false)
+    }
+    return { close }
+  }
 }
 </script>
 

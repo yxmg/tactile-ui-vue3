@@ -3,7 +3,7 @@
     <h1 style="margin-bottom: 12px;">示例1-基本用法</h1>
     <div style="margin-bottom: 24px;">
       <Button theme="primary" @click="toggleDialog(1)">打开弹窗</Button>
-      <Dialog :visible="visible[1]"></Dialog>
+      <Dialog v-model:visible="visible[1]"></Dialog>
     </div>
   </div>
 </template>
