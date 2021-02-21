@@ -4,10 +4,14 @@
     <div class="t-dialog-wrapper">
       <div class="t-dialog">
         <div class="t-dialog-header">
-          <span class="t-dialog-title">标题</span>
+          <slot name="title">
+            <span class="t-dialog-title">{{ title }}</span>
+          </slot>
           <span class="t-dialog-close" @click="close"></span>
         </div>
-        <div class="t-dialog-content">内容</div>
+        <div class="t-dialog-content">
+          <slot/>
+        </div>
         <div class="t-dialog-footer">
           <Button theme="primary" @click="ok">确认</Button>
           <Button @click="cancel">取消</Button>
@@ -21,7 +25,7 @@
 import Button from './button.vue'
 
 export default {
-  name: "dialog",
+  name: "Dialog",
   props: {
     visible: {
       type: Boolean,
@@ -30,6 +34,10 @@ export default {
     maskClosable: {
       type: Boolean,
       default: false
+    },
+    title: {
+      type: String,
+      default: ''
     },
     ok: {
       type: Function,
