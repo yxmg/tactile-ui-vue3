@@ -1,6 +1,6 @@
 <template>
   <template v-if="visible">
-    <div class="t-dialog-overlay" @click="close"></div>
+    <div class="t-dialog-mask" @click="onClickMask"></div>
     <div class="t-dialog-wrapper">
       <div class="t-dialog">
         <div class="t-dialog-header">
@@ -9,8 +9,8 @@
         </div>
         <div class="t-dialog-content">内容</div>
         <div class="t-dialog-footer">
-          <Button theme="primary">确认</Button>
-          <Button @click="close">取消</Button>
+          <Button theme="primary" @click="ok">确认</Button>
+          <Button @click="cancel">取消</Button>
         </div>
       </div>
     </div>
@@ -26,6 +26,20 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    maskClosable: {
+      type: Boolean,
+      default: false
+    },
+    ok: {
+      type: Function,
+      default: () => {
+      }
+    },
+    cancel: {
+      type: Function,
+      default: () => {
+      }
     }
   },
   components: { Button },
@@ -33,7 +47,19 @@ export default {
     const close = () => {
       context.emit('update:visible', false)
     }
-    return { close }
+    const onClickMask = () => {
+      props.maskClosable && close()
+    }
+    const ok = () => {
+      if(props.ok?.() !== false) {
+        close()
+      }
+    }
+    const cancel = () => {
+      context.emit('cancel')
+      close()
+    }
+    return { close, onClickMask, ok, cancel }
   }
 }
 </script>
@@ -48,7 +74,7 @@ $border-color: #d9d9d9;
   min-width: 15em;
   max-width: 90%;
 
-  &-overlay {
+  &-mask {
     position: fixed;
     top: 0;
     left: 0;
