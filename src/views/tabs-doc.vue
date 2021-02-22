@@ -10,7 +10,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Tabs from '../lib/tabs.vue'
 import Tab from '../lib/tab.vue'
 

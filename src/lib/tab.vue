@@ -1,8 +1,10 @@
 <template>
-  <div>Tab组件</div>
+  <div>
+    <slot></slot>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "Tab"
 }
