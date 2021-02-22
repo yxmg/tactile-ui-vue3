@@ -1,23 +1,25 @@
 <template>
   <template v-if="visible">
-    <div class="t-dialog-mask" @click="onClickMask"></div>
-    <div class="t-dialog-wrapper">
-      <div class="t-dialog">
-        <div class="t-dialog-header">
-          <slot name="title">
-            <span class="t-dialog-title">{{ title }}</span>
-          </slot>
-          <span class="t-dialog-close" @click="close"></span>
-        </div>
-        <div class="t-dialog-content">
-          <slot/>
-        </div>
-        <div class="t-dialog-footer">
-          <Button theme="primary" @click="ok">确认</Button>
-          <Button @click="cancel">取消</Button>
+    <Teleport to="body">
+      <div class="t-dialog-mask" @click="onClickMask"></div>
+      <div class="t-dialog-wrapper">
+        <div class="t-dialog">
+          <div class="t-dialog-header">
+            <slot name="title">
+              <span class="t-dialog-title">{{ title }}</span>
+            </slot>
+            <span class="t-dialog-close" @click="close"></span>
+          </div>
+          <div class="t-dialog-content">
+            <slot/>
+          </div>
+          <div class="t-dialog-footer">
+            <Button theme="primary" @click="ok">确认</Button>
+            <Button @click="cancel">取消</Button>
+          </div>
         </div>
       </div>
-    </div>
+    </Teleport>
   </template>
 </template>
 
