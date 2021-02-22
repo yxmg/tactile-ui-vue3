@@ -1,7 +1,17 @@
 <template>
-  <div>Tabs组件</div>
-  <div v-for="(title, index) in titleProps" :key="index">{{ title }}</div>
-  <component v-for="(defaultSlot, index) in defaultSlots" :is="defaultSlot" :key="index"/>
+  <div class="t-tabs">
+    <div class="t-tabs-nav">
+      <div class="t-tabs-nav-item" v-for="(title, index) in titleProps" :key="index">{{ title }}</div>
+    </div>
+    <div class="t-tabs-content">
+      <component
+        class="t-tabs-content-item"
+        v-for="(defaultSlot, index) in defaultSlots"
+        :is="defaultSlot"
+        :key="index"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -21,6 +31,33 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$blue: #40a9ff;
+$color: #333;
+$border-color: #d9d9d9;
+.t-tabs {
+  &-nav {
+    display: flex;
+    color: $color;
+    border-bottom: 1px solid $border-color;
 
+    &-item {
+      padding: 8px 0;
+      margin: 0 16px;
+      cursor: pointer;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &.selected {
+        color: $blue;
+      }
+    }
+  }
+
+  &-content {
+    padding: 8px 0;
+  }
+}
 </style>
