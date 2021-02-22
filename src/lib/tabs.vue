@@ -1,6 +1,7 @@
 <template>
   <div>Tabs组件</div>
-  <component v-for="defaultSlot in defaultSlots" :is="defaultSlot"></component>
+  <div v-for="(title, index) in titleProps" :key="index">{{ title }}</div>
+  <component v-for="(defaultSlot, index) in defaultSlots" :is="defaultSlot" :key="index"/>
 </template>
 
 <script lang="ts">
@@ -14,7 +15,8 @@ export default {
     if (defaultSlots.some(slot => slot.type !== Tab)) {
       throw new Error(`Tabs's children must be Tab`)
     }
-    return { defaultSlots }
+    const titleProps = defaultSlots.map(slot => slot.props.title)
+    return { defaultSlots, titleProps }
   }
 }
 </script>
