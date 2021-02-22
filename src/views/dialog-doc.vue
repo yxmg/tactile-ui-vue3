@@ -4,7 +4,10 @@
     <div style="margin-bottom: 24px;">
       <Button theme="primary" @click="toggleDialog(1)">打开弹窗</Button>
       <Dialog v-model:visible="visible[1]" mask-closable :ok="onOK" title="标题">
-        测试
+        <template v-slot:title>
+          <strong>标题</strong>
+        </template>
+        <div>测试</div>
       </Dialog>
     </div>
   </div>
