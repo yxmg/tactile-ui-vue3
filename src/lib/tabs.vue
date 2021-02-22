@@ -1,14 +1,20 @@
 <template>
   <div class="t-tabs">
     <div class="t-tabs-nav">
-      <div class="t-tabs-nav-item" v-for="(title, index) in titleProps" :key="index">{{ title }}</div>
+      <div
+        class="t-tabs-nav-item"
+        :class="{ selected: keyProps[index] === activeKey}"
+        v-for="(title, index) in titleProps"
+        :key="index"
+        @click="onTabClick(keyProps[index])"
+      >
+        {{ title }}
+      </div>
     </div>
     <div class="t-tabs-content">
       <component
         class="t-tabs-content-item"
-        v-for="(defaultSlot, index) in defaultSlots"
-        :is="defaultSlot"
-        :key="index"
+        :is="selectedTab"
       />
     </div>
   </div>
@@ -16,9 +22,13 @@
 
 <script lang="ts">
 import Tab from './tab.vue'
+import {computed} from 'vue'
 
 export default {
   name: "Tabs",
+  props: {
+    activeKey: [String, Number]
+  },
   setup(props, context) {
     // 检查子元素类型
     const defaultSlots = context.slots.default()
@@ -26,7 +36,12 @@ export default {
       throw new Error(`Tabs's children must be Tab`)
     }
     const titleProps = defaultSlots.map(slot => slot.props.title)
-    return { defaultSlots, titleProps }
+    const keyProps = defaultSlots.map(slot => slot.props.key)
+    const selectedTab = computed(() => defaultSlots.find(slot => slot.props.key === props.activeKey))
+    const onTabClick = (key) => {
+      context.emit('update:activeKey', key)
+    }
+    return { defaultSlots, titleProps, keyProps, selectedTab, onTabClick }
   }
 }
 </script>
