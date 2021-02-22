@@ -10,6 +10,10 @@
         <div>测试</div>
       </Dialog>
     </div>
+    <h1 style="margin-bottom: 12px;">示例2-编程式调用</h1>
+    <div style="margin-bottom: 24px;">
+      <Button theme="primary" @click="showDialogByCall(1)">打开弹窗</Button>
+    </div>
   </div>
 </template>
 
@@ -17,6 +21,7 @@
 import Dialog from "../lib/dialog.vue"
 import Button from "../lib/button.vue"
 import { reactive } from 'vue'
+import { openDialog } from "../lib/open-dialog"
 
 export default {
   name: "dialog-doc",
@@ -27,10 +32,12 @@ export default {
       visible[index] = !visible[index]
     }
     const onOK = () => {
-      console.log(1, "1")
       return false
     }
-    return { visible, toggleDialog, onOK }
+    const showDialogByCall = () => {
+      openDialog({ title: '标题', content: '内容' })
+    }
+    return { visible, toggleDialog, onOK, openDialog, showDialogByCall }
   }
 }
 </script>
