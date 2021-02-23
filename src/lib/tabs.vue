@@ -14,10 +14,20 @@
       <div class="t-tabs-nav-indicator" ref="indicatorRef"></div>
     </div>
     <div class="t-tabs-content">
-      <component
-        class="t-tabs-content-item"
-        :is="selectedTab"
-      />
+      <template v-if="forceRender">
+        <component
+          class="t-tabs-content-item"
+          :is="selectedTab"
+        />
+      </template>
+      <template v-else>
+        <component
+          class="t-tabs-content-item"
+          v-for="slot in defaultSlots"
+          v-show="slot.props.key === activeKey"
+          :is="slot"
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -29,7 +39,11 @@ import {ref, computed, onMounted, watch, nextTick} from 'vue'
 export default {
   name: "Tabs",
   props: {
-    activeKey: [String, Number]
+    activeKey: [String, Number],
+    forceRender: {
+      type: Boolean,
+      default: false
+    }
   },
   setup(props, context) {
     // 检查子元素类型
