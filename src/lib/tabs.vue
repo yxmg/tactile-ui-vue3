@@ -1,16 +1,17 @@
 <template>
   <div class="t-tabs">
-    <div class="t-tabs-nav">
+    <div class="t-tabs-nav" ref="navWrapperRef">
       <div
         class="t-tabs-nav-item"
         :class="{ selected: keyProps[index] === activeKey}"
         v-for="(title, index) in titleProps"
+        :ref="(el) => el && navItems.push(el)"
         :key="index"
         @click="onTabClick(keyProps[index])"
       >
         <span>{{ title }}</span>
-        <div v-if="index === 0" class="t-tabs-nav-indicator"></div>
       </div>
+      <div class="t-tabs-nav-indicator" ref="indicatorRef"></div>
     </div>
     <div class="t-tabs-content">
       <component
@@ -23,7 +24,7 @@
 
 <script lang="ts">
 import Tab from './tab.vue'
-import {computed} from 'vue'
+import {ref, computed, onMounted, watch, nextTick} from 'vue'
 
 export default {
   name: "Tabs",
@@ -42,7 +43,34 @@ export default {
     const onTabClick = (key) => {
       context.emit('update:activeKey', key)
     }
-    return { defaultSlots, titleProps, keyProps, selectedTab, onTabClick }
+    const navItems = ref<HTMLDivElement[]>([])
+    const navWrapperRef = ref<HTMLDivElement>(null)
+    const indicatorRef = ref<HTMLDivElement>(null)
+    // 设置indicator参数，宽度/偏移
+    const updateIndicator = () => {
+      const activeNav = navItems.value.find(nav => nav.classList.contains('selected'))
+      const { width: activeNavWidth, left: activeNavLeft } = activeNav.getBoundingClientRect()
+      const { left: navWrapperLeft } = navWrapperRef.value.getBoundingClientRect()
+      indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
+      indicatorRef.value.style.width = activeNavWidth + 'px'
+    }
+    onMounted(updateIndicator)
+    watch(() => props.activeKey, () => {
+      nextTick(updateIndicator)
+    })
+
+    // 获取选中Tab的宽度
+    // 获取容器偏移-Tab偏移
+    return {
+      defaultSlots,
+      titleProps,
+      keyProps,
+      selectedTab,
+      onTabClick,
+      navItems,
+      navWrapperRef,
+      indicatorRef
+    }
   }
 }
 </script>
@@ -57,18 +85,18 @@ $primary-color: #1890ff;
     display: flex;
     color: $color;
     border-bottom: 1px solid $border-color;
+    position: relative;
 
     &-indicator {
       position: absolute;
       left: 0;
       bottom: -1px;
-      width: 100%;
       height: 3px;
       background-color: $primary-color;
+      transition: width 0.25s, left 0.25s;
     }
 
     &-item {
-      position: relative;
       padding: 8px 0;
       margin: 0 16px;
       cursor: pointer;

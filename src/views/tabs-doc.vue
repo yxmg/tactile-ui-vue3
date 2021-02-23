@@ -3,7 +3,7 @@
     <h1 style="margin-bottom: 12px;">示例1-基本用法</h1>
     <div style="margin-bottom: 24px;">
       <Tabs v-model:activeKey="activeKey">
-        <Tab title="导航1" :key="1">内容1</Tab>
+        <Tab title="导航22221" :key="1">内容1</Tab>
         <Tab title="导航2" :key="2">内容2</Tab>
       </Tabs>
     </div>
