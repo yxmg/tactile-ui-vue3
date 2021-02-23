@@ -46,7 +46,6 @@ export default {
   align-items: center;
   padding: 0 50px;
   height: 64px;
-  background-color: lightcoral;
 
   .img-logo {
     width: 48px;
