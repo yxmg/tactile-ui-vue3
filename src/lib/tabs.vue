@@ -8,7 +8,8 @@
         :key="index"
         @click="onTabClick(keyProps[index])"
       >
-        {{ title }}
+        <span>{{ title }}</span>
+        <div v-if="index === 0" class="t-tabs-nav-indicator"></div>
       </div>
     </div>
     <div class="t-tabs-content">
@@ -47,16 +48,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$blue: #40a9ff;
 $color: #333;
 $border-color: #d9d9d9;
+$primary-color: #1890ff;
+
 .t-tabs {
   &-nav {
     display: flex;
     color: $color;
     border-bottom: 1px solid $border-color;
 
+    &-indicator {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 3px;
+      background-color: $primary-color;
+    }
+
     &-item {
+      position: relative;
       padding: 8px 0;
       margin: 0 16px;
       cursor: pointer;
@@ -66,7 +78,7 @@ $border-color: #d9d9d9;
       }
 
       &.selected {
-        color: $blue;
+        color: $primary-color;
       }
     }
   }
