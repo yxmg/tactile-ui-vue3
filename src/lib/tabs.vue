@@ -5,7 +5,7 @@
         class="t-tabs-nav-item"
         :class="{ selected: keyProps[index] === activeKey}"
         v-for="(title, index) in titleProps"
-        :ref="(el) => el && navItems.push(el)"
+        :ref="(el) => keyProps[index] === activeKey && (activeNav = el)"
         :key="index"
         @click="onTabClick(keyProps[index])"
       >
@@ -43,13 +43,12 @@ export default {
     const onTabClick = (key) => {
       context.emit('update:activeKey', key)
     }
-    const navItems = ref<HTMLDivElement[]>([])
+    const activeNav = ref<HTMLDivElement>(null)
     const navWrapperRef = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
     // 设置indicator参数，宽度/偏移
     const updateIndicator = () => {
-      const activeNav = navItems.value.find(nav => nav.classList.contains('selected'))
-      const { width: activeNavWidth, left: activeNavLeft } = activeNav.getBoundingClientRect()
+      const { width: activeNavWidth, left: activeNavLeft } = activeNav.value.getBoundingClientRect()
       const { left: navWrapperLeft } = navWrapperRef.value.getBoundingClientRect()
       indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
       indicatorRef.value.style.width = activeNavWidth + 'px'
@@ -67,7 +66,7 @@ export default {
       keyProps,
       selectedTab,
       onTabClick,
-      navItems,
+      activeNav,
       navWrapperRef,
       indicatorRef
     }
