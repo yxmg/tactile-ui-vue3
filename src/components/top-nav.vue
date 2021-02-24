@@ -12,9 +12,7 @@
     </router-link>
 
     <div class="menu">
-      <a href="">菜单1</a>
-      |
-      <a href="">菜单2</a>
+      <router-link to="/doc">文档</router-link>
     </div>
   </div>
 </template>
@@ -40,7 +38,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;

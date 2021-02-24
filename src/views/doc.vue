@@ -75,9 +75,11 @@ export default {
     background: lightblue;
     width: 150px;
     position: fixed;
-    top: 64px;
+    z-index: 1;
+    top: 0;
     left: 0;
     padding: 16px;
+    padding-top: 80px;
     height: 100%;
 
     > h2 {
