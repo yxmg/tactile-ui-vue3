@@ -1,17 +1,15 @@
 <template>
   <div class="top-nav">
-    <span class="toggle-aside-btn" @click="toggleMenu">
+    <span class="toggle-aside-btn" @click="toggleMenu" v-if="needToggleBtn">
       <i class="stroke"></i>
       <i class="stroke"></i>
       <i class="stroke"></i>
     </span>
-    <router-link to="/">
-      <div class="logo">
-        <img class="img-logo" src="../assets/logo.png" alt="">
-      </div>
+    <router-link class="logo" to="/">
+      <img class="img-logo" src="../assets/logo.png" alt="">
     </router-link>
 
-    <div class="menu">
+    <div class="menu" v-if="needMenuBtn">
       <router-link to="/doc">文档</router-link>
     </div>
   </div>
@@ -22,17 +20,29 @@ import {inject, Ref} from 'vue'
 
 export default {
   name: "top-nav",
+  props: {
+    needToggleBtn: {
+      type: Boolean,
+      default: false
+    },
+    needMenuBtn: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     const asideVisible = inject<Ref<boolean>>('asideVisible')
     const toggleMenu = () => {
       asideVisible.value = !asideVisible.value
     }
-    return {asideVisible, toggleMenu}
+    return { asideVisible, toggleMenu }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+$padding-horizontal: 50px;
+
 .top-nav {
   position: fixed;
   top: 0;
@@ -42,7 +52,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 50px;
+  padding: 0 $padding-horizontal;
   height: 64px;
 
   .img-logo {
@@ -51,6 +61,8 @@ export default {
   }
 
   .toggle-aside-btn {
+    position: absolute;
+    left: $padding-horizontal;
     display: none;
     cursor: pointer;
 
@@ -67,8 +79,13 @@ export default {
     }
   }
 
+  .menu {
+    position: absolute;
+    right: $padding-horizontal;
+  }
+
   @media (max-width: 600px) {
-    > .logo {
+    .logo {
       margin: 0 auto;
     }
 

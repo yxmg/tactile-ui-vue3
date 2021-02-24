@@ -1,6 +1,6 @@
 <template>
   <div class="page-doc">
-    <top-nav class="nav"/>
+    <top-nav class="nav" need-toggle-btn/>
     <div class="top-nav">
       <div class="logo"></div>
       <div class="menu"></div>

@@ -1,7 +1,7 @@
 <template>
   <div class="page-home">
     <div class="top-part">
-      <top-nav/>
+      <top-nav need-menu-btn />
       <div class="banner">
         <h1 class="title">Tiny UI</h1>
         <h2 class="desc">The UI library for Vue3 study</h2>
