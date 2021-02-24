@@ -1,13 +1,40 @@
 <template>
   <div class="page-home">
-    <top-nav/>
-    <div class="banner">
-      <h1 class="title">Tiny UI</h1>
-      <h2 class="desc">The UI library for Vue3 study</h2>
-      <p class="actions">
-        <a class="action-item" href="">Github</a>
-        <router-link class="action-item" to="/doc">开始</router-link>
-      </p>
+    <div class="top-part">
+      <top-nav/>
+      <div class="banner">
+        <h1 class="title">Tiny UI</h1>
+        <h2 class="desc">The UI library for Vue3 study</h2>
+        <p class="actions">
+          <a class="action-item" href="">Github</a>
+          <router-link class="action-item" to="/doc">开始</router-link>
+        </p>
+      </div>
+    </div>
+    <div class="feature-wrapper">
+      <ul class="features">
+        <li class="feature-item">
+          <svg class="icon">
+            <use xlink:href="#icon-vue"></use>
+          </svg>
+          <h3 class="feature-title">基于 Vue 3</h3>
+          <p class="feature-desc">Vue 3 Composition API</p>
+        </li>
+        <li class="feature-item">
+          <svg class="icon">
+            <use xlink:href="#icon-typescript"></use>
+          </svg>
+          <h3 class="feature-title">基于 TypeScript </h3>
+          <p class="feature-desc">使用 TypeScript （非严格检查）</p>
+        </li>
+        <li class="feature-item">
+          <svg class="icon">
+            <use xlink:href="#icon-light"></use>
+          </svg>
+          <h3 class="feature-title">代码易读</h3>
+          <p class="feature-desc">简洁明了的源代码</p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -27,12 +54,15 @@ $border-radius: 4px;
 $font-color: #007974;
 
 .page-home {
-  color: $font-color;
-  background: linear-gradient(145deg, rgba(227, 255, 253, 1) 0%, rgba(183, 233, 230, 1) 100%);
-  text-align: center;
+  .top-part {
+    color: $font-color;
+    background: linear-gradient(145deg, rgba(227, 255, 253, 1) 0%, rgba(183, 233, 230, 1) 100%);
+    clip-path: ellipse(80% 60% at 50% 40%);
+    text-align: center;
+  }
 
   .banner {
-    padding: 300px 0;
+    padding: 250px 0;
   }
 
   .title {
@@ -59,5 +89,48 @@ $font-color: #007974;
     }
   }
 
+  .feature-wrapper {
+    margin: 64px auto;
+    width: 400px;
+    @media (min-width: 800px) {
+      width: 800px;
+    }
+    @media (min-width: 1200px) {
+      width: 1200px;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+
+      .feature-item {
+        width: 400px;
+        margin: 16px 0;
+        display: grid;
+        justify-content: start;
+        align-content: space-between;
+        grid-template-areas:
+        "icon title"
+        "icon text";
+        grid-template-columns: 80px auto;
+        grid-template-rows: 1fr auto;
+
+        .icon {
+          grid-area: icon;
+          width: 64px;
+          height: 64px;
+        }
+
+        .feature-title {
+          grid-area: title;
+          font-size: 28px;
+        }
+
+        .feature-desc {
+          grid-area: text
+        }
+      }
+    }
+  }
 }
 </style>
