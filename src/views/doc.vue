@@ -48,10 +48,10 @@ import {inject, Ref} from "vue";
 
 export default {
   name: "doc",
-  components: {TopNav},
+  components: { TopNav },
   setup() {
     const asideVisible = inject<Ref<boolean>>('asideVisible')
-    return {asideVisible}
+    return { asideVisible }
   }
 }
 </script>
@@ -90,17 +90,26 @@ export default {
     z-index: 1;
     top: 0;
     left: 0;
-    padding: 16px;
-    padding-top: 80px;
+    padding: 80px 0 16px;
     height: 100%;
 
     > h2 {
+      padding: 0 16px;
       margin-bottom: 4px;
     }
 
-    > ul {
+    > ol {
       > li {
         padding: 4px 0;
+
+        > a {
+          display: block;
+          padding: 4px 16px;
+
+          &.router-link-active {
+            background-color: #D4DFE6;
+          }
+        }
       }
     }
   }
