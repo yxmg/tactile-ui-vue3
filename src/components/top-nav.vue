@@ -41,7 +41,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$padding-horizontal: 50px;
 
 .top-nav {
   position: fixed;
@@ -50,9 +49,9 @@ $padding-horizontal: 50px;
   width: 100%;
   z-index: 2;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0 $padding-horizontal;
+  padding: 0;
   height: 64px;
 
   .img-logo {
@@ -81,19 +80,20 @@ $padding-horizontal: 50px;
 
   .menu {
     position: absolute;
-    right: $padding-horizontal;
+    right: 50px;
   }
 
   @media (max-width: 600px) {
-    box-shadow: 0 0 3px rgba(0,0,0,.25);
+    box-shadow: 0 0 3px rgba(0, 0, 0, .25);
     background-color: #fff;
 
-    .logo {
-      margin: 0 auto;
-    }
 
     > .toggle-aside-btn {
       display: inline-block;
+    }
+
+    .menu {
+      right: 15px;
     }
   }
 }

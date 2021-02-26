@@ -1,7 +1,7 @@
 # 快速上手
 ## 安装
 npm 或 yarn 安装
-```bash
+```
 # npm
 $ npm install tiny-ui --save
 

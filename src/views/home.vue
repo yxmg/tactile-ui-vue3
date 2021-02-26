@@ -1,7 +1,7 @@
 <template>
   <div class="page-home">
     <div class="top-part">
-      <top-nav need-menu-btn />
+      <top-nav need-menu-btn/>
       <div class="banner">
         <h1 class="title">Tiny UI</h1>
         <h2 class="desc">The UI library for Vue3 study</h2>
@@ -54,6 +54,15 @@ $border-radius: 4px;
 $font-color: #007974;
 
 .page-home {
+  overflow: hidden;
+
+  @media (max-width: 600px) {
+    .top-nav {
+      background-color: transparent;
+      box-shadow: none;
+    }
+  }
+
   .top-part {
     color: $font-color;
     background: linear-gradient(145deg, rgba(227, 255, 253, 1) 0%, rgba(183, 233, 230, 1) 100%);
