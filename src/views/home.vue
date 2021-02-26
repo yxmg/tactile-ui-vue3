@@ -11,31 +11,29 @@
         </p>
       </div>
     </div>
-    <div class="feature-wrapper">
-      <ul class="features">
-        <li class="feature-item">
-          <svg class="icon">
-            <use xlink:href="#icon-vue"></use>
-          </svg>
-          <h3 class="feature-title">基于 Vue 3</h3>
-          <p class="feature-desc">Vue 3 Composition API</p>
-        </li>
-        <li class="feature-item">
-          <svg class="icon">
-            <use xlink:href="#icon-typescript"></use>
-          </svg>
-          <h3 class="feature-title">基于 TypeScript </h3>
-          <p class="feature-desc">使用 TypeScript （非严格检查）</p>
-        </li>
-        <li class="feature-item">
-          <svg class="icon">
-            <use xlink:href="#icon-light"></use>
-          </svg>
-          <h3 class="feature-title">代码易读</h3>
-          <p class="feature-desc">简洁明了的源代码</p>
-        </li>
-      </ul>
-    </div>
+    <ul class="features">
+      <li class="feature-item">
+        <svg class="icon">
+          <use xlink:href="#icon-vue"></use>
+        </svg>
+        <h3 class="feature-title">基于 Vue 3</h3>
+        <p class="feature-desc">Vue 3 Composition API</p>
+      </li>
+      <li class="feature-item">
+        <svg class="icon">
+          <use xlink:href="#icon-typescript"></use>
+        </svg>
+        <h3 class="feature-title">基于 TypeScript </h3>
+        <p class="feature-desc">使用 TypeScript</p>
+      </li>
+      <li class="feature-item">
+        <svg class="icon">
+          <use xlink:href="#icon-light"></use>
+        </svg>
+        <h3 class="feature-title">代码易读</h3>
+        <p class="feature-desc">简洁明了的源代码</p>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -55,13 +53,6 @@ $font-color: #007974;
 
 .page-home {
   overflow: hidden;
-
-  @media (max-width: 600px) {
-    .top-nav {
-      background-color: transparent;
-      box-shadow: none;
-    }
-  }
 
   .top-part {
     color: $font-color;
@@ -98,46 +89,51 @@ $font-color: #007974;
     }
   }
 
-  .feature-wrapper {
+  .features {
     margin: 64px auto;
-    width: 400px;
+    padding: 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .feature-item {
+      width: 100%;
+      margin: 16px 0;
+      display: grid;
+      justify-content: start;
+      align-content: space-between;
+      grid-template-areas:
+        "icon title"
+        "icon text";
+      grid-template-columns: 80px auto;
+      grid-template-rows: 1fr auto;
+
+
+      .icon {
+        grid-area: icon;
+        width: 64px;
+        height: 64px;
+      }
+
+      .feature-title {
+        grid-area: title;
+        font-size: 28px;
+      }
+
+      .feature-desc {
+        grid-area: text
+      }
+    }
+
     @media (min-width: 800px) {
       width: 800px;
+      .feature-item {
+        width: 50%;
+      }
     }
     @media (min-width: 1200px) {
       width: 1200px;
-    }
-
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-
       .feature-item {
-        width: 400px;
-        margin: 16px 0;
-        display: grid;
-        justify-content: start;
-        align-content: space-between;
-        grid-template-areas:
-        "icon title"
-        "icon text";
-        grid-template-columns: 80px auto;
-        grid-template-rows: 1fr auto;
-
-        .icon {
-          grid-area: icon;
-          width: 64px;
-          height: 64px;
-        }
-
-        .feature-title {
-          grid-area: title;
-          font-size: 28px;
-        }
-
-        .feature-desc {
-          grid-area: text
-        }
+        width: 33.3%;
       }
     }
   }
