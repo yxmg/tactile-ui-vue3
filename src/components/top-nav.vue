@@ -49,9 +49,8 @@ export default {
   width: 100%;
   z-index: 2;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 0;
+  padding: 0 50px;
   height: 64px;
 
   .img-logo {
@@ -86,6 +85,9 @@ export default {
   @media (max-width: 600px) {
     box-shadow: 0 0 3px rgba(0, 0, 0, .25);
     background-color: #fff;
+    .logo {
+      margin: 0 auto;
+    }
 
 
     > .toggle-aside-btn {
