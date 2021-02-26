@@ -23,6 +23,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+::v-deep {
+  ul {
+    list-style: disc;
+  }
+}
 </style>

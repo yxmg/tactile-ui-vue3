@@ -54,6 +54,7 @@ $padding-horizontal: 50px;
   align-items: center;
   padding: 0 $padding-horizontal;
   height: 64px;
+  background-color: #fff;
 
   .img-logo {
     width: 48px;
@@ -62,7 +63,7 @@ $padding-horizontal: 50px;
 
   .toggle-aside-btn {
     position: absolute;
-    left: $padding-horizontal;
+    left: 15px;
     display: none;
     cursor: pointer;
 
