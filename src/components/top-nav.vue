@@ -54,7 +54,6 @@ $padding-horizontal: 50px;
   align-items: center;
   padding: 0 $padding-horizontal;
   height: 64px;
-  background-color: #fff;
 
   .img-logo {
     width: 48px;
@@ -86,6 +85,9 @@ $padding-horizontal: 50px;
   }
 
   @media (max-width: 600px) {
+    box-shadow: 0 0 3px rgba(0,0,0,.25);
+    background-color: #fff;
+
     .logo {
       margin: 0 auto;
     }
