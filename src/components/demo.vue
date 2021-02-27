@@ -5,7 +5,7 @@
       <component :is="component"></component>
     </div>
     <div class="demo-actions">
-      <Button @click="toggleCodeVisible">查看代码</Button>
+      <Button @click="toggleCodeVisible">{{ codeVisible ? '隐藏代码' : '查看代码' }}</Button>
     </div>
     <div class="demo-code">
         <pre
