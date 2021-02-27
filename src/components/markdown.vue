@@ -1,24 +1,15 @@
 <template>
-  <article class="markdown-body" v-if="md" v-html="md"/>
+  <article class="markdown-body" v-if="content" v-html="content"/>
 </template>
 
 <script lang="ts">
-import {ref} from 'vue'
-
 export default {
   name: "markdown",
   props: {
-    path: String
-  },
-  setup(props) {
-    const md = ref('')
-    if (props.path) {
-      import(props.path)
-        .then(context => {
-          md.value = context.default
-        })
+    content: {
+      type: String,
+      required: true
     }
-    return { md }
   }
 }
 </script>

@@ -4,7 +4,7 @@
 import {h} from 'vue'
 import Markdown from '../components/markdown.vue'
 
-export const generateMd = (filename) => {
+export const generateMd = (content) => {
   // @ts-ignore
-  return h(Markdown, { path: `../markdown/${filename}.md`, key: filename })
+  return h(Markdown, { content, key: content })
 }

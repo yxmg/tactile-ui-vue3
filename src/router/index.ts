@@ -6,6 +6,8 @@ import ButtonDoc from "../views/button-doc.vue";
 import TabsDoc from "../views/tabs-doc.vue"
 import DialogDoc from "../views/dialog-doc.vue"
 import {generateMd} from './generate-md'
+import IntroMd from '../markdown/intro.md'
+import GetStartedMd from '../markdown/get-started.md'
 
 const history = createWebHashHistory()
 const router = createRouter({
@@ -17,8 +19,8 @@ const router = createRouter({
       component: DocView,
       redirect: '/doc/intro',
       children: [
-        { path: 'intro', component: generateMd('intro') },
-        { path: 'get-started', component: generateMd('get-started') },
+        { path: 'intro', component: generateMd(IntroMd) },
+        { path: 'get-started', component: generateMd(GetStartedMd) },
         { path: 'switch', component: SwitchDoc },
         { path: 'button', component: ButtonDoc },
         { path: 'dialog', component: DialogDoc },
