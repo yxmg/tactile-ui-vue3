@@ -56,7 +56,9 @@ export default {
     const asideVisible = inject<Ref<boolean>>('asideVisible')
     const wrapper = useClickOutside()
     const handleClickOutside = (event) => {
-      asideVisible.value = false
+      if (document.documentElement.clientWidth < 600) {
+        asideVisible.value = false
+      }
     }
     return { asideVisible, wrapper, handleClickOutside }
   }
