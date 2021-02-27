@@ -61,12 +61,12 @@ export default {
       props.maskClosable && close()
     }
     const ok = () => {
-      if (props.ok?.() !== false) {
+      if (props.ok() !== false) {
         close()
       }
     }
     const cancel = () => {
-      if (props.cancel?.() !== false) {
+      if (props.cancel() !== false) {
         close()
       }
     }
