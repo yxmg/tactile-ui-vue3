@@ -24,9 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep {
-  ul {
-    list-style: disc;
-  }
+::v-deep(ul) {
+  list-style: disc;
 }
 </style>
