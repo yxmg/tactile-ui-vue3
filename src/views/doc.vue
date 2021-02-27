@@ -6,7 +6,12 @@
       <div class="menu"></div>
     </div>
     <div class="content">
-      <aside v-if="asideVisible">
+      <aside
+        ref="wrapper"
+        v-show="asideVisible"
+        @clickOutside="handleClickOutside"
+        data-outside-exclude=".toggle-aside-btn"
+      >
         <h2>文档</h2>
         <ol>
           <li>
@@ -42,13 +47,18 @@
 <script lang="ts">
 import TopNav from '../components/top-nav.vue'
 import {inject, Ref} from "vue";
+import {useClickOutside} from '../plugins/use-click-outside'
 
 export default {
   name: "doc",
   components: { TopNav },
   setup() {
     const asideVisible = inject<Ref<boolean>>('asideVisible')
-    return { asideVisible }
+    const wrapper = useClickOutside()
+    const handleClickOutside = (event) => {
+      asideVisible.value = false
+    }
+    return { asideVisible, wrapper, handleClickOutside }
   }
 }
 </script>
