@@ -5,6 +5,8 @@ import {mdTransform} from './src/plugins/md-transform'
 import vueCustomBlockTransforms from './src/plugins/vue-custom-block-transform'
 
 export default {
+  base: './',
+  assetsDir: 'assets',
   plugins: [mdTransform()],
   vueCustomBlockTransforms
 }
