@@ -1,16 +1,21 @@
 <template>
-  <span
+  <button
     class="t-switch"
     :class="{
       checked,
-      [`t-switch-${size}`]: size
+      [`t-switch-${size}`]: size,
+      [`t-switch-disabled`]: disabled
      }"
+    :style="{
+      backgroundColor: checked ? checkedColor : uncheckedColor
+    }"
+    :disabled="disabled"
     @click="toggleChecked"
   >
-
-    <input type="hidden" :value="checked">
+    <input type="hidden" :value="checked" :disabled="disabled">
+    <span class="t-switch-animate-bg" :style="{ backgroundColor: uncheckedColor }"></span>
     <span class="t-switch-inner"></span>
-  </span>
+  </button>
 </template>
 
 <script lang="ts">
@@ -32,10 +37,14 @@ export default {
     size: {
       type: String,
       default: 'medium'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, context) {
-    const toggleChecked = () => {
+    const toggleChecked = (event) => {
       context.emit('update:checked', !props.checked)
     }
     return { toggleChecked }
@@ -63,6 +72,7 @@ $largeBallHeight: $largeSwitchHeight - 6px;
   position: relative;
   outline: none;
   transition: background-color 0.1s linear;
+  user-select: none;
 
   .t-switch-inner {
     position: absolute;
@@ -76,8 +86,12 @@ $largeBallHeight: $largeSwitchHeight - 6px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
   }
 
-  &:before {
-    content: '';
+  &-disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  &-animate-bg {
     display: inline-block;
     position: absolute;
     width: calc(100% - 4px);
@@ -85,11 +99,10 @@ $largeBallHeight: $largeSwitchHeight - 6px;
     border-radius: 1000px;
     top: 2px;
     left: 2px;
-    background: #bfbfbf;
     transition: transform .35s cubic-bezier(.45, 1, .4, 1);
   }
 
-  &:active {
+  &:not(.t-switch-disabled):active {
     .t-switch-inner {
       width: $ballHeight + 4px;
     }
@@ -98,11 +111,11 @@ $largeBallHeight: $largeSwitchHeight - 6px;
   &.checked {
     background-color: #1890ff;
 
-    &:before {
+    .t-switch-animate-bg {
       transform: scale(0);
     }
 
-    &:active {
+    &:not(.t-switch-disabled):active {
       .t-switch-inner {
         width: $ballHeight + 4px;
         margin-left: -4px;
@@ -131,7 +144,7 @@ $largeBallHeight: $largeSwitchHeight - 6px;
     }
 
     &.checked {
-      &:active {
+      &:not(.t-switch-disabled):active {
         .t-switch-inner {
           width: $smallBallHeight + 2px;
           margin-left: -2px;
@@ -157,14 +170,14 @@ $largeBallHeight: $largeSwitchHeight - 6px;
       top: 3px;
     }
 
-    &:active {
+    &:not(.t-switch-disabled):active {
       .t-switch-inner {
         width: $largeBallHeight + 4px;
       }
     }
 
     &.checked {
-      &:active {
+      &:not(.t-switch-disabled):active {
         .t-switch-inner {
           width: $largeBallHeight + 4px;
         }
