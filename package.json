@@ -18,13 +18,13 @@
     "vue": ">=3.0.0"
   },
   "dependencies": {
-    "github-markdown-css": "^4.0.0",
-    "marked": "^2.0.0",
-    "prismjs": "^1.23.0",
-    "vue": "^3.0.4",
-    "vue-router": "4.0.3"
   },
   "devDependencies": {
+    "github-markdown-css": "^4.0.0",
+    "marked": "^2.0.0",
+    "vue-router": "4.0.3",
+    "prismjs": "^1.23.0",
+    "vue": "^3.0.4",
     "@vue/compiler-sfc": "^3.0.4",
     "rollup-plugin-esbuild": "2.5.0",
     "rollup-plugin-scss": "2.6.0",
