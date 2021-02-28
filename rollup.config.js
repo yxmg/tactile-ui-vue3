@@ -5,6 +5,7 @@ import dartSass from 'sass';
 import { terser } from "rollup-plugin-terser"
 
 export default {
+  external: ['vue'],
   input: 'src/lib/index.ts',
   output: [
     {

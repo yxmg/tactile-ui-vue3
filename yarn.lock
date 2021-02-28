@@ -1483,7 +1483,7 @@ node-forge@^0.10.0:
   resolved "https://registry.npm.taobao.org/node-forge/download/node-forge-0.10.0.tgz?cache=0&sync_timestamp=1599054189018&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-forge%2Fdownload%2Fnode-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha1-Mt6ir7Ppkm8C7lzoeUkCaRpna/M=
 
-node-sass@4, "node-sass@npm:sass@1.26.11", sass@1.26.11:
+node-sass@4, "node-sass@npm:sass@1.26.11":
   version "1.26.11"
   resolved "https://registry.npm.taobao.org/sass/download/sass-1.26.11.tgz?cache=0&sync_timestamp=1613686491856&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsass%2Fdownload%2Fsass-1.26.11.tgz#0f22cc4ab2ba27dad1d4ca30837beb350b709847"
   integrity sha1-DyLMSrK6J9rR1Mowg3vrNQtwmEc=
@@ -1908,6 +1908,13 @@ safe-buffer@^5.1.0, safe-buffer@~5.2.0:
   version "5.2.1"
   resolved "https://registry.npm.taobao.org/safe-buffer/download/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=
+
+sass@^1.32.8:
+  version "1.32.8"
+  resolved "https://registry.npm.taobao.org/sass/download/sass-1.32.8.tgz?cache=0&sync_timestamp=1613686491856&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsass%2Fdownload%2Fsass-1.32.8.tgz#f16a9abd8dc530add8834e506878a2808c037bdc"
+  integrity sha1-8WqavY3FMK3Yg05QaHiigIwDe9w=
+  dependencies:
+    chokidar ">=2.0.0 <4.0.0"
 
 select@^1.1.2:
   version "1.1.2"
