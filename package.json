@@ -1,6 +1,6 @@
 {
   "name": "tiny-ui-vue3",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "files": [
     "dist/lib/*"
   ],
@@ -20,17 +20,17 @@
   "dependencies": {
   },
   "devDependencies": {
+    "@vue/compiler-sfc": "3.0.4",
+    "vue": "3.0.4",
     "github-markdown-css": "^4.0.0",
     "marked": "^2.0.0",
-    "vue-router": "4.0.3",
     "prismjs": "^1.23.0",
-    "vue": "^3.0.4",
-    "@vue/compiler-sfc": "^3.0.4",
-    "rollup-plugin-esbuild": "2.5.0",
+    "rollup-plugin-esbuild": "^2.6.1",
     "rollup-plugin-scss": "2.6.0",
     "rollup-plugin-terser": "7.0.2",
     "rollup-plugin-vue": "6.0.0-beta.10",
     "sass": "^1.32.8",
-    "vite": "^1.0.0-rc.13"
+    "vite": "^1.0.0-rc.13",
+    "vue-router": "4.0.3"
   }
 }

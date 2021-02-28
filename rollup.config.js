@@ -26,6 +26,8 @@ export default {
   ],
   plugins: [
     scss({ include: /\.scss$/, sass: dartSass }),
+    // ESBuild 2.5.0存在BUG，
+    //  并没有将const activeNav = ref<HTMLDivElement>(null)转成 const activeNav = ref(null)
     esbuild({
       include: /\.[jt]s$/,
       minify: process.env.NODE_ENV === 'production',
