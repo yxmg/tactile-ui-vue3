@@ -11,5 +11,5 @@ Tiny UI 是一款基于 Vue 3 和 TypeScript 的 UI 组件库
 <br>
 <br>
 
-下一节：[开始使用](#/doc/install)
+下一节：[开始使用](#/doc/get-started)
 
