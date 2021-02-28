@@ -1,8 +1,11 @@
 <template>
-  <div>
+  <div class="switch-doc">
     <h1>Switch 组件示例 </h1>
     <Demo :component="normalDemo"></Demo>
     <Demo :component="disabledDemo"></Demo>
+    <Switch size="large" v-model:checked="sizeChecked"></Switch>
+    <Switch size="medium" v-model:checked="sizeChecked"></Switch>
+    <Switch size="small" v-model:checked="sizeChecked"></Switch>
   </div>
 </template>
 
@@ -10,13 +13,15 @@
 import normalDemo from './components/normal-demo.vue'
 import disabledDemo from './components/disabled-demo.vue'
 import Demo from '../../components/demo.vue'
-
+import Switch from '../../lib/switch.vue'
+import {ref} from 'vue'
 
 export default {
   name: "switch-doc",
-  components: { Demo },
+  components: { Demo, Switch },
   setup() {
-    return { normalDemo, disabledDemo, Prism }
+    const sizeChecked = ref(false)
+    return { normalDemo, disabledDemo, sizeChecked }
   }
 }
 </script>
