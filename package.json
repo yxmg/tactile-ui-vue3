@@ -1,6 +1,6 @@
 {
   "name": "tiny-ui-vue3",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "files": [
     "dist/lib/*"
   ],
@@ -12,6 +12,10 @@
   },
   "resolutions": {
     "node-sass": "npm:sass@1.26.11"
+  },
+  "peerDependencies": {
+    "@vue/compiler-sfc": ">=3.0.0",
+    "vue": ">=3.0.0"
   },
   "dependencies": {
     "github-markdown-css": "^4.0.0",
