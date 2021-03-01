@@ -1,33 +1,29 @@
 <template>
   <button
     class="t-switch"
-    :class="{
-      checked,
-      [`t-switch-${size}`]: size,
-      [`t-switch-disabled`]: disabled
-     }"
-    :style="{
-      backgroundColor: checked ? checkedColor : uncheckedColor
-    }"
-    :disabled="disabled"
+    :class="switchClass"
+    :style="switchStyle"
+    :disabled="_disabled"
     @click="toggleChecked"
   >
-    <input type="hidden" :value="checked" :disabled="disabled">
+    <input type="hidden" :value="checked" :disabled="_disabled">
     <span class="t-switch-animate-bg" :style="{ backgroundColor: uncheckedColor }"></span>
     <span class="t-switch-inner"></span>
   </button>
 </template>
 
 <script lang="ts">
+import {computed} from 'vue'
+
 export default {
   name: "Switch",
   props: {
     checkedColor: {
-      type: Boolean,
+      type: String,
       default: '#1890ff'
     },
     uncheckedColor: {
-      type: Boolean,
+      type: String,
       default: '#bfbfbf'
     },
     checked: {
@@ -41,13 +37,27 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, context) {
-    const toggleChecked = (event) => {
+    const toggleChecked = () => {
       context.emit('update:checked', !props.checked)
     }
-    return { toggleChecked }
+    const _disabled = computed(() => props.disabled || props.loading)
+    const switchStyle = computed(() => ({
+      backgroundColor: props.checked ? props.checkedColor : props.uncheckedColor
+    }))
+    const switchClass = computed(() => ({
+      checked: props.checked,
+      [`t-switch-${props.size}`]: props.size,
+      [`t-switch-disabled`]: _disabled,
+      [`t-switch-loading`]: props.loading
+    }))
+    return { toggleChecked, switchStyle, switchClass, _disabled }
   }
 }
 </script>
@@ -84,6 +94,24 @@ $largeBallHeight: $largeSwitchHeight - 6px;
     border-radius: $ballHeight / 2;
     transition: left .35s cubic-bezier(.45, 1, .4, 1), width .35s cubic-bezier(.45, 1, .4, 1), margin .35s cubic-bezier(.45, 1, .4, 1);
     box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+  }
+
+  &-loading {
+    .t-switch-inner {
+      &:after {
+        content: '';
+        position: absolute;
+        width: calc(100% - 4px);
+        height: calc(100% - 4px);
+        left: 2px;
+        top: 2px;
+        border: 2px solid transparent;
+        border-right: 2px solid #1890ff;
+        border-radius: 50%;
+        box-sizing: border-box;
+        animation: spin 1s linear infinite;
+      }
+    }
   }
 
   &-disabled {
@@ -186,6 +214,15 @@ $largeBallHeight: $largeSwitchHeight - 6px;
       .t-switch-inner {
         left: calc(100% - #{$largeBallHeight} - 3px);
       }
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 }
