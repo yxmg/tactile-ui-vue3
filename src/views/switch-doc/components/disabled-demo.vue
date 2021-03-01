@@ -1,17 +1,22 @@
 <demo-sign>支持disabled</demo-sign>
 <template>
-  <Switch v-model:checked="checked" disabled></Switch>
+  <Switch :disabled="disabled"></Switch>
+  <Button @click="toggleDisabled" size="small">切换禁用</Button>
 </template>
 
 <script lang="ts">
 import Switch from '../../../lib/switch.vue'
+import Button from '../../../lib/button.vue'
 import {ref} from 'vue'
 
 export default {
-  components: { Switch },
+  components: { Switch, Button },
   setup() {
-    const checked = ref(false)
-    return { checked }
+    const disabled = ref(true)
+    const toggleDisabled = () => {
+      disabled.value = !disabled.value
+    }
+    return { disabled, toggleDisabled }
   }
 }
 </script>
