@@ -3,10 +3,10 @@
     class="t-switch"
     :class="switchClass"
     :style="switchStyle"
-    :disabled="_disabled"
+    :disabled="privateDisabled"
     @click="toggleChecked"
   >
-    <input type="hidden" :value="checked" :disabled="_disabled">
+    <input type="hidden" :value="checked" :disabled="privateDisabled">
     <span class="t-switch-animate-bg" :style="{ backgroundColor: uncheckedColor }"></span>
     <span class="t-switch-inner"></span>
   </button>
@@ -47,17 +47,17 @@ export default {
     const toggleChecked = () => {
       context.emit('update:checked', !props.checked)
     }
-    const _disabled = computed(() => props.disabled || props.loading)
+    const privateDisabled = computed(() => props.disabled || props.loading)
     const switchStyle = computed(() => ({
       backgroundColor: props.checked ? props.checkedColor : props.uncheckedColor
     }))
     const switchClass = computed(() => ({
       checked: props.checked,
       [`t-switch-${props.size}`]: props.size,
-      [`t-switch-disabled`]: _disabled,
+      [`t-switch-disabled`]: privateDisabled.value,
       [`t-switch-loading`]: props.loading
     }))
-    return { toggleChecked, switchStyle, switchClass, _disabled }
+    return { toggleChecked, switchStyle, switchClass, privateDisabled }
   }
 }
 </script>

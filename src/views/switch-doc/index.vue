@@ -4,7 +4,7 @@
     <Demo :component="normalDemo"></Demo>
     <Demo :component="disabledDemo"></Demo>
     <Switch size="large" v-model:checked="sizeChecked" checked-color="green" unchecked-color="red"></Switch>
-    <Switch size="medium" v-model:checked="sizeChecked"></Switch>
+    <Switch size="medium" v-model:checked="sizeChecked" loading></Switch>
     <Switch size="small" v-model:checked="sizeChecked"></Switch>
   </div>
 </template>
