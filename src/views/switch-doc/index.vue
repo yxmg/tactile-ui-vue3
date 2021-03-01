@@ -3,6 +3,7 @@
     <h1>Switch 组件示例 </h1>
     <Demo :component="normalDemo"></Demo>
     <Demo :component="colorDemo"></Demo>
+    <Demo :component="valueDemo"></Demo>
     <Demo :component="sizeDemo"></Demo>
     <Demo :component="disabledDemo"></Demo>
     <Demo :component="loadingDemo"></Demo>
@@ -17,13 +18,14 @@ import sizeDemo from './components/size-demo.vue'
 import loadingDemo from './components/loading-demo.vue'
 import colorDemo from './components/color-demo.vue'
 import contentDemo from './components/content-demo.vue'
+import valueDemo from './components/value-demo.vue'
 import Demo from '../../components/demo.vue'
 
 export default {
   name: "switch-doc",
   components: { Demo },
   setup() {
-    return { normalDemo, disabledDemo, sizeDemo, loadingDemo, colorDemo, contentDemo }
+    return { normalDemo, disabledDemo, sizeDemo, loadingDemo, colorDemo, contentDemo, valueDemo }
   }
 }
 </script>
