@@ -125,7 +125,7 @@ $largeBallHeight: $largeSwitchHeight - 6px;
 
     .t-switch-inner {
       font-size: 14px;
-      margin-left: 6px;
+      margin-left: 8px;
       margin-right: 24px;
     }
   }
@@ -146,7 +146,7 @@ $largeBallHeight: $largeSwitchHeight - 6px;
     position: relative;
     font-size: 14px;
     margin-left: 24px;
-    margin-right: 6px;
+    margin-right: 8px;
   }
 
   &-disabled {
