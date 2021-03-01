@@ -9,7 +9,7 @@
     <input type="hidden" :value="currentChecked" :disabled="privateDisabled">
     <span class="t-switch-animate-bg" :style="{ backgroundColor: uncheckedColor }"></span>
     <span class="t-switch-inner">
-      <slot name="checked" v-if="currentChecked"></slot>
+      <slot name="checked" v-if="currentChecked === checkedValue"></slot>
       <slot name="unchecked" v-else></slot>
     </span>
     <span class="t-switch-thumb"></span>
@@ -45,23 +45,36 @@ export default {
     uncheckedColor: {
       type: String,
       default: '#bfbfbf'
+    },
+    checkedValue: {
+      type: [String, Number, Boolean],
+      default: true
+    },
+    uncheckedValue: {
+      type: [String, Number, Boolean],
+      default: false
     }
   },
   setup(props, context) {
     const currentChecked = ref(props.checked)
     watch(() => props.checked, (checked) => {
+      if (checked !== props.checkedValue && checked !== props.uncheckedValue) {
+        throw new Error('值不合法，必须为checkValue或uncheckedValue的一个')
+      }
       currentChecked.value = checked
     })
     const toggleChecked = () => {
-      currentChecked.value = !currentChecked.value
-      context.emit('update:checked', currentChecked.value)
+      const checked = currentChecked.value === props.checkedValue
+        ? props.uncheckedValue : props.checkedValue
+      currentChecked.value = checked
+      context.emit('update:checked', checked)
     }
     const privateDisabled = computed(() => props.disabled || props.loading)
     const switchStyle = computed(() => ({
-      backgroundColor: currentChecked.value ? props.checkedColor : props.uncheckedColor
+      backgroundColor: currentChecked.value === props.checkedValue ? props.checkedColor : props.uncheckedColor
     }))
     const switchClass = computed(() => ({
-      checked: currentChecked.value,
+      checked: currentChecked.value === props.checkedValue,
       [`t-switch-${props.size}`]: props.size,
       [`t-switch-disabled`]: privateDisabled.value,
       [`t-switch-loading`]: props.loading
