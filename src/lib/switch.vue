@@ -89,6 +89,15 @@ $largeBallHeight: $largeSwitchHeight - 6px;
   transition: background-color 0.1s linear;
   user-select: none;
   color: #fff;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(24,144,255,.2);
+  }
+
+  &:focus:not(:focus-visible) {
+    box-shadow: none;
+  }
 
   &.checked {
     background-color: #1890ff;
@@ -134,6 +143,11 @@ $largeBallHeight: $largeSwitchHeight - 6px;
     margin-right: 6px;
   }
 
+  &-disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
   &-loading {
     .t-switch-thumb {
       &:after {
@@ -150,11 +164,6 @@ $largeBallHeight: $largeSwitchHeight - 6px;
         animation: spin 1s linear infinite;
       }
     }
-  }
-
-  &-disabled {
-    cursor: not-allowed;
-    opacity: 0.4;
   }
 
   &-animate-bg {
