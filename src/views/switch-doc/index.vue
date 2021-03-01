@@ -3,9 +3,18 @@
     <h1>Switch 组件示例 </h1>
     <Demo :component="normalDemo"></Demo>
     <Demo :component="disabledDemo"></Demo>
-    <Switch size="large" v-model:checked="sizeChecked" checked-color="green" unchecked-color="red"></Switch>
-    <Switch size="medium" v-model:checked="sizeChecked" loading></Switch>
-    <Switch size="small" v-model:checked="sizeChecked"></Switch>
+    <Switch size="large" v-model:checked="sizeChecked" checked-color="green" unchecked-color="red">
+      <template #checked>ON</template>
+      <template #unchecked>OFF</template>
+    </Switch>
+    <Switch size="medium" v-model:checked="sizeChecked" loading>
+      <template #checked>ON</template>
+      <template #unchecked>OFF</template>
+    </Switch>
+    <Switch size="small" v-model:checked="sizeChecked">
+      <template #checked>ON</template>
+      <template #unchecked>OFF</template>
+    </Switch>
   </div>
 </template>
 
