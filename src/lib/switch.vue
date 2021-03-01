@@ -6,10 +6,10 @@
     :disabled="privateDisabled"
     @click="toggleChecked"
   >
-    <input type="hidden" :value="checked" :disabled="privateDisabled">
+    <input type="hidden" :value="currentChecked" :disabled="privateDisabled">
     <span class="t-switch-animate-bg" :style="{ backgroundColor: uncheckedColor }"></span>
     <span class="t-switch-inner">
-      <slot name="checked" v-if="checked"></slot>
+      <slot name="checked" v-if="currentChecked"></slot>
       <slot name="unchecked" v-else></slot>
     </span>
     <span class="t-switch-thumb"></span>
@@ -17,19 +17,11 @@
 </template>
 
 <script lang="ts">
-import {computed} from 'vue'
+import {computed, ref, watch} from 'vue'
 
 export default {
   name: "Switch",
   props: {
-    checkedColor: {
-      type: String,
-      default: '#1890ff'
-    },
-    uncheckedColor: {
-      type: String,
-      default: '#bfbfbf'
-    },
     checked: {
       type: Boolean,
       default: false
@@ -45,23 +37,37 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    checkedColor: {
+      type: String,
+      default: '#1890ff'
+    },
+    uncheckedColor: {
+      type: String,
+      default: '#bfbfbf'
     }
   },
   setup(props, context) {
+    const currentChecked = ref(props.checked)
+    watch(() => props.checked, (checked) => {
+      currentChecked.value = checked
+    })
     const toggleChecked = () => {
-      context.emit('update:checked', !props.checked)
+      currentChecked.value = !currentChecked.value
+      context.emit('update:checked', currentChecked.value)
     }
     const privateDisabled = computed(() => props.disabled || props.loading)
     const switchStyle = computed(() => ({
-      backgroundColor: props.checked ? props.checkedColor : props.uncheckedColor
+      backgroundColor: currentChecked.value ? props.checkedColor : props.uncheckedColor
     }))
     const switchClass = computed(() => ({
-      checked: props.checked,
+      checked: currentChecked.value,
       [`t-switch-${props.size}`]: props.size,
       [`t-switch-disabled`]: privateDisabled.value,
       [`t-switch-loading`]: props.loading
     }))
-    return { toggleChecked, switchStyle, switchClass, privateDisabled }
+
+    return { toggleChecked, switchStyle, switchClass, privateDisabled, currentChecked }
   }
 }
 </script>
@@ -92,7 +98,7 @@ $largeBallHeight: $largeSwitchHeight - 6px;
   cursor: pointer;
 
   &:focus {
-    box-shadow: 0 0 0 2px rgba(24,144,255,.2);
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, .2);
   }
 
   &:focus:not(:focus-visible) {
