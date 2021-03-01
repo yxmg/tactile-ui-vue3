@@ -1,4 +1,4 @@
-<demo-sign>支持disabled</demo-sign>
+<demo-sign>disabled</demo-sign>
 <template>
   <Switch :disabled="disabled"></Switch>
   <Button @click="toggleDisabled" size="small">切换禁用</Button>

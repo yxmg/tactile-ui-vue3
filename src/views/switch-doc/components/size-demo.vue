@@ -17,8 +17,3 @@ export default {
   }
 }
 </script>
-<style>
-.t-switch {
-  margin-right: 6px;
-}
-</style>
