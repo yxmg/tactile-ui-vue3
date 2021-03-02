@@ -1,4 +1,4 @@
-<demo-sign>键盘操作（tab、shiftTab、enter、space）</demo-sign>
+<demo-sign>键盘操作（Click &gt; Tab/shiftTab &gt; Enter/Space）</demo-sign>
 <template>
   <Button theme="default" @click="onClick" autofocus>default</Button>
   <Button theme="primary" @click="onClick">primary</Button>

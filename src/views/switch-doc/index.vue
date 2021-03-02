@@ -8,6 +8,7 @@
     <Demo :component="disabledDemo"></Demo>
     <Demo :component="loadingDemo"></Demo>
     <Demo :component="contentDemo"></Demo>
+    <Demo :component="keyboardDemo"></Demo>
   </div>
 </template>
 
@@ -19,13 +20,14 @@ import loadingDemo from './components/loading-demo.vue'
 import colorDemo from './components/color-demo.vue'
 import contentDemo from './components/content-demo.vue'
 import valueDemo from './components/value-demo.vue'
+import keyboardDemo from './components/keyboard-demo.vue'
 import Demo from '../../components/demo.vue'
 
 export default {
   name: "switch-doc",
   components: { Demo },
   setup() {
-    return { normalDemo, disabledDemo, sizeDemo, loadingDemo, colorDemo, contentDemo, valueDemo }
+    return { normalDemo, disabledDemo, sizeDemo, loadingDemo, colorDemo, contentDemo, valueDemo, keyboardDemo }
   }
 }
 </script>
