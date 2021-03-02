@@ -16,7 +16,7 @@
     <template #unchecked>待审核</template>
     <template #checked>已审核</template>
   </Switch>
-  {{ auditStatus }}
+  "{{ auditStatus }}"
 </template>
 
 <script lang="ts">

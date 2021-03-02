@@ -28,7 +28,7 @@ export default {
     },
     size: {
       type: String,
-      default: 'medium'
+      default: 'normal'
     },
     disabled: {
       type: Boolean,

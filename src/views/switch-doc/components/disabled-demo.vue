@@ -1,7 +1,7 @@
 <demo-sign>disabled</demo-sign>
 <template>
   <Switch :disabled="disabled"></Switch>
-  <Button @click="toggleDisabled" size="small">切换禁用</Button>
+  <Button @click="toggleDisabled">切换禁用</Button>
 </template>
 
 <script lang="ts">
