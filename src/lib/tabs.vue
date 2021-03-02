@@ -5,7 +5,7 @@
         class="t-tabs-nav-item"
         :class="{ selected: keyProps[index] === activeKey}"
         v-for="(title, index) in titleProps"
-        :ref="(el) => keyProps[index] === activeKey && (activeNav = el)"
+        :ref="(el) => (index === 0 || keyProps[index] === activeKey) && (activeNav = el)"
         :key="index"
         @click="onTabClick(keyProps[index])"
       >
@@ -23,7 +23,7 @@
       <template v-else>
         <component
           class="t-tabs-content-item"
-          v-for="slot in defaultSlots"
+          v-for="slot in expectDefaultSlots"
           v-show="slot.props.key === activeKey"
           :is="slot"
         />
@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import Tab from './tab.vue'
-import {ref, computed, onMounted, watch, nextTick} from 'vue'
+import {ref, computed, onMounted, watch, nextTick, h, reactive} from 'vue'
 
 export default {
   name: "Tabs",
@@ -48,21 +48,41 @@ export default {
   setup(props, context) {
     // 检查子元素类型
     const defaultSlots = context.slots.default()
-    if (defaultSlots.some(slot => slot.type !== Tab)) {
+    // 处理slots
+    const expectDefaultSlots = []
+    defaultSlots.forEach(slot => {
+      const isVForNode = Array.isArray(slot.children)
+      const isCommentNode = typeof slot.type === 'symbol'
+      if (isVForNode) {
+        // 展开v-for节点
+        expectDefaultSlots.push(...slot.children)
+      } else if (!isCommentNode) {
+        // 过滤注释节点
+        expectDefaultSlots.push(slot)
+      }
+    })
+    if (
+      !expectDefaultSlots.length ||
+      expectDefaultSlots.some(slot => slot.type.name !== Tab.name)
+    ) {
       throw new Error(`Tabs's children must be Tab`)
     }
-    const titleProps = defaultSlots.map(slot => slot.props.title)
-    const keyProps = defaultSlots.map(slot => slot.props.key)
-    const selectedTab = computed(() => defaultSlots.find(slot => slot.props.key === props.activeKey))
-    const onTabClick = (key) => {
-      context.emit('update:activeKey', key)
-    }
+    const firstTab = expectDefaultSlots[0]
+    const titleProps = expectDefaultSlots.map(slot => slot.props.title)
+    const keyProps = expectDefaultSlots.map(slot => slot.props.key)
     const activeNav = ref<HTMLDivElement>(null)
     const navWrapperRef = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
-    // 设置indicator参数，宽度/偏移
+    const onTabClick = (key) => {
+      context.emit('update:activeKey', key)
+    }
+    // forceRender
+    const selectedTab = computed(() => expectDefaultSlots.find(slot => slot.props.key === props.activeKey) || firstTab)
+    // // 设置indicator参数，宽度/偏移
     const updateIndicator = () => {
+      // 获取选中Tab的宽度
       const { width: activeNavWidth, left: activeNavLeft } = activeNav.value.getBoundingClientRect()
+      // 获取容器偏移-Tab偏移
       const { left: navWrapperLeft } = navWrapperRef.value.getBoundingClientRect()
       indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
       indicatorRef.value.style.width = activeNavWidth + 'px'
@@ -72,10 +92,8 @@ export default {
       nextTick(updateIndicator)
     })
 
-    // 获取选中Tab的宽度
-    // 获取容器偏移-Tab偏移
     return {
-      defaultSlots,
+      expectDefaultSlots,
       titleProps,
       keyProps,
       selectedTab,
@@ -125,7 +143,7 @@ $primary-color: #1890ff;
   }
 
   &-content {
-    padding: 8px 0;
+    padding: 16px 0;
   }
 }
 </style>
