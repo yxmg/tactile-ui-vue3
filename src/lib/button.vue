@@ -77,6 +77,9 @@ export default {
 $primary-color: #1890ff;
 $success-color: #52c41a;
 $danger-color: #f5222d;
+$smallButtonHeight: 28px;
+$normalButtonHeight: 36px;
+$largeButtonHeight: 44px;
 
 .t-button {
   display: inline-block;
@@ -95,7 +98,7 @@ $danger-color: #f5222d;
   user-select: none;
   // 只允许滚动和缩放
   touch-action: manipulation;
-  height: 36px;
+  height: $normalButtonHeight;
   padding: 0 15px;
   font-size: 14px;
   border-radius: 4px;
@@ -109,27 +112,36 @@ $danger-color: #f5222d;
     outline: none;
   }
 
+  &:focus {
+    box-shadow: 0 0 0 2px fade_out($primary-color, 0.5)
+  }
+
+  &:focus:not(:focus-visible) {
+    box-shadow: none;
+  }
+
   &::after {
     background-color: currentColor;
     border-radius: inherit;
-    bottom: 0;
     color: inherit;
     content: "";
     left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     opacity: 0;
     pointer-events: none;
     position: absolute;
-    right: 0;
-    top: 0;
     transition: opacity .2s cubic-bezier(.4, 0, .6, 1);
   }
 
   &:active::after {
     background-color: #000000;
+    opacity: 0.08;
   }
 
   &:hover::after {
-    opacity: .08;
+    opacity: 0.08;
   }
 
   &.t-theme-default {
@@ -144,38 +156,54 @@ $danger-color: #f5222d;
   &.t-theme-primary {
     color: #ffffff;
     background-color: $primary-color;
-    border-color: $primary-color
+    border-color: $primary-color;
   }
 
   &.t-theme-danger {
     color: #ffffff;
     background-color: $danger-color;
     border-color: $danger-color;
+
+    &:focus {
+      box-shadow: 0 0 0 2px fade_out($danger-color, 0.5)
+    }
+
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+    }
   }
 
   &.t-theme-success {
     color: #ffffff;
     background-color: $success-color;
     border-color: $success-color;
+
+    &:focus {
+      box-shadow: 0 0 0 2px fade_out($success-color, 0.5)
+    }
+
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+    }
   }
 
   &.t-size-large {
-    height: 44px;
+    height: $largeButtonHeight;
     padding: 0 20px;
     font-size: 18px;
 
     &.t-shape-circle {
-      min-width: 44px;
+      min-width: $largeButtonHeight;
     }
   }
 
   &.t-size-small {
     padding: 0 12px;
     font-size: 14px;
-    height: 28px;
+    height: $smallButtonHeight;
 
     &.t-shape-circle {
-      min-width: 28px;
+      min-width: $smallButtonHeight;
     }
   }
 
@@ -199,7 +227,7 @@ $danger-color: #f5222d;
   }
 
   &.t-shape-circle {
-    min-width: 36px;
+    min-width: $normalButtonHeight;
     padding: 0;
     border-radius: 50%;
   }
