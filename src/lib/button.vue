@@ -4,10 +4,10 @@
     :class="classes"
     :disabled="disabled || loading"
   >
-    <span class="loading-indicator"></span>
     <svg class="icon" v-if="icon">
       <use :xlink:href="`#icon-${icon}`"></use>
     </svg>
+    <span v-else class="loading-indicator"></span>
     <span class="content" v-if="$slots.default"><slot/></span>
   </button>
 </template>

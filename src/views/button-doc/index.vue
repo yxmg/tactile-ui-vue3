@@ -2,9 +2,11 @@
   <div class="button-doc">
     <h1>Button 组件示例 </h1>
     <Demo :component="themeDemo"></Demo>
+    <Demo :component="iconDemo"></Demo>
     <Demo :component="sizeDemo"></Demo>
     <Demo :component="disabledDemo"></Demo>
     <Demo :component="loadingDemo"></Demo>
+    <Demo :component="blockDemo"></Demo>
   </div>
 </template>
 
@@ -14,12 +16,14 @@ import themeDemo from './components/theme-demo.vue'
 import sizeDemo from './components/size-demo.vue'
 import disabledDemo from './components/disabled-demo.vue'
 import loadingDemo from './components/loading-demo.vue'
+import blockDemo from './components/block-demo.vue'
+import iconDemo from './components/icon-demo.vue'
 
 export default {
   name: "button-doc",
   components: { Demo },
   setup() {
-    return { themeDemo, sizeDemo, disabledDemo, loadingDemo }
+    return { themeDemo, sizeDemo, disabledDemo, loadingDemo, blockDemo, iconDemo }
   }
 }
 </script>
