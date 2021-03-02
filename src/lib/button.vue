@@ -213,6 +213,10 @@ $largeButtonHeight: 44px;
     border-color: #d9d9d9;
     cursor: not-allowed;
 
+    &.t-text-button {
+      color: rgba(0, 0, 0, .25);
+    }
+
     &::after {
       display: none;
     }
