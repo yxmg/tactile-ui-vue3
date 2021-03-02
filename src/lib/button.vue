@@ -2,6 +2,7 @@
   <button
     class="t-button"
     :class="classes"
+    :disabled="disabled || loading"
   >
     <span class="loading-indicator"></span>
     <slot name="icon"/>
@@ -224,7 +225,34 @@ $danger-color: #f5222d;
   }
 
   &.t-loading-button {
-    > .loading-indicator {
+    cursor: not-allowed;
+
+    &:hover::after {
+      opacity: 0;
+    }
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: -1px;
+      top: -1px;
+      right: -1px;
+      bottom: -1px;
+      z-index: 1;
+      background-color: #fff;
+      opacity: 0.35;
+      transition: opacity 0.2s;
+      border-radius: inherit;
+    }
+
+    &.t-text-button {
+      .loading-indicator {
+        border-left-color: #1890ff;
+      }
+    }
+
+    .loading-indicator {
       display: inline-block;
       vertical-align: middle;
       width: 16px;

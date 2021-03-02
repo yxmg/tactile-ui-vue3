@@ -38,7 +38,7 @@
       <Button theme="primary" shape="rect" loading>Rect</Button>
       <Button loading>Round</Button>
       <Button theme="primary" shape="circle" loading></Button>
-      <Button theme="primary" link loading>Link</Button>
+      <Button theme="primary" text loading>Link</Button>
     </div>
   </div>
 </template>
