@@ -5,8 +5,8 @@
     <template #unchecked>关</template>
   </Switch>
   {{ status }}
-  <br>
-  <br>
+  <br/>
+  <br/>
   <Switch
     v-model:checked="auditStatus"
     checked-color="#00bc70"
