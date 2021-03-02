@@ -4,6 +4,7 @@
     <Demo :component="themeDemo"></Demo>
     <Demo :component="sizeDemo"></Demo>
     <Demo :component="disabledDemo"></Demo>
+    <Demo :component="loadingDemo"></Demo>
   </div>
 </template>
 
@@ -12,12 +13,13 @@ import Demo from '../../components/Demo.vue'
 import themeDemo from './components/theme-demo.vue'
 import sizeDemo from './components/size-demo.vue'
 import disabledDemo from './components/disabled-demo.vue'
+import loadingDemo from './components/loading-demo.vue'
 
 export default {
   name: "button-doc",
   components: { Demo },
   setup() {
-    return { themeDemo, sizeDemo, disabledDemo }
+    return { themeDemo, sizeDemo, disabledDemo, loadingDemo }
   }
 }
 </script>

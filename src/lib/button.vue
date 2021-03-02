@@ -54,7 +54,7 @@ export default {
       default: false
     },
     // 图标配置
-    icon: {}
+    icon: String
   },
   setup(props) {
     const classes = computed(() => {
@@ -90,7 +90,7 @@ $largeButtonHeight: 44px;
   background-image: none;
   box-shadow: 0 2px 0 rgba(0, 0, 0, .015);
   cursor: pointer;
-  transition: all .3s cubic-bezier(.645, .045, .355, 1);
+  transition: padding .3s cubic-bezier(.645, .045, .355, 1);
   // 用户选择文本
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -263,6 +263,14 @@ $largeButtonHeight: 44px;
 
   &.t-loading-button {
     cursor: not-allowed;
+
+    &:not(.t-shape-circle) {
+      padding-left: 30px;
+
+      .loading-indicator {
+        margin-left: -14px;
+      }
+    }
 
     &:hover::after {
       opacity: 0;
