@@ -4,7 +4,8 @@
     :class="switchClass"
     :style="switchStyle"
     :disabled="privateDisabled"
-    @click="toggleChecked"
+    @click="toggleChecked()"
+    @keydown.left.right="handleKeyboard"
   >
     <input type="hidden" :value="currentChecked" :disabled="privateDisabled">
     <span class="t-switch-animate-bg" :style="{ backgroundColor: uncheckedColor }"></span>
@@ -23,7 +24,7 @@ export default {
   name: "Switch",
   props: {
     checked: {
-      type: Boolean,
+      type: [String, Number, Boolean],
       default: false
     },
     size: {
@@ -63,8 +64,8 @@ export default {
       }
       currentChecked.value = checked
     })
-    const toggleChecked = () => {
-      const checked = currentChecked.value === props.checkedValue
+    const toggleChecked = (currentVal = currentChecked.value) => {
+      const checked = currentVal === props.checkedValue
         ? props.uncheckedValue : props.checkedValue
       currentChecked.value = checked
       context.emit('update:checked', checked)
@@ -79,8 +80,16 @@ export default {
       [`t-switch-disabled`]: privateDisabled.value,
       [`t-switch-loading`]: props.loading
     }))
+    const handleKeyboard = (event) => {
+      const KEY_CODE_MAP = { LEFT: 37, RIGHT: 39 }
+      if (KEY_CODE_MAP.LEFT === event.keyCode && currentChecked.value === props.checkedValue) {
+        toggleChecked(props.checkedValue)
+      } else if (KEY_CODE_MAP.RIGHT === event.keyCode && currentChecked.value === props.uncheckedValue) {
+        toggleChecked(props.uncheckedValue)
+      }
+    }
 
-    return { toggleChecked, switchStyle, switchClass, privateDisabled, currentChecked }
+    return { toggleChecked, switchStyle, switchClass, privateDisabled, currentChecked, handleKeyboard }
   }
 }
 </script>
