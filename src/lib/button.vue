@@ -55,16 +55,15 @@ export default {
     icon: {}
   },
   setup(props) {
-    const { theme, size, shape, text, loading, block, disabled } = props
     const classes = computed(() => {
       return {
-        [`t-theme-${theme}`]: theme,
-        [`t-size-${size}`]: size,
-        [`t-shape-${shape}`]: shape,
-        't-text-button': text,
-        't-loading-button': loading,
-        't-block-button': block,
-        't-disabled-button': disabled,
+        [`t-theme-${props.theme}`]: props.theme,
+        [`t-size-${props.size}`]: props.size,
+        [`t-shape-${props.shape}`]: props.shape,
+        't-text-button': props.text,
+        't-loading-button': props.loading,
+        't-block-button': props.block,
+        't-disabled-button': props.disabled,
       }
     })
     return { classes }
