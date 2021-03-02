@@ -7,6 +7,7 @@
     <Demo :component="disabledDemo"></Demo>
     <Demo :component="loadingDemo"></Demo>
     <Demo :component="blockDemo"></Demo>
+    <Demo :component="keyboardDemo"></Demo>
   </div>
 </template>
 
@@ -18,12 +19,13 @@ import disabledDemo from './components/disabled-demo.vue'
 import loadingDemo from './components/loading-demo.vue'
 import blockDemo from './components/block-demo.vue'
 import iconDemo from './components/icon-demo.vue'
+import keyboardDemo from './components/keyboard-demo.vue'
 
 export default {
   name: "button-doc",
   components: { Demo },
   setup() {
-    return { themeDemo, sizeDemo, disabledDemo, loadingDemo, blockDemo, iconDemo }
+    return { themeDemo, sizeDemo, disabledDemo, loadingDemo, blockDemo, iconDemo, keyboardDemo }
   }
 }
 </script>
