@@ -17,8 +17,8 @@
       <Button>Medium</Button>
     </div>
     <div style="margin-bottom: 24px;">
-      <Button>Small</Button>
-      <Button>Small</Button>
+      <Button size="small">Small</Button>
+      <Button size="small">Small</Button>
     </div>
     <h1 style="margin-bottom: 12px;">示例3-disabled</h1>
     <div style="margin-bottom: 24px;">

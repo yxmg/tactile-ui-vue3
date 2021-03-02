@@ -20,10 +20,10 @@ export default {
       type: String,
       default: 'default'
     },
-    // 尺寸，可选值：large、medium、small
+    // 尺寸，可选值：large、normal、small
     size: {
       type: String,
-      default: 'medium'
+      default: 'normal'
     },
     // 形状，可选：rect、round、circle
     shape: {
@@ -46,7 +46,7 @@ export default {
       default: false
     },
     // 是否链接按钮
-    link: {
+    text: {
       type: Boolean,
       default: false
     },
@@ -54,19 +54,19 @@ export default {
     icon: {}
   },
   setup(props) {
-    const {theme, size, shape, link, loading, block, disabled} = props
+    const { theme, size, shape, text, loading, block, disabled } = props
     const classes = computed(() => {
       return {
         [`t-theme-${theme}`]: theme,
         [`t-size-${size}`]: size,
         [`t-shape-${shape}`]: shape,
-        't-link-button': link,
+        't-text-button': text,
         't-loading-button': loading,
         't-block-button': block,
         't-disabled-button': disabled,
       }
     })
-    return {classes}
+    return { classes }
   }
 }
 </script>
@@ -93,7 +93,7 @@ $danger-color: #f5222d;
   user-select: none;
   // 只允许滚动和缩放
   touch-action: manipulation;
-  height: 44px;
+  height: 36px;
   padding: 0 15px;
   font-size: 14px;
   border-radius: 4px;
@@ -162,7 +162,7 @@ $danger-color: #f5222d;
   }
 
   &.t-size-large {
-    height: 52px;
+    height: 44px;
     padding: 0 20px;
     font-size: 18px;
   }
@@ -170,7 +170,7 @@ $danger-color: #f5222d;
   &.t-size-small {
     padding: 0 12px;
     font-size: 14px;
-    height: 36px;
+    height: 28px;
   }
 
   &.t-disabled-button {
@@ -198,7 +198,7 @@ $danger-color: #f5222d;
     border-radius: 50%;
   }
 
-  &.t-link-button {
+  &.t-text-button {
     color: #1890ff;
     background-color: transparent;
     border-color: transparent;
