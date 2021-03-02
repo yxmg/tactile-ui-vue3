@@ -163,12 +163,20 @@ $danger-color: #f5222d;
     height: 44px;
     padding: 0 20px;
     font-size: 18px;
+
+    &.t-shape-circle {
+      min-width: 44px;
+    }
   }
 
   &.t-size-small {
     padding: 0 12px;
     font-size: 14px;
     height: 28px;
+
+    &.t-shape-circle {
+      min-width: 28px;
+    }
   }
 
   &.t-disabled-button {
@@ -191,7 +199,7 @@ $danger-color: #f5222d;
   }
 
   &.t-shape-circle {
-    min-width: 44px;
+    min-width: 36px;
     padding: 0;
     border-radius: 50%;
   }
