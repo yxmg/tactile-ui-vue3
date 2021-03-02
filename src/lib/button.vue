@@ -5,8 +5,10 @@
     :disabled="disabled || loading"
   >
     <span class="loading-indicator"></span>
-    <slot name="icon"/>
-    <span v-if="$slots.default"><slot/></span>
+    <svg class="icon" v-if="icon">
+      <use :xlink:href="`#icon-${icon}`"></use>
+    </svg>
+    <span class="content" v-if="$slots.default"><slot/></span>
   </button>
 </template>
 
@@ -51,7 +53,7 @@ export default {
       type: Boolean,
       default: false
     },
-    // TODO：图标，支持内置ICON、RF、slot
+    // 图标配置
     icon: {}
   },
   setup(props) {
@@ -100,10 +102,6 @@ $danger-color: #f5222d;
   color: rgba(0, 0, 0, .65);
   background-color: #fff;
   border: 1px solid #d9d9d9;
-
-  .content {
-    margin-left: 4px;
-  }
 
   &,
   &:active,
@@ -261,9 +259,15 @@ $danger-color: #f5222d;
       border-left: 2px solid #fff;
       animation: spin 1s linear infinite;
 
-      & + span {
+      & + .content {
         margin-left: 8px;
       }
+    }
+  }
+
+  .icon {
+    & + .content {
+      margin-left: 6px;
     }
   }
 

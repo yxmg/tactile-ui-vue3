@@ -40,6 +40,10 @@
       <Button theme="primary" shape="circle" loading></Button>
       <Button theme="primary" text loading>Link</Button>
     </div>
+    <div>
+      <Button icon="check">123123</Button>
+      <Button icon="check" theme="primary">123123</Button>
+    </div>
   </div>
 </template>
 
