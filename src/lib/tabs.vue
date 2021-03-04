@@ -46,51 +46,60 @@ export default {
     }
   },
   setup(props, context) {
-    // 检查子元素类型
-    const defaultSlots = context.slots.default()
-    // 处理slots
-    const expectDefaultSlots = []
-    defaultSlots.forEach(slot => {
-      const isVForNode = Array.isArray(slot.children)
-      const isCommentNode = typeof slot.type === 'symbol'
-      if (isVForNode) {
-        // 展开v-for节点
-        expectDefaultSlots.push(...slot.children)
-      } else if (!isCommentNode) {
-        // 过滤注释节点
-        expectDefaultSlots.push(slot)
-      }
-    })
-    if (
-      !expectDefaultSlots.length ||
-      expectDefaultSlots.some(slot => slot.type.name !== Tab.name)
-    ) {
-      throw new Error(`Tabs's children must be Tab`)
+    const formatSlots = () => {
+      const defaultSlots = context.slots.default()
+      // 处理slots
+      const tempArr = []
+      defaultSlots.forEach(slot => {
+        const isVForNode = Array.isArray(slot.children)
+        const isCommentNode = typeof slot.type === 'symbol'
+        if (isVForNode) {
+          // 展开v-for节点
+          tempArr.push(...slot.children)
+        } else if (!isCommentNode) {
+          // 过滤注释节点
+          tempArr.push(slot)
+        }
+      })
+      return tempArr
     }
+    const expectDefaultSlots = formatSlots()
+    const checkSlotsLegality = (slots) => {
+      if (!slots.length || slots.some(slot => slot.type.name !== Tab.name)) {
+        throw new Error(`Tabs's children must be Tab`)
+      }
+    }
+    checkSlotsLegality(expectDefaultSlots)
+
     const firstTab = expectDefaultSlots[0]
     const titleProps = expectDefaultSlots.map(slot => slot.props.title)
     const keyProps = expectDefaultSlots.map(slot => slot.props.key)
     const activeNav = ref<HTMLDivElement>(null)
     const navWrapperRef = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
+    // forceRender
+    const selectedTab = computed(() =>
+      expectDefaultSlots.find(slot => slot.props.key === props.activeKey) || firstTab)
     const onTabClick = (key) => {
       context.emit('update:activeKey', key)
     }
-    // forceRender
-    const selectedTab = computed(() => expectDefaultSlots.find(slot => slot.props.key === props.activeKey) || firstTab)
-    // // 设置indicator参数，宽度/偏移
-    const updateIndicator = () => {
-      // 获取选中Tab的宽度
-      const { width: activeNavWidth, left: activeNavLeft } = activeNav.value.getBoundingClientRect()
-      // 获取容器偏移-Tab偏移
-      const { left: navWrapperLeft } = navWrapperRef.value.getBoundingClientRect()
-      indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
-      indicatorRef.value.style.width = activeNavWidth + 'px'
+
+    const useIndicator = () => {
+      const updateIndicator = () => {
+        // 获取选中Tab的宽度
+        const { width: activeNavWidth, left: activeNavLeft } = activeNav.value.getBoundingClientRect()
+        // 获取容器偏移-Tab偏移
+        const { left: navWrapperLeft } = navWrapperRef.value.getBoundingClientRect()
+        indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
+        indicatorRef.value.style.width = activeNavWidth + 'px'
+      }
+      onMounted(updateIndicator)
+      watch(() => props.activeKey, () => {
+        nextTick(updateIndicator)
+      })
     }
-    onMounted(updateIndicator)
-    watch(() => props.activeKey, () => {
-      nextTick(updateIndicator)
-    })
+    useIndicator()
+
 
     return {
       expectDefaultSlots,
