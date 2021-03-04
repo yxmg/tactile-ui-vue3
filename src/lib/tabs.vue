@@ -2,6 +2,7 @@
   <div class="t-tabs">
     <div class="t-tabs-nav" ref="navWrapperRef">
       <div
+        tabindex="0"
         class="t-tabs-nav-item"
         :class="{ selected: keyProps[index] === activeKey}"
         v-for="(title, index) in titleProps"
@@ -137,12 +138,21 @@ $primary-color: #1890ff;
     }
 
     &-item {
-      padding: 8px 0;
-      margin: 0 16px;
+      padding: 8px 16px;
       cursor: pointer;
 
-      &:first-child {
-        margin-left: 0;
+      &:hover,
+      &:focus {
+        color: fade_out($primary-color, 0.3);
+        outline: 0;
+      }
+
+      &:focus:not(:focus-visible) {
+        color: $primary-color;
+      }
+
+      &:active:not(:focus-visible) {
+        color: #096dd9;
       }
 
       &.selected {
