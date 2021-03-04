@@ -56,6 +56,7 @@ export default {
       default: false
     }
   },
+  emits: ['update:checked', 'change'],
   setup(props, context) {
     const currentChecked = ref(props.checked)
     watch(() => props.checked, (checked) => {
@@ -69,6 +70,7 @@ export default {
         ? props.uncheckedValue : props.checkedValue
       currentChecked.value = checked
       context.emit('update:checked', checked)
+      context.emit('change', checked)
     }
     const privateDisabled = computed(() => props.disabled || props.loading)
     const switchStyle = computed(() => ({
