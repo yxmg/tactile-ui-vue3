@@ -4,7 +4,10 @@
       <div
         tabindex="0"
         class="t-tabs-nav-item"
-        :class="{ selected: keyProps[index] === activeKey}"
+        :class="{
+          selected: keyProps[index] === activeKey,
+          disabled: checkBooleanProp(disabledProps[index])
+        }"
         v-for="(title, index) in titleProps"
         :ref="(el) => (index === 0 || keyProps[index] === activeKey) && (activeNav = el)"
         :key="index"
@@ -22,20 +25,39 @@
         />
       </template>
       <template v-else>
-        <component
-          class="t-tabs-content-item"
+        <transition
           v-for="slot in expectDefaultSlots"
-          v-show="slot.props.key === activeKey"
-          :is="slot"
-        />
+          :name="computeTransition"
+        >
+          <component
+            class="t-tabs-content-item"
+            v-show="slot.props.key === activeKey"
+            :key="slot.props.key"
+            :is="slot"
+          />
+        </transition>
       </template>
     </div>
   </div>
+
 </template>
 
 <script lang="ts">
 import Tab from './tab.vue'
 import {ref, computed, onMounted, watch, nextTick, h, reactive} from 'vue'
+
+const mapSlotsProps = (slots, propNames) => {
+  return Array.isArray(slots) && slots.reduce((propsMap, slot) => {
+    propNames.forEach(propName => {
+      const propArr = propsMap[propName]
+      propArr ? propArr.push(slot.props[propName]) : (propsMap[propName] = [slot.props[propName]])
+    })
+    return propsMap
+  }, {})
+}
+const checkBooleanProp = (prop) => {
+  return prop !== undefined && prop !== false
+}
 
 export default {
   name: "Tabs",
@@ -73,18 +95,25 @@ export default {
     checkSlotsLegality(expectDefaultSlots)
 
     const firstTab = expectDefaultSlots[0]
-    const titleProps = expectDefaultSlots.map(slot => slot.props.title)
-    const keyProps = expectDefaultSlots.map(slot => slot.props.key)
+    const {
+      title: titleProps,
+      key: keyProps,
+      disabled: disabledProps
+    } = mapSlotsProps(expectDefaultSlots, ['title', 'key', 'disabled'])
     const activeNav = ref<HTMLDivElement>(null)
     const navWrapperRef = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
-    // forceRender
+    const direction = ref('')
     const selectedTab = computed(() =>
       expectDefaultSlots.find(slot => slot.props.key === props.activeKey) || firstTab)
     const onTabClick = (key) => {
+      const targetTab = expectDefaultSlots.find(slot => slot.props.key === key)
+      if (checkBooleanProp(targetTab.props.disabled)) {
+        return
+      }
       context.emit('update:activeKey', key)
     }
-
+    // 下划线
     const useIndicator = () => {
       const updateIndicator = () => {
         // 获取选中Tab的宽度
@@ -100,17 +129,26 @@ export default {
       })
     }
     useIndicator()
-
+    // 内容切换动画
+    watch(() => props.activeKey, (to, from) => {
+      direction.value = keyProps.indexOf(to) > keyProps.indexOf(from) ? 'forward' : 'backward'
+    })
+    const computeTransition = computed(() =>
+      direction.value === 'forward' ? 'slide-forward' : 'slide-backward')
 
     return {
+      disabledProps,
       expectDefaultSlots,
       titleProps,
       keyProps,
+      direction,
       selectedTab,
       onTabClick,
       activeNav,
       navWrapperRef,
-      indicatorRef
+      indicatorRef,
+      computeTransition,
+      checkBooleanProp
     }
   }
 }
@@ -134,12 +172,31 @@ $primary-color: #1890ff;
       bottom: -1px;
       height: 3px;
       background-color: $primary-color;
-      transition: width 0.25s, left 0.25s;
+      transition: width .3s cubic-bezier(.25, .8, .5, 1), left .3s cubic-bezier(.25, .8, .5, 1);
     }
 
     &-item {
       padding: 8px 16px;
       cursor: pointer;
+
+      &.disabled {
+        cursor: not-allowed;
+        color: rgba(0, 0, 0, .25);
+        user-select: none;
+
+        &:hover,
+        &:focus {
+          color: rgba(0, 0, 0, .25);
+        }
+
+        &:focus:not(:focus-visible) {
+          color: rgba(0, 0, 0, .25);
+        }
+
+        &:active:not(:focus-visible) {
+          color: rgba(0, 0, 0, .25);
+        }
+      }
 
       &:hover,
       &:focus {
@@ -162,7 +219,43 @@ $primary-color: #1890ff;
   }
 
   &-content {
-    padding: 16px 0;
+    position: relative;
   }
+}
+</style>
+
+<style>
+/* slide-forward */
+.slide-forward-enter-active,
+.slide-forward-leave-active {
+  transition: transform .3s cubic-bezier(.25, .8, .5, 1);
+}
+
+.slide-forward-enter-from {
+  transform: translateX(100%)
+}
+
+.slide-forward-leave-to {
+  transform: translateX(-100%)
+}
+
+/* slide-backward */
+.slide-backward-enter-active, .slide-backward-leave-active {
+  transition: .3s cubic-bezier(.25, .8, .5, 1);
+}
+
+.slide-backward-enter-from {
+  transform: translateX(-100%)
+}
+
+.slide-backward-leave-to {
+  transform: translateX(100%)
+}
+
+.slide-forward-leave-to, .slide-backward-leave-to {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 </style>

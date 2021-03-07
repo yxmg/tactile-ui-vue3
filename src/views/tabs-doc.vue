@@ -3,8 +3,9 @@
     <h1 style="margin-bottom: 12px;">示例1-基本用法</h1>
     <div style="margin-bottom: 24px;">
       <Tabs v-model:activeKey="activeKey">
-        <Tab title="导航22221" :key="1">内容1</Tab>
-        <Tab title="导航2" :key="2">内容2</Tab>
+        <Tab title="导航22221" :key="1">1111Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Tab>
+        <Tab title="导航2" :key="2">2222Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Tab>
+        <Tab title="导航3" :key="3" disabled>3333Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Tab>
       </Tabs>
     </div>
   </div>
