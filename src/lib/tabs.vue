@@ -70,7 +70,7 @@ export default {
     },
     vertical: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   setup(props, context) {
@@ -285,7 +285,7 @@ $primary-color: #1890ff;
 /* slide-forward */
 .slide-forward-enter-active,
 .slide-forward-leave-active {
-  transition: transform .3s cubic-bezier(.25, .8, .5, 1);
+  transition: .3s cubic-bezier(.25, .8, .5, 1);
 }
 
 .slide-forward-enter-from {
@@ -309,10 +309,10 @@ $primary-color: #1890ff;
   transform: translateX(100%)
 }
 
-.slide-forward-leave-to, .slide-backward-leave-to {
+.slide-forward-leave-form, .slide-forward-leave-to, .slide-backward-leave-from, .slide-backward-leave-to {
   position: absolute;
   top: 0;
-  left: 0;
   width: 100%;
+  z-index: 1;
 }
 </style>
