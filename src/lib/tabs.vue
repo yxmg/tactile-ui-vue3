@@ -1,5 +1,5 @@
 <template>
-  <div class="t-tabs">
+  <div class="t-tabs" :class="{ 't-tabs-vertical': vertical }">
     <div class="t-tabs-nav" ref="navWrapperRef">
       <div
         tabindex="0"
@@ -67,6 +67,10 @@ export default {
     forceRender: {
       type: Boolean,
       default: false
+    },
+    vertical: {
+      type: Boolean,
+      default: true
     }
   },
   setup(props, context) {
@@ -120,11 +124,25 @@ export default {
     const useIndicator = () => {
       const updateIndicator = () => {
         // 获取选中Tab的宽度
-        const { width: activeNavWidth, left: activeNavLeft } = activeNav.value.getBoundingClientRect()
+        const {
+          width: activeNavWidth,
+          left: activeNavLeft,
+          top: activeNavTop,
+          height: activeNavHeight
+        } = activeNav.value.getBoundingClientRect()
         // 获取容器偏移-Tab偏移
-        const { left: navWrapperLeft } = navWrapperRef.value.getBoundingClientRect()
-        indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
-        indicatorRef.value.style.width = activeNavWidth + 'px'
+        const {
+          left: navWrapperLeft,
+          top: navWrapperTop
+        } = navWrapperRef.value.getBoundingClientRect()
+        if (props.vertical) {
+          indicatorRef.value.style.top = activeNavTop - navWrapperTop + 'px'
+          indicatorRef.value.style.height = activeNavHeight + 'px'
+        } else {
+          indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
+          indicatorRef.value.style.width = activeNavWidth + 'px'
+        }
+
       }
       onMounted(updateIndicator)
       watch(() => props.activeKey, () => {
@@ -165,6 +183,34 @@ $border-color: #d9d9d9;
 $primary-color: #1890ff;
 
 .t-tabs {
+  &.t-tabs-vertical {
+    display: flex;
+
+    .t-tabs-nav {
+      display: flex;
+      flex-direction: column;
+      flex: 1 0 auto;
+      height: auto;
+      border-bottom: 0 none;
+      border-right: 1px solid $border-color;
+      border-left: 1px solid $border-color;
+    }
+
+    .t-tabs-nav-item {
+      text-align: center;
+    }
+
+    .t-tabs-nav-indicator {
+      left: auto;
+      right: 0;
+      width: 3px;
+    }
+
+    .t-tabs-content {
+      flex: 0 1 100%;
+    }
+  }
+
   &-nav {
     display: flex;
     color: $color;
@@ -177,7 +223,7 @@ $primary-color: #1890ff;
       bottom: -1px;
       height: 3px;
       background-color: $primary-color;
-      transition: width .3s cubic-bezier(.25, .8, .5, 1), left .3s cubic-bezier(.25, .8, .5, 1);
+      transition: .3s cubic-bezier(.25, .8, .5, 1);
     }
 
     &-icon {
@@ -230,6 +276,7 @@ $primary-color: #1890ff;
 
   &-content {
     position: relative;
+    overflow: hidden;
   }
 }
 </style>

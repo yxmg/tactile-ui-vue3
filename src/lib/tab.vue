@@ -22,6 +22,6 @@ export default {
 
 <style scoped>
 .t-tab {
-  padding: 16px 0;
+  padding: 16px;
 }
 </style>
