@@ -16,16 +16,14 @@
         <svg class="t-tabs-nav-icon icon" v-if="iconProps[index]">
           <use :xlink:href="`#icon-${iconProps[index]}`"></use>
         </svg>
-        <span>{{ title }}</span>
+        <component v-if="titleSlots[index]" :is="titleSlots[index]"/>
+        <span v-else>{{ title }}</span>
       </div>
       <div class="t-tabs-nav-indicator" ref="indicatorRef"></div>
     </div>
     <div class="t-tabs-content">
       <template v-if="forceRender">
-        <component
-          class="t-tabs-content-item"
-          :is="selectedTab"
-        />
+        <component class="t-tabs-content-item" :is="selectedTab"/>
       </template>
       <template v-else>
         <transition
@@ -104,6 +102,7 @@ export default {
       disabled: disabledProps,
       icon: iconProps
     } = mapSlotsProps(expectDefaultSlots, ['title', 'key', 'disabled', 'icon'])
+    const titleSlots = expectDefaultSlots.map(slot => slot.children.title && slot.children.title()[0])
     const activeNav = ref<HTMLDivElement>(null)
     const navWrapperRef = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
@@ -141,6 +140,7 @@ export default {
       direction.value === 'forward' ? 'slide-forward' : 'slide-backward')
 
     return {
+      titleSlots,
       iconProps,
       disabledProps,
       expectDefaultSlots,
