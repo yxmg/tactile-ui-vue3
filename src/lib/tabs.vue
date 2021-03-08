@@ -13,6 +13,9 @@
         :key="index"
         @click="onTabClick(keyProps[index])"
       >
+        <svg class="t-tabs-nav-icon icon" v-if="iconProps[index]">
+          <use :xlink:href="`#icon-${iconProps[index]}`"></use>
+        </svg>
         <span>{{ title }}</span>
       </div>
       <div class="t-tabs-nav-indicator" ref="indicatorRef"></div>
@@ -98,8 +101,9 @@ export default {
     const {
       title: titleProps,
       key: keyProps,
-      disabled: disabledProps
-    } = mapSlotsProps(expectDefaultSlots, ['title', 'key', 'disabled'])
+      disabled: disabledProps,
+      icon: iconProps
+    } = mapSlotsProps(expectDefaultSlots, ['title', 'key', 'disabled', 'icon'])
     const activeNav = ref<HTMLDivElement>(null)
     const navWrapperRef = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
@@ -137,6 +141,7 @@ export default {
       direction.value === 'forward' ? 'slide-forward' : 'slide-backward')
 
     return {
+      iconProps,
       disabledProps,
       expectDefaultSlots,
       titleProps,
@@ -175,9 +180,14 @@ $primary-color: #1890ff;
       transition: width .3s cubic-bezier(.25, .8, .5, 1), left .3s cubic-bezier(.25, .8, .5, 1);
     }
 
+    &-icon {
+      margin-right: 8px;
+    }
+
     &-item {
       padding: 8px 16px;
       cursor: pointer;
+
 
       &.disabled {
         cursor: not-allowed;
