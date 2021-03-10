@@ -5,6 +5,7 @@
         class="t-tabs-prev-btn"
         v-if="isOverflow"
         @click="slidePage('backward')"
+        @keydown.enter="slidePage('backward')"
         tabindex="0"
       >
         <svg class="t-tabs-nav-icon icon">
@@ -23,6 +24,7 @@
             v-for="(title, index) in titleProps"
             :ref="(el) => (index === 0 || keyProps[index] === activeKey) && (activeNav = el)"
             :key="index"
+            @keydown.enter="onTabClick($event, keyProps[index])"
             @click="onTabClick($event, keyProps[index])"
           >
             <svg class="t-tabs-nav-icon icon" v-if="iconProps[index]">
@@ -38,6 +40,7 @@
         class="t-tabs-next-btn"
         v-if="isOverflow"
         @click="slidePage('forward')"
+        @keydown.enter="slidePage('forward')"
         tabindex="0"
       >
         <svg class="t-tabs-nav-icon icon">
