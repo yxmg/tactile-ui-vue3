@@ -1,26 +1,33 @@
 <template>
   <div class="t-tabs" :class="{ 't-tabs-vertical': vertical }">
-    <div class="t-tabs-nav" ref="navWrapperRef">
-      <div
-        tabindex="0"
-        class="t-tabs-nav-item"
-        :class="{
+    <div class="t-tabs-slide">
+      <div class="t-tabs-prev-btn" @click="slidePage('backward')">&lt;</div>
+      <div class="t-tabs-nav-wrapper" ref="navWrapperRef">
+        <div class="t-tabs-nav" ref="navRef">
+          <div
+            tabindex="0"
+            class="t-tabs-nav-item"
+            :class="{
           selected: keyProps[index] === activeKey,
           disabled: checkBooleanProp(disabledProps[index])
         }"
-        v-for="(title, index) in titleProps"
-        :ref="(el) => (index === 0 || keyProps[index] === activeKey) && (activeNav = el)"
-        :key="index"
-        @click="onTabClick(keyProps[index])"
-      >
-        <svg class="t-tabs-nav-icon icon" v-if="iconProps[index]">
-          <use :xlink:href="`#icon-${iconProps[index]}`"></use>
-        </svg>
-        <component v-if="titleSlots[index]" :is="titleSlots[index]"/>
-        <span v-else>{{ title }}</span>
+            v-for="(title, index) in titleProps"
+            :ref="(el) => (index === 0 || keyProps[index] === activeKey) && (activeNav = el)"
+            :key="index"
+            @click="onTabClick($event, keyProps[index])"
+          >
+            <svg class="t-tabs-nav-icon icon" v-if="iconProps[index]">
+              <use :xlink:href="`#icon-${iconProps[index]}`"></use>
+            </svg>
+            <component v-if="titleSlots[index]" :is="titleSlots[index]"/>
+            <span v-else>{{ title }}</span>
+          </div>
+          <div class="t-tabs-nav-indicator" ref="indicatorRef"></div>
+        </div>
       </div>
-      <div class="t-tabs-nav-indicator" ref="indicatorRef"></div>
+      <div class="t-tabs-next-btn" @click="slidePage('forward')">&gt;</div>
     </div>
+
     <div class="t-tabs-content" ref="tabContent" :style="{ height: contentHeight && (contentHeight + 'px') }">
       <template v-if="forceRender">
         <component class="t-tabs-content-item" :is="selectedTab"/>
@@ -69,8 +76,35 @@ const mapSlotsProps = (slots, propNames) => {
 const checkBooleanProp = (prop) => {
   return prop !== undefined && prop !== false
 }
+// Tab-slot处理
+const useTabSlot = (context) => {
+  const formatSlots = () => {
+    const defaultSlots = context.slots.default()
+    const tempArr = []
+    defaultSlots.forEach(slot => {
+      const isVForNode = Array.isArray(slot.children)
+      const isCommentNode = typeof slot.type === 'symbol'
+      if (isVForNode) {
+        // 展开v-for节点
+        tempArr.push(...slot.children)
+      } else if (!isCommentNode) {
+        // 过滤注释节点
+        tempArr.push(slot)
+      }
+    })
+    return tempArr
+  }
+  const expectDefaultSlots = formatSlots()
+  const checkSlotsLegality = (slots) => {
+    if (!slots.length || slots.some(slot => slot.type.name !== Tab.name)) {
+      throw new Error(`Tabs's children must be Tab`)
+    }
+  }
+  checkSlotsLegality(expectDefaultSlots)
+  return { expectDefaultSlots }
+}
 // 下划线
-const useIndicator = (props, { activeNav, navWrapperRef, indicatorRef }) => {
+const useIndicator = (props, { activeNav, navRef, indicatorRef }) => {
   const updateIndicator = () => {
     // 获取选中Tab的宽度
     const {
@@ -83,7 +117,7 @@ const useIndicator = (props, { activeNav, navWrapperRef, indicatorRef }) => {
     const {
       left: navWrapperLeft,
       top: navWrapperTop
-    } = navWrapperRef.value.getBoundingClientRect()
+    } = navRef.value.getBoundingClientRect()
     if (props.vertical) {
       indicatorRef.value.style.top = activeNavTop - navWrapperTop + 'px'
       indicatorRef.value.style.height = activeNavHeight + 'px'
@@ -151,6 +185,59 @@ const useTabTransition = (props, { keyProps, direction, tabContent, contentHeigh
 
   return { computeTransition, onBeforeTransition, onAfterTransition, onEnter }
 }
+// Tab-nav-slide切换
+const useTabNavSlide = ({ navWrapperRef, navRef, activeNav }) => {
+  const slideTo = (delta, _direction) => {
+    const navWrapperScrollLeft = navWrapperRef.value.scrollLeft
+    const navWrapperRefScrollWidth = navWrapperRef.value.scrollWidth
+    const { width: navWrapperWidth } = navWrapperRef.value.getBoundingClientRect()
+    if (_direction === 'forward') {
+      delta = navWrapperScrollLeft + navWrapperWidth + delta > navWrapperRefScrollWidth
+        ? navWrapperRefScrollWidth - (navWrapperScrollLeft + navWrapperWidth) : delta
+    } else {
+      delta = navWrapperScrollLeft - delta < 0 ? navWrapperScrollLeft : delta
+    }
+    // 动画结束后替换为滚动属性
+    navRef.value.addEventListener('transitionend', () => {
+      navRef.value.style.transition = ''
+      navRef.value.style.transform = ''
+      navWrapperRef.value.scrollLeft = _direction === 'forward'
+        ? navWrapperScrollLeft + delta
+        : navWrapperScrollLeft - delta
+    })
+    // transform移动navRef
+    navRef.value.style.transition = '.3s cubic-bezier(.25, .8, .5, 1)'
+    navRef.value.style.transform = `translateX(${_direction === 'forward' ? -delta : delta}px)`
+  }
+  const slidePage = (_direction) => {
+    // 获取移动距离 = navWrapper宽度 - 32（2倍padding）
+    const { width: navWrapperWidth } = navWrapperRef.value.getBoundingClientRect()
+    slideTo(navWrapperWidth, _direction)
+  }
+  const slideToView = (navEl) => {
+    const navWrapperScrollLeft = navWrapperRef.value.scrollLeft
+    const navWrapperScrollWidth = navWrapperRef.value.scrollWidth
+    const { width: navWidth } = navEl.getBoundingClientRect()
+    const { width: navWrapperWidth } = navWrapperRef.value.getBoundingClientRect()
+    const navWrapperCenter = navWrapperWidth / 2
+    const centerOffset = navWrapperCenter - navWidth / 2
+    const navLeft = navEl.offsetLeft
+    const activeNavLeft = activeNav.value.offsetLeft
+
+    // 无法居中时移动到边缘
+    if (navLeft < centerOffset) {
+      slideTo(centerOffset, 'backward')
+      return
+    } else if (navWrapperScrollWidth - navLeft < centerOffset) {
+      slideTo(centerOffset, 'forward')
+      return
+    }
+    const direction = activeNavLeft < navLeft ? 'forward' : 'backward'
+    const delta = Math.abs(navLeft - navWrapperScrollLeft - centerOffset)
+    slideTo(delta, direction)
+  }
+  return { slidePage, slideToView }
+}
 
 
 export default {
@@ -167,31 +254,7 @@ export default {
     }
   },
   setup(props, context) {
-    const formatSlots = () => {
-      const defaultSlots = context.slots.default()
-      // 处理slots
-      const tempArr = []
-      defaultSlots.forEach(slot => {
-        const isVForNode = Array.isArray(slot.children)
-        const isCommentNode = typeof slot.type === 'symbol'
-        if (isVForNode) {
-          // 展开v-for节点
-          tempArr.push(...slot.children)
-        } else if (!isCommentNode) {
-          // 过滤注释节点
-          tempArr.push(slot)
-        }
-      })
-      return tempArr
-    }
-    const expectDefaultSlots = formatSlots()
-    const checkSlotsLegality = (slots) => {
-      if (!slots.length || slots.some(slot => slot.type.name !== Tab.name)) {
-        throw new Error(`Tabs's children must be Tab`)
-      }
-    }
-    checkSlotsLegality(expectDefaultSlots)
-
+    const { expectDefaultSlots } = useTabSlot(context)
     const firstTab = expectDefaultSlots[0]
     const {
       title: titleProps,
@@ -199,31 +262,35 @@ export default {
       disabled: disabledProps,
       icon: iconProps
     } = mapSlotsProps(expectDefaultSlots, ['title', 'key', 'disabled', 'icon'])
-    const titleSlots = expectDefaultSlots.map(slot => slot.children.title && slot.children.title()[0])
+    const titleSlots = expectDefaultSlots.map(slot => slot.children && slot.children.title && slot.children.title()[0])
     const activeNav = ref<HTMLDivElement>(null)
     const navWrapperRef = ref<HTMLDivElement>(null)
+    const navRef = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
     const tabContent = ref<HTMLDivElement>(null)
     const direction = ref('')
     const contentHeight = ref(null)
     const selectedTab = computed(() =>
       expectDefaultSlots.find(slot => slot.props.key === props.activeKey) || firstTab)
-    const onTabClick = (key) => {
-      const targetTab = expectDefaultSlots.find(slot => slot.props.key === key)
-      if (checkBooleanProp(targetTab.props.disabled)) {
-        return
-      }
-      context.emit('update:activeKey', key)
-    }
-    useIndicator(props, { activeNav, navWrapperRef, indicatorRef })
+    useIndicator(props, { activeNav, navRef, indicatorRef })
     const {
       computeTransition,
       onAfterTransition,
       onBeforeTransition,
       onEnter
     } = useTabTransition(props, { keyProps, direction, tabContent, contentHeight })
+    const { slidePage, slideToView } = useTabNavSlide({ navWrapperRef, navRef, activeNav })
+    const onTabClick = (event, key) => {
+      const targetTab = expectDefaultSlots.find(slot => slot.props.key === key)
+      if (checkBooleanProp(targetTab.props.disabled)) {
+        return
+      }
+      context.emit('update:activeKey', key)
+      slideToView(event.currentTarget)
+    }
 
     return {
+      slidePage,
       tabContent,
       contentHeight,
       onAfterTransition,
@@ -239,6 +306,7 @@ export default {
       selectedTab,
       onTabClick,
       activeNav,
+      navRef,
       navWrapperRef,
       indicatorRef,
       computeTransition,
@@ -254,17 +322,22 @@ $border-color: #d9d9d9;
 $primary-color: #1890ff;
 
 .t-tabs {
+  position: relative;
+
   &.t-tabs-vertical {
     display: flex;
+
+    .t-tabs-slide {
+      border-bottom: 0 none;
+      border-right: 1px solid $border-color;
+      border-left: 1px solid $border-color;
+    }
 
     .t-tabs-nav {
       display: flex;
       flex-direction: column;
       flex: 1 0 auto;
       height: auto;
-      border-bottom: 0 none;
-      border-right: 1px solid $border-color;
-      border-left: 1px solid $border-color;
     }
 
     .t-tabs-nav-item {
@@ -282,11 +355,52 @@ $primary-color: #1890ff;
     }
   }
 
+  &-nav-wrapper {
+    position: relative;
+    max-width: 100%;
+    overflow: auto;
+    // 隐藏滚动条
+    -ms-overflow-style: none; // IE
+    scrollbar-width: none; // Firefox
+
+    &::-webkit-scrollbar {
+      display: none; // Chrome、Safari
+    }
+  }
+
+  &-slide {
+    position: relative;
+    background-color: #fff;
+    border-bottom: 1px solid $border-color;
+    padding: 0 50px;
+  }
+
+  &-prev-btn, &-next-btn {
+    position: absolute;
+    top: 0;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: inherit;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  &-prev-btn {
+    left: 0;
+  }
+
+  &-next-btn {
+    right: 0;
+  }
+
   &-nav {
     display: flex;
     color: $color;
-    border-bottom: 1px solid $border-color;
     position: relative;
+    white-space: nowrap;
 
     &-indicator {
       position: absolute;
@@ -304,7 +418,6 @@ $primary-color: #1890ff;
     &-item {
       padding: 8px 16px;
       cursor: pointer;
-      will-change: transform;
 
 
       &.disabled {
