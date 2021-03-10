@@ -145,7 +145,7 @@ const useTabTransition = (props, { keyProps, direction, tabContent, contentHeigh
     }
   }
 
-  return { computeTransition, onBeforeTransition, onAfterTransition, onEnter, onCancelTransition }
+  return { computeTransition, onBeforeTransition, onAfterTransition, onEnter }
 }
 
 
@@ -216,7 +216,6 @@ export default {
       computeTransition,
       onAfterTransition,
       onBeforeTransition,
-      onCancelTransition,
       onEnter
     } = useTabTransition(props, { keyProps, direction, tabContent, contentHeight })
 
@@ -225,7 +224,6 @@ export default {
       contentHeight,
       onAfterTransition,
       onBeforeTransition,
-      onCancelTransition,
       onEnter,
       titleSlots,
       iconProps,
