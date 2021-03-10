@@ -110,11 +110,12 @@ const useTabTransition = (props, { keyProps, direction, tabContent, contentHeigh
   const computeTransition = computed(() =>
     direction.value === 'forward' ? 'slide-forward' : 'slide-backward')
 
-  // 高度改变动画
+  // 高度自适应动画
   const onEnter = (el) => {
     if (!isInTransition) {
       return
     }
+
     nextTick(() => {
       if (!computeTransition || !isInTransition) {
         return
@@ -127,6 +128,8 @@ const useTabTransition = (props, { keyProps, direction, tabContent, contentHeigh
       return
     }
     isInTransition = true
+    // 动画加速
+    tabContent.value.classList.add('will-change')
     // 离开初态
     if (transitionCount === 0) {
       contentHeight.value = tabContent.value.clientHeight
@@ -142,6 +145,7 @@ const useTabTransition = (props, { keyProps, direction, tabContent, contentHeigh
     transitionCount > 0 && transitionCount--
     if (transitionCount === 0) {  // 动画完全结束
       contentHeight.value = undefined
+      tabContent.value.classList.remove('will-change')
     }
   }
 
@@ -348,7 +352,15 @@ $primary-color: #1890ff;
     overflow: hidden;
     transition: all .3s cubic-bezier(.25, .8, .5, 1);
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-    will-change: height;
+
+    // TODO：performance上观察似乎提升很小，不过稳定在60FPS，后续验证...
+    &.will-change {
+      will-change: height;
+
+      .t-tabs-content-item {
+        will-change: transform;
+      }
+    }
   }
 }
 </style>
