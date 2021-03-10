@@ -21,7 +21,7 @@
       </div>
       <div class="t-tabs-nav-indicator" ref="indicatorRef"></div>
     </div>
-    <div class="t-tabs-content">
+    <div class="t-tabs-content" ref="tabContent" :style="{ height: contentHeight && (contentHeight + 'px') }">
       <template v-if="forceRender">
         <component class="t-tabs-content-item" :is="selectedTab"/>
       </template>
@@ -29,6 +29,16 @@
         <transition
           v-for="slot in expectDefaultSlots"
           :name="computeTransition"
+
+          @before-enter="onBeforeTransition"
+          @after-enter="onAfterTransition"
+          @enter-cancelled="onAfterTransition"
+
+          @before-leave="onBeforeTransition"
+          @after-leave="onAfterTransition"
+          @leave-cancelled="onAfterTransition"
+
+          @enter="onEnter"
         >
           <component
             class="t-tabs-content-item"
@@ -59,6 +69,85 @@ const mapSlotsProps = (slots, propNames) => {
 const checkBooleanProp = (prop) => {
   return prop !== undefined && prop !== false
 }
+// 下划线
+const useIndicator = (props, { activeNav, navWrapperRef, indicatorRef }) => {
+  const updateIndicator = () => {
+    // 获取选中Tab的宽度
+    const {
+      width: activeNavWidth,
+      left: activeNavLeft,
+      top: activeNavTop,
+      height: activeNavHeight
+    } = activeNav.value.getBoundingClientRect()
+    // 获取容器偏移-Tab偏移
+    const {
+      left: navWrapperLeft,
+      top: navWrapperTop
+    } = navWrapperRef.value.getBoundingClientRect()
+    if (props.vertical) {
+      indicatorRef.value.style.top = activeNavTop - navWrapperTop + 'px'
+      indicatorRef.value.style.height = activeNavHeight + 'px'
+    } else {
+      indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
+      indicatorRef.value.style.width = activeNavWidth + 'px'
+    }
+
+  }
+  onMounted(updateIndicator)
+  watch(() => props.activeKey, () => {
+    nextTick(updateIndicator)
+  })
+}
+// Tab切换动画
+const useTabTransition = (props, { keyProps, direction, tabContent, contentHeight }) => {
+  let isInTransition = false
+  let transitionCount = 0
+
+  // 内容切换动画
+  watch(() => props.activeKey, (to, from) => {
+    direction.value = keyProps.indexOf(to) > keyProps.indexOf(from) ? 'forward' : 'backward'
+  })
+  const computeTransition = computed(() =>
+    direction.value === 'forward' ? 'slide-forward' : 'slide-backward')
+
+  // 高度改变动画
+  const onEnter = (el) => {
+    if (!isInTransition) {
+      return
+    }
+    nextTick(() => {
+      if (!computeTransition || !isInTransition) {
+        return
+      }
+      contentHeight.value = el.clientHeight
+    })
+  }
+  const onBeforeTransition = () => {
+    if (isInTransition) {
+      return
+    }
+    isInTransition = true
+    // 离开初态
+    if (transitionCount === 0) {
+      contentHeight.value = tabContent.value.clientHeight
+    }
+    // 离开和进入动画同时发生，transitionCount记录
+    transitionCount++
+  }
+  const onAfterTransition = () => {
+    if (!isInTransition) {
+      return
+    }
+    isInTransition = false
+    transitionCount > 0 && transitionCount--
+    if (transitionCount === 0) {  // 动画完全结束
+      contentHeight.value = undefined
+    }
+  }
+
+  return { computeTransition, onBeforeTransition, onAfterTransition, onEnter, onCancelTransition }
+}
+
 
 export default {
   name: "Tabs",
@@ -110,7 +199,9 @@ export default {
     const activeNav = ref<HTMLDivElement>(null)
     const navWrapperRef = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
+    const tabContent = ref<HTMLDivElement>(null)
     const direction = ref('')
+    const contentHeight = ref(null)
     const selectedTab = computed(() =>
       expectDefaultSlots.find(slot => slot.props.key === props.activeKey) || firstTab)
     const onTabClick = (key) => {
@@ -120,44 +211,22 @@ export default {
       }
       context.emit('update:activeKey', key)
     }
-    // 下划线
-    const useIndicator = () => {
-      const updateIndicator = () => {
-        // 获取选中Tab的宽度
-        const {
-          width: activeNavWidth,
-          left: activeNavLeft,
-          top: activeNavTop,
-          height: activeNavHeight
-        } = activeNav.value.getBoundingClientRect()
-        // 获取容器偏移-Tab偏移
-        const {
-          left: navWrapperLeft,
-          top: navWrapperTop
-        } = navWrapperRef.value.getBoundingClientRect()
-        if (props.vertical) {
-          indicatorRef.value.style.top = activeNavTop - navWrapperTop + 'px'
-          indicatorRef.value.style.height = activeNavHeight + 'px'
-        } else {
-          indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
-          indicatorRef.value.style.width = activeNavWidth + 'px'
-        }
-
-      }
-      onMounted(updateIndicator)
-      watch(() => props.activeKey, () => {
-        nextTick(updateIndicator)
-      })
-    }
-    useIndicator()
-    // 内容切换动画
-    watch(() => props.activeKey, (to, from) => {
-      direction.value = keyProps.indexOf(to) > keyProps.indexOf(from) ? 'forward' : 'backward'
-    })
-    const computeTransition = computed(() =>
-      direction.value === 'forward' ? 'slide-forward' : 'slide-backward')
+    useIndicator(props, { activeNav, navWrapperRef, indicatorRef })
+    const {
+      computeTransition,
+      onAfterTransition,
+      onBeforeTransition,
+      onCancelTransition,
+      onEnter
+    } = useTabTransition(props, { keyProps, direction, tabContent, contentHeight })
 
     return {
+      tabContent,
+      contentHeight,
+      onAfterTransition,
+      onBeforeTransition,
+      onCancelTransition,
+      onEnter,
       titleSlots,
       iconProps,
       disabledProps,
@@ -233,6 +302,7 @@ $primary-color: #1890ff;
     &-item {
       padding: 8px 16px;
       cursor: pointer;
+      will-change: transform;
 
 
       &.disabled {
@@ -276,7 +346,11 @@ $primary-color: #1890ff;
 
   &-content {
     position: relative;
+    height: inherit;
     overflow: hidden;
+    transition: all .3s cubic-bezier(.25, .8, .5, 1);
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    will-change: height;
   }
 }
 </style>
