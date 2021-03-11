@@ -164,9 +164,17 @@ const useIndicator = (props, { activeNav, navRef, indicatorRef }) => {
       top: navWrapperTop
     } = navRef.value.getBoundingClientRect()
     if (props.vertical) {
+      if (indicatorRef.value.style.left) {
+        indicatorRef.value.style.left = ''
+        indicatorRef.value.style.width = ''
+      }
       indicatorRef.value.style.top = activeNavTop - navWrapperTop + 'px'
       indicatorRef.value.style.height = activeNavHeight + 'px'
     } else {
+      if (indicatorRef.value.style.top) {
+        indicatorRef.value.style.top = ''
+        indicatorRef.value.style.height = ''
+      }
       indicatorRef.value.style.left = activeNavLeft - navWrapperLeft + 'px'
       indicatorRef.value.style.width = activeNavWidth + 'px'
     }
@@ -174,6 +182,9 @@ const useIndicator = (props, { activeNav, navRef, indicatorRef }) => {
   }
   onMounted(updateIndicator)
   watch(() => props.activeKey, () => {
+    nextTick(updateIndicator)
+  })
+  watch(() => props.vertical, () => {
     nextTick(updateIndicator)
   })
 }
@@ -436,6 +447,7 @@ $primary-color: #1890ff;
     }
 
     .t-tabs-nav-item {
+      padding: 16px;
       text-align: center;
     }
 
