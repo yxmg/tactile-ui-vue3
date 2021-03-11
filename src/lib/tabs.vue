@@ -49,37 +49,39 @@
       </div>
     </div>
 
-    <div
-      class="t-tabs-content"
-      ref="tabContent"
-      :style="{ height: contentHeight && (contentHeight + 'px') }"
-    >
-      <template v-if="forceRender">
-        <component class="t-tabs-content-item" :is="selectedTab"/>
-      </template>
-      <template v-else>
-        <transition
-          v-for="slot in expectDefaultSlots"
-          :name="computeTransition"
+    <div class="t-tabs-wrapper">
+      <div
+        class="t-tabs-content"
+        ref="tabContent"
+        :style="{ height: contentHeight && (contentHeight + 'px') }"
+      >
+        <template v-if="forceRender">
+          <component class="t-tabs-content-item" :is="selectedTab"/>
+        </template>
+        <template v-else>
+          <transition
+            v-for="slot in expectDefaultSlots"
+            :name="computeTransition"
 
-          @before-enter="onBeforeTransition"
-          @after-enter="onAfterTransition"
-          @enter-cancelled="onAfterTransition"
+            @before-enter="onBeforeTransition"
+            @after-enter="onAfterTransition"
+            @enter-cancelled="onAfterTransition"
 
-          @before-leave="onBeforeTransition"
-          @after-leave="onAfterTransition"
-          @leave-cancelled="onAfterTransition"
+            @before-leave="onBeforeTransition"
+            @after-leave="onAfterTransition"
+            @leave-cancelled="onAfterTransition"
 
-          @enter="onEnter"
-        >
-          <component
-            class="t-tabs-content-item"
-            v-show="slot.props.key === activeKey"
-            :key="slot.props.key"
-            :is="slot"
-          />
-        </transition>
-      </template>
+            @enter="onEnter"
+          >
+            <component
+              class="t-tabs-content-item"
+              v-show="slot.props.key === activeKey"
+              :key="slot.props.key"
+              :is="slot"
+            />
+          </transition>
+        </template>
+      </div>
     </div>
   </div>
 
@@ -89,15 +91,6 @@
 import Tab from './tab.vue'
 import {ref, computed, onMounted, watch, nextTick} from 'vue'
 
-const mapSlotsProps = (slots, propNames) => {
-  return Array.isArray(slots) && slots.reduce((propsMap, slot) => {
-    propNames.forEach(propName => {
-      const propArr = propsMap[propName]
-      propArr ? propArr.push(slot.props[propName]) : (propsMap[propName] = [slot.props[propName]])
-    })
-    return propsMap
-  }, {})
-}
 const checkBooleanProp = (prop) => {
   return prop !== undefined && prop !== false
 }
@@ -376,6 +369,11 @@ $primary-color: #1890ff;
 
 .t-tabs {
   position: relative;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+
+  &-wrapper {
+    flex: auto;
+  }
 
   &.t-tabs-vertical {
     display: flex;
@@ -403,9 +401,6 @@ $primary-color: #1890ff;
       width: 3px;
     }
 
-    .t-tabs-content {
-      flex: 0 1 100%;
-    }
   }
 
   &-nav-wrapper {
@@ -535,7 +530,6 @@ $primary-color: #1890ff;
     height: inherit;
     overflow: hidden;
     transition: all .3s cubic-bezier(.25, .8, .5, 1);
-    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
 
     // TODO：performance上观察似乎提升很小，不过稳定在60FPS，后续验证...
     &.will-change {
