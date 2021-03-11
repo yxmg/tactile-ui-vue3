@@ -1,21 +1,30 @@
 <template>
+  <div class="modal-trigger" @click="showDialog">
+    <slot name="trigger"></slot>
+  </div>
   <template v-if="visible">
-    <Teleport to="body">
-      <div class="t-dialog-mask" @click="onClickMask"></div>
-      <div class="t-dialog-wrapper">
+    <Teleport :to="mountedNode">
+      <div class="t-dialog-mask" v-if="!hideMask" @click="onClickMask"></div>
+      <div
+        class="t-dialog-wrapper"
+        :style="{ width: dialogWidth }"
+        :class="[dialogClass]"
+      >
         <div class="t-dialog">
-          <div class="t-dialog-header">
+          <div class="t-dialog-header" v-if="!hideHeader">
             <slot name="title">
               <span class="t-dialog-title">{{ title }}</span>
             </slot>
-            <span class="t-dialog-close" @click="close"></span>
+            <span class="t-dialog-close" @click="close" v-if="!hideClose"></span>
           </div>
           <div class="t-dialog-content">
             <slot/>
           </div>
-          <div class="t-dialog-footer">
-            <Button theme="primary" @click="ok">确认</Button>
-            <Button @click="cancel">取消</Button>
+          <div class="t-dialog-footer" v-if="!hideFooter">
+            <slot name="footer">
+              <Button theme="primary" @click="ok">确认</Button>
+              <Button @click="cancel">取消</Button>
+            </slot>
           </div>
         </div>
       </div>
@@ -25,30 +34,27 @@
 
 <script lang="ts">
 import Button from './button.vue'
+import {computed} from 'vue'
 
 export default {
   name: "Dialog",
   props: {
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    maskClosable: {
-      type: Boolean,
-      default: false
-    },
-    title: {
-      type: String,
-      default: ''
-    },
+    width: { type: [Number, String], default: 500 },
+    visible: { type: Boolean, default: false },
+    dialogClass: String,
+    hideMask: { type: Boolean, default: false },
+    hideHeader: { type: Boolean, default: false },
+    hideFooter: { type: Boolean, default: false },
+    hideClose: { type: Boolean, default: false },
+    maskClosable: { type: Boolean, default: false },
+    mountedNode: { type: String, default: 'body' },
+    title: { type: String, default: '' },
     ok: {
-      type: Function,
-      default: () => {
+      type: Function, default: () => {
       }
     },
     cancel: {
-      type: Function,
-      default: () => {
+      type: Function, default: () => {
       }
     }
   },
@@ -70,7 +76,13 @@ export default {
         close()
       }
     }
-    return { close, onClickMask, ok, cancel }
+    const dialogWidth = computed(() => {
+      return typeof props.width === 'string' ? props.width : props.width + 'px'
+    })
+    const showDialog = () => {
+      context.emit('update:visible', true)
+    }
+    return { close, onClickMask, ok, cancel, dialogWidth, showDialog }
   }
 }
 </script>
@@ -82,8 +94,8 @@ $border-color: #d9d9d9;
   background: white;
   border-radius: $radius;
   box-shadow: 0 0 3px fade_out(black, 0.5);
+  width: 100%;
   min-width: 15em;
-  max-width: 90%;
 
   &-mask {
     position: fixed;
@@ -101,6 +113,11 @@ $border-color: #d9d9d9;
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 11;
+    width: 100%;
+
+    &:not(.t-dialog-fullscreen) {
+      max-width: 90%;
+    }
   }
 
   &-header {
