@@ -4,11 +4,11 @@
   </div>
   <template v-if="visible">
     <Teleport :to="mountedNode">
-      <div class="t-dialog-mask" v-if="!hideMask" @click="onClickMask"></div>
+      <div class="t-dialog-mask" v-if="!hideMask || fullscreen" @click="onClickMask"></div>
       <div
         class="t-dialog-wrapper"
-        :style="{ width: dialogWidth }"
-        :class="[dialogClass]"
+        :style="{ width: fullscreen ?  '100%' : dialogWidth }"
+        :class="[dialogClass, { 't-dialog-fullscreen' : fullscreen }]"
       >
         <div class="t-dialog">
           <div class="t-dialog-header" v-if="!hideHeader">
@@ -49,6 +49,7 @@ export default {
     maskClosable: { type: Boolean, default: false },
     mountedNode: { type: String, default: 'body' },
     title: { type: String, default: '' },
+    fullscreen: { type: Boolean, default: false },
     ok: {
       type: Function, default: () => {
       }
@@ -91,10 +92,13 @@ export default {
 $radius: 4px;
 $border-color: #d9d9d9;
 .t-dialog {
+  display: flex;
+  flex-direction: column;
   background: white;
   border-radius: $radius;
   box-shadow: 0 0 3px fade_out(black, 0.5);
   width: 100%;
+  height: 100%;
   min-width: 15em;
 
   &-mask {
@@ -112,8 +116,14 @@ $border-color: #d9d9d9;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 11;
+    z-index: 999;
     width: 100%;
+
+    &.t-dialog-fullscreen {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
 
     &:not(.t-dialog-fullscreen) {
       max-width: 90%;
@@ -131,6 +141,7 @@ $border-color: #d9d9d9;
 
   &-content {
     padding: 12px 16px;
+    flex: auto;
   }
 
   &-footer {
