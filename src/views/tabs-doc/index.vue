@@ -3,8 +3,10 @@
     <h1>Tabs 组件示例 </h1>
     <Demo :component="normalDemo"></Demo>
     <Demo :component="iconDemo"></Demo>
-    <Demo :component="disabledDemo"></Demo>
     <Demo :component="customTitleDemo"></Demo>
+    <Demo :component="disabledDemo"></Demo>
+    <Demo :component="verticalDemo"></Demo>
+    <Demo :component="overflowDemo"></Demo>
   </div>
 </template>
 
@@ -14,12 +16,14 @@ import normalDemo from './components/normal-demo.vue'
 import disabledDemo from './components/disabled-demo.vue'
 import iconDemo from './components/icon-demo.vue'
 import customTitleDemo from './components/custom-title-demo.vue'
+import verticalDemo from './components/vertical-demo.vue'
+import overflowDemo from './components/overflow-demo.vue'
 
 export default {
   name: "tabs-doc",
   components: { Demo },
   setup() {
-    return { normalDemo, disabledDemo, iconDemo, customTitleDemo }
+    return { normalDemo, disabledDemo, iconDemo, customTitleDemo, verticalDemo, overflowDemo }
   }
 }
 </script>
