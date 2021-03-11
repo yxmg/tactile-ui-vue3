@@ -31,7 +31,7 @@ export default {
   components: { Tabs, Tab, Button },
   setup() {
     const activeKey = ref('Vue')
-    const length = ref(10)
+    const length = ref(3)
     const isVertical = ref(false)
     const firstItemDisabled = ref(false)
     return { activeKey, length, isVertical, firstItemDisabled }

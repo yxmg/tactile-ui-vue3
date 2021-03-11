@@ -97,7 +97,7 @@ export default {
     background: lightblue;
     width: 150px;
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     top: 0;
     left: 0;
     padding: 80px 0 16px;

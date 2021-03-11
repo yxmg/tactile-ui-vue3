@@ -128,6 +128,7 @@ const useTabSlot = (props, { isOverflow, navRef, navWrapperRef, nextTick, contex
   }
   onMounted(checkOverflow)
   watch(() => context.slots.default(), () => nextTick(checkOverflow))
+  watch(() => props.vertical, () => nextTick(checkOverflow))
 
   // 提取属性
   const titleProps = ref(null)
