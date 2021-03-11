@@ -95,7 +95,7 @@ const checkBooleanProp = (prop) => {
   return prop !== undefined && prop !== false
 }
 // Tab-slot处理
-const useTabSlot = (context, { isOverflow, navRef, navWrapperRef, nextTick }) => {
+const useTabSlot = (props, { isOverflow, navRef, navWrapperRef, nextTick, context }) => {
   // 筛选slot
   const formatSlots = () => {
     const defaultSlots = context.slots.default()
@@ -123,7 +123,8 @@ const useTabSlot = (context, { isOverflow, navRef, navWrapperRef, nextTick }) =>
 
   // 判断slot是否超出容器
   const checkOverflow = () => {
-    isOverflow.value = navRef.value.clientWidth > navWrapperRef.value.clientWidth
+    const compareProp = props.vertical ? 'clientHeight' : 'clientWidth'
+    isOverflow.value = navRef.value[compareProp] > navWrapperRef.value[compareProp]
   }
   onMounted(checkOverflow)
   watch(() => context.slots.default(), () => nextTick(checkOverflow))
@@ -230,54 +231,71 @@ const useTabTransition = (props, { keyProps, direction, tabContent, contentHeigh
   return { computeTransition, onBeforeTransition, onAfterTransition, onEnter }
 }
 // Tab-nav-slide切换
-const useTabNavSlide = ({ navWrapperRef, navRef, activeNav }) => {
+const useTabNavSlide = (props, { navWrapperRef, navRef, activeNav }) => {
+  const VERTICAL_MAP = {
+    SCROLL_DISTANCE: 'scrollTop',
+    SCROLL_DIMENSION: 'scrollHeight',
+    DIMENSION: 'height',
+    TRANSFORM: 'translateY',
+    OFFSET_DISTANCE: 'offsetTop'
+  }
+  const HORIZONTAL_MAP = {
+    SCROLL_DISTANCE: 'scrollLeft',
+    SCROLL_DIMENSION: 'scrollWidth',
+    DIMENSION: 'width',
+    TRANSFORM: 'translateX',
+    OFFSET_DISTANCE: 'offsetLeft'
+  }
   const slideTo = (delta, _direction) => {
-    const navWrapperScrollLeft = navWrapperRef.value.scrollLeft
-    const navWrapperRefScrollWidth = navWrapperRef.value.scrollWidth
-    const { width: navWrapperWidth } = navWrapperRef.value.getBoundingClientRect()
+    const MAP = props.vertical ? VERTICAL_MAP : HORIZONTAL_MAP
+    const navWrapperScrollDistance = navWrapperRef.value[MAP.SCROLL_DISTANCE]
+    const navWrapperScrollDimension = navWrapperRef.value[MAP.SCROLL_DIMENSION]
+    const { [MAP.DIMENSION]: navWrapperDimension } = navWrapperRef.value.getBoundingClientRect()
     if (_direction === 'forward') {
-      delta = navWrapperScrollLeft + navWrapperWidth + delta > navWrapperRefScrollWidth
-        ? navWrapperRefScrollWidth - (navWrapperScrollLeft + navWrapperWidth) : delta
+      delta = navWrapperScrollDistance + navWrapperDimension + delta > navWrapperScrollDimension
+        ? navWrapperScrollDimension - (navWrapperScrollDistance + navWrapperDimension) : delta
     } else {
-      delta = navWrapperScrollLeft - delta < 0 ? navWrapperScrollLeft : delta
+      delta = navWrapperScrollDistance - delta < 0 ? navWrapperScrollDistance : delta
     }
     // 动画结束后替换为滚动属性
     navRef.value.addEventListener('transitionend', () => {
       navRef.value.style.transition = ''
       navRef.value.style.transform = ''
-      navWrapperRef.value.scrollLeft = _direction === 'forward'
-        ? navWrapperScrollLeft + delta
-        : navWrapperScrollLeft - delta
+      navWrapperRef.value[MAP.SCROLL_DISTANCE] = _direction === 'forward'
+        ? navWrapperScrollDistance + delta
+        : navWrapperScrollDistance - delta
     })
     // transform移动navRef
     navRef.value.style.transition = '.3s cubic-bezier(.25, .8, .5, 1)'
-    navRef.value.style.transform = `translateX(${_direction === 'forward' ? -delta : delta}px)`
+    navRef.value.style.transform = `${MAP.TRANSFORM}(${_direction === 'forward' ? -delta : delta}px)`
   }
   const slidePage = (_direction) => {
-    // 获取移动距离 = navWrapper宽度 - 32（2倍padding）
-    const { width: navWrapperWidth } = navWrapperRef.value.getBoundingClientRect()
-    slideTo(navWrapperWidth, _direction)
+    const MAP = props.vertical ? VERTICAL_MAP : HORIZONTAL_MAP
+    // 获取移动距离 = navWrapper宽度
+    const { [MAP.DIMENSION]: navWrapperDimension } = navWrapperRef.value.getBoundingClientRect()
+    slideTo(navWrapperDimension, _direction)
   }
   const slideToView = (navItemEl) => {
-    const navWrapperScrollLeft = navWrapperRef.value.scrollLeft
-    const navWrapperScrollWidth = navWrapperRef.value.scrollWidth
-    const { width: navWidth } = navItemEl.getBoundingClientRect()
-    const { width: navWrapperWidth } = navWrapperRef.value.getBoundingClientRect()
-    const navWrapperCenter = navWrapperWidth / 2
-    const centerOffset = navWrapperCenter - navWidth / 2
-    const navLeft = navItemEl.offsetLeft
-    const activeNavLeft = activeNav.value.offsetLeft
+    const MAP = props.vertical ? VERTICAL_MAP : HORIZONTAL_MAP
+    const navWrapperScrollDistance = navWrapperRef.value[MAP.SCROLL_DISTANCE]
+    const navWrapperScrollDimension = navWrapperRef.value[MAP.SCROLL_DIMENSION]
+    const { [MAP.DIMENSION]: navDimension } = navItemEl.getBoundingClientRect()
+    const { [MAP.DIMENSION]: navWrapperDimension } = navWrapperRef.value.getBoundingClientRect()
+    const navWrapperCenter = navWrapperDimension / 2
+    const centerOffset = navWrapperCenter - navDimension / 2
+    const navDistance = navItemEl[MAP.OFFSET_DISTANCE]
+    const activeNavDistance = activeNav.value[MAP.OFFSET_DISTANCE]
 
     // 无法居中时移动到边缘
-    if (navLeft < centerOffset) {
+    if (navDistance < centerOffset) {
       slideTo(centerOffset, 'backward')
       return
-    } else if (navWrapperScrollWidth - navLeft < centerOffset) {
+    } else if (navWrapperScrollDimension - navDistance < centerOffset) {
       slideTo(centerOffset, 'forward')
       return
     }
-    const direction = activeNavLeft < navLeft ? 'forward' : 'backward'
-    const delta = Math.abs(navLeft - navWrapperScrollLeft - centerOffset)
+    const direction = activeNavDistance < navDistance ? 'forward' : 'backward'
+    const delta = Math.abs(navDistance - navWrapperScrollDistance - centerOffset)
     slideTo(delta, direction)
   }
   return { slidePage, slideToView }
@@ -308,7 +326,7 @@ export default {
       disabledProps,
       iconProps,
       titleSlots
-    } = useTabSlot(context, { isOverflow, navRef, navWrapperRef, nextTick })
+    } = useTabSlot(props, { isOverflow, navRef, navWrapperRef, nextTick, context })
     const firstTab = expectDefaultSlots.value[0]
     const activeNav = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
@@ -324,7 +342,7 @@ export default {
       onBeforeTransition,
       onEnter
     } = useTabTransition(props, { keyProps, direction, tabContent, contentHeight })
-    const { slidePage, slideToView } = useTabNavSlide({ navWrapperRef, navRef, activeNav })
+    const { slidePage, slideToView } = useTabNavSlide(props, { navWrapperRef, navRef, activeNav })
     const onTabClick = (event, key) => {
       const targetTab = expectDefaultSlots.value.find(slot => slot.props.key === key)
       if (checkBooleanProp(targetTab.props.disabled)) {
@@ -382,6 +400,29 @@ $primary-color: #1890ff;
       border-bottom: 0 none;
       border-right: 1px solid $border-color;
       border-left: 1px solid $border-color;
+
+      &.overflow {
+        padding: 50px 0;
+      }
+    }
+
+    .t-tabs-prev-btn, .t-tabs-next-btn {
+      width: 100%;
+      height: 50px;
+
+      .t-tabs-nav-icon {
+        transform: rotate(90deg);
+      }
+    }
+
+    .t-tabs-prev-btn {
+      top: 0;
+      bottom: auto;
+    }
+
+    .t-tabs-next-btn {
+      bottom: 0;
+      top: auto;
     }
 
     .t-tabs-nav {
@@ -406,6 +447,7 @@ $primary-color: #1890ff;
   &-nav-wrapper {
     position: relative;
     max-width: 100%;
+    max-height: 500px;
     overflow: auto;
     // 隐藏滚动条
     -ms-overflow-style: none; // IE
@@ -430,6 +472,7 @@ $primary-color: #1890ff;
   &-prev-btn, &-next-btn {
     position: absolute;
     top: 0;
+    left: 0;
     width: 50px;
     display: flex;
     justify-content: center;
@@ -455,10 +498,12 @@ $primary-color: #1890ff;
 
   &-prev-btn {
     left: 0;
+    right: auto;
   }
 
   &-next-btn {
     right: 0;
+    left: auto;
   }
 
   &-nav {
