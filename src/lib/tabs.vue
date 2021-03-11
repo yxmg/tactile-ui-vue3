@@ -75,7 +75,7 @@
           >
             <component
               class="t-tabs-content-item"
-              v-show="keyProps.includes(activeKey) ? slot.props.key === activeKey : index === 0"
+              v-show="slot.props.key === activeKey"
               :key="slot.props.key"
               :is="slot"
             />
@@ -145,6 +145,16 @@ const useTabSlot = (props, { isOverflow, navRef, navWrapperRef, nextTick, contex
   }
   extractData()
   watch(() => context.slots.default(), extractData)
+
+  // slots变动时防止activeKey指向不存在Tab
+  watch(() => context.slots.default(), () => {
+    const index = keyProps.value.indexOf(props.activeKey)
+    if (index < 0) {
+      const fallbackKey = keyProps.value[index] !== undefined
+        ? keyProps.value[index] : keyProps.value.slice(-1)[0]
+      context.emit('update:activeKey', fallbackKey)
+    }
+  })
 
   return { expectDefaultSlots, titleProps, keyProps, disabledProps, iconProps, titleSlots }
 }
