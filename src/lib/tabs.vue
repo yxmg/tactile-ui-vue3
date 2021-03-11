@@ -60,7 +60,7 @@
         </template>
         <template v-else>
           <transition
-            v-for="slot in expectDefaultSlots"
+            v-for="(slot, index) in expectDefaultSlots"
             :name="computeTransition"
 
             @before-enter="onBeforeTransition"
@@ -75,7 +75,7 @@
           >
             <component
               class="t-tabs-content-item"
-              v-show="slot.props.key === activeKey"
+              v-show="keyProps.includes(activeKey) ? slot.props.key === activeKey : index === 0"
               :key="slot.props.key"
               :is="slot"
             />
