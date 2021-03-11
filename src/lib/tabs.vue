@@ -556,6 +556,9 @@ $primary-color: #1890ff;
       flex-shrink: 0;
       white-space: nowrap;
 
+      &.selected {
+        color: $primary-color;
+      }
 
       &.disabled {
         cursor: not-allowed;
@@ -588,10 +591,6 @@ $primary-color: #1890ff;
 
       &:active:not(:focus-visible) {
         color: #096dd9;
-      }
-
-      &.selected {
-        color: $primary-color;
       }
     }
   }
