@@ -89,7 +89,7 @@
 
 <script lang="ts">
 import Tab from './tab.vue'
-import {ref, computed, onMounted, watch, nextTick} from 'vue'
+import {ref, computed, onMounted, watch, nextTick, h} from 'vue'
 
 const checkBooleanProp = (prop) => {
   return prop !== undefined && prop !== false
@@ -141,7 +141,7 @@ const useTabSlot = (props, { isOverflow, navRef, navWrapperRef, nextTick, contex
     disabledProps.value = expectDefaultSlots.value.map(item => item.props.disabled)
     iconProps.value = expectDefaultSlots.value.map(item => item.props.icon)
     titleSlots.value = expectDefaultSlots.value
-      .map(slot => slot.children && slot.children.title && slot.children.title()[0])
+      .map(slot => slot.children && slot.children.title && h('div', { class: 't-tabs-nav-item' }, slot.children.title()))
   }
   extractData()
   watch(() => context.slots.default(), extractData)
