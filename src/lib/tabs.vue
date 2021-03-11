@@ -344,6 +344,9 @@ export default {
     } = useTabTransition(props, { keyProps, direction, tabContent, contentHeight })
     const { slidePage, slideToView } = useTabNavSlide(props, { navWrapperRef, navRef, activeNav })
     const onTabClick = (event, key) => {
+      if (key === props.activeKey) {
+        return
+      }
       const targetTab = expectDefaultSlots.value.find(slot => slot.props.key === key)
       if (checkBooleanProp(targetTab.props.disabled)) {
         return
@@ -514,7 +517,7 @@ $primary-color: #1890ff;
     &-indicator {
       position: absolute;
       left: 0;
-      bottom: -1px;
+      bottom: 0;
       height: 3px;
       background-color: $primary-color;
       transition: .3s cubic-bezier(.25, .8, .5, 1);
