@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-trigger" @click="showDialog" v-if="triggerSlot">
+  <div class="modal-trigger" @click="open" v-if="triggerSlot">
     <slot name="trigger"></slot>
   </div>
   <Teleport :to="mountedNode">
@@ -10,7 +10,6 @@
         @click="onClickMask"
       />
     </transition>
-
     <div
       class="t-dialog-wrapper"
       ref="dialogWrapperRef"
@@ -30,8 +29,8 @@
           </div>
           <div class="t-dialog-footer" v-if="!hideFooter">
             <slot name="footer">
-              <Button theme="primary" @click="ok">确认</Button>
               <Button @click="cancel">取消</Button>
+              <Button theme="primary" @click="ok">确认</Button>
             </slot>
           </div>
         </div>
@@ -131,7 +130,7 @@ export default {
     hideClose: { type: Boolean, default: false },
     mountedNode: { type: String, default: 'body' },
     fullscreen: { type: Boolean, default: false },
-    maskClosable: { type: Boolean, default: false },
+    maskClosable: { type: Boolean, default: true },
     escClosable: { type: Boolean, default: true },
     draggable: { type: Boolean, default: false },
     transition: { type: String, default: 'dialog-transition' },
@@ -177,7 +176,7 @@ export default {
     const dialogWidth = computed(() => {
       return typeof props.width === 'string' ? props.width : props.width + 'px'
     })
-    const showDialog = () => {
+    const open = () => {
       context.emit('update:visible', true)
       currentVisible.value = true
     }
@@ -191,7 +190,7 @@ export default {
       ok,
       cancel,
       dialogWidth,
-      showDialog,
+      open,
       dialogWrapperRef,
       dialogHeaderRef,
       triggerSlot
