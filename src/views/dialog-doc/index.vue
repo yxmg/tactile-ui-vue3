@@ -6,6 +6,7 @@
     <Demo :component="closableDemo"></Demo>
     <Demo :component="draggableDemo"></Demo>
     <Demo :component="overflowDemo"></Demo>
+    <Demo :component="transitionDemo"></Demo>
   </div>
 </template>
 
@@ -16,12 +17,13 @@ import customDemo from './components/custom-demo.vue'
 import closableDemo from './components/closable-demo.vue'
 import draggableDemo from './components/draggable-demo.vue'
 import overflowDemo from './components/overflow-demo.vue'
+import transitionDemo from './components/transition-demo.vue'
 
 export default {
   name: "dialog-doc",
   components: { Demo },
   setup() {
-    return { normalDemo, customDemo, closableDemo, draggableDemo, overflowDemo }
+    return { normalDemo, customDemo, closableDemo, draggableDemo, overflowDemo, transitionDemo }
   }
 }
 </script>
