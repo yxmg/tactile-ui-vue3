@@ -17,7 +17,7 @@
       :style="{ width: fullscreen ?  '100%' : dialogWidth }"
       :class="[dialogClass, { 't-dialog-fullscreen' : fullscreen, 't-dialog-draggable': draggable }]"
     >
-      <transition name="dialog-transition" appear>
+      <transition :name="transition" appear>
         <div class="t-dialog" v-show="visible">
           <div class="t-dialog-header" v-if="!hideHeader" ref="dialogHeaderRef">
             <slot name="title">
@@ -134,6 +134,7 @@ export default {
     maskClosable: { type: Boolean, default: false },
     escClosable: { type: Boolean, default: true },
     draggable: { type: Boolean, default: false },
+    transition: { type: String, default: 'dialog-transition' },
     ok: {
       type: Function, default: () => {
       }
@@ -306,4 +307,13 @@ $border-color: #d9d9d9;
 .dialog-transition-enter-to, .dialog-transition-leave {
   opacity: 1
 }
+
+.slide-bottom-enter-from, .slide-bottom-leave-to {
+  transform: translateY(100%)
+}
+
+.slide-top-enter-from, .slide-top-leave-to {
+  transform: translateY(-100%)
+}
+
 </style>
