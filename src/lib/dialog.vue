@@ -350,18 +350,18 @@ $border-color: #d9d9d9;
   opacity: 1
 }
 
-.slide-bottom-enter-from, .slide-bottom-leave-to {
+.slide-top-enter-from, .slide-top-leave-to {
   transform: translateY(100%);
   opacity: 0
 }
 
-.slide-top-enter-from, .slide-top-leave-to {
+.slide-bottom-enter-from, .slide-bottom-leave-to {
   transform: translateY(-100%);
   opacity: 0
 }
 
-.slide-bottom-enter-to, .slide-bottom-leave,
-.slide-top-enter-to, .slide-top-leave {
+.slide-top-enter-to, .slide-top-leave,
+.slide-bottom-enter-to, .slide-bottom-leave {
   opacity: 1
 }
 

@@ -1,6 +1,6 @@
 <demo-sign>全屏</demo-sign>
 <template>
-  <Dialog title="全屏" fullscreen>
+  <Dialog title="全屏" fullscreen transition="slide-top">
     <template #trigger>
       <Button>全屏</Button>
     </template>
