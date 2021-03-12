@@ -3,7 +3,7 @@
     <slot name="trigger"></slot>
   </div>
   <Teleport :to="mountedNode">
-    <transition name="fade">
+    <transition name="fade" appear>
       <div
         class="t-dialog-mask"
         v-if="!hideMask && !fullscreen && visible"
@@ -17,7 +17,7 @@
       :style="{ width: fullscreen ?  '100%' : dialogWidth }"
       :class="[dialogClass, { 't-dialog-fullscreen' : fullscreen, 't-dialog-draggable': draggable }]"
     >
-      <transition name="dialog-transition">
+      <transition name="dialog-transition" appear>
         <div class="t-dialog" v-show="visible">
           <div class="t-dialog-header" v-if="!hideHeader" ref="dialogHeaderRef">
             <slot name="title">
@@ -61,58 +61,61 @@ const useKeyboard = (props, { close }) => {
   onBeforeUnmount(removeEscEvent)
 }
 // TODO：视情况封装
-const useDrag = (props, { dialogWrapperRef, dialogHeaderRef }) => {
-  // 注册mousedown，获取拖拽初态
-  const mousedown = (event) => {
-    const distanceX = event.clientX - dialogHeaderRef.value.offsetLeft
-    const distanceY = event.clientY - dialogHeaderRef.value.offsetTop
-    const { left: currentX, top: currentY } = getComputedStyle(dialogWrapperRef.value)
-    // 禁止选中，避免触发原生选中
-    dialogWrapperRef.value.style.userSelect = 'none'
-    // 计算位移边界
-    const screenWidth = document.documentElement.clientWidth
-    const screenHeight = document.documentElement.clientHeight
-    const dialogWrapperWidth = dialogWrapperRef.value.clientWidth
-    const dialogWrapperHeight = dialogWrapperRef.value.clientHeight
-    const {
-      top: dialogWrapperViewTop,
-      left: dialogWrapperViewLeft
-    } = dialogWrapperRef.value.getBoundingClientRect()
-    // 修正transform影响
-    const transformX = parseInt(dialogWrapperViewLeft) - parseInt(currentX)
-    const transformY = parseInt(dialogWrapperViewTop) - parseInt(currentY)
+const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch }) => {
+  const handleDrag = () => {
+    // 注册mousedown，获取拖拽初态
+    const mousedown = (event) => {
+      const distanceX = event.clientX - dialogHeaderRef.value.offsetLeft
+      const distanceY = event.clientY - dialogHeaderRef.value.offsetTop
+      const { left: currentX, top: currentY } = getComputedStyle(dialogWrapperRef.value)
+      // 禁止选中，避免触发原生选中
+      dialogWrapperRef.value.style.userSelect = 'none'
+      // 计算位移边界
+      const screenWidth = document.documentElement.clientWidth
+      const screenHeight = document.documentElement.clientHeight
+      const dialogWrapperWidth = dialogWrapperRef.value.clientWidth
+      const dialogWrapperHeight = dialogWrapperRef.value.clientHeight
+      const {
+        top: dialogWrapperViewTop,
+        left: dialogWrapperViewLeft
+      } = dialogWrapperRef.value.getBoundingClientRect()
+      // 修正transform影响
+      const transformX = parseInt(dialogWrapperViewLeft) - parseInt(currentX)
+      const transformY = parseInt(dialogWrapperViewTop) - parseInt(currentY)
 
-    const maxDialogTop = screenHeight - dialogWrapperHeight / 2 - transformY
-    const minDialogTop = -transformY
-    const maxDialogLeft = screenWidth - dialogWrapperWidth / 2 - transformX
-    const minDialogLeft = -(dialogWrapperWidth / 2) - transformX
+      const maxDialogTop = screenHeight - dialogWrapperHeight / 2 - transformY
+      const minDialogTop = -transformY
+      const maxDialogLeft = screenWidth - dialogWrapperWidth / 2 - transformX
+      const minDialogLeft = -(dialogWrapperWidth / 2) - transformX
 
-    const mousemove = (event) => {
-      // 注册mousemove，实时计算位移终态
-      const deltaX = event.clientX - distanceX
-      const deltaY = event.clientY - distanceY
+      const mousemove = (event) => {
+        // 注册mousemove，实时计算位移终态
+        const deltaX = event.clientX - distanceX
+        const deltaY = event.clientY - distanceY
 
-      // 限制位移，避免用户拽出屏幕无法拽回
-      let targetX = deltaX + parseInt(currentX)
-      let targetY = deltaY + parseInt(currentY)
-      targetX = Math.max(minDialogLeft, targetX)
-      targetX = Math.min(maxDialogLeft, targetX)
-      targetY = Math.max(minDialogTop, targetY)
-      targetY = Math.min(maxDialogTop, targetY)
-      dialogWrapperRef.value.style.cssText
-        += `;left: ${targetX}px; top: ${targetY}px`
+        // 限制位移，避免用户拽出屏幕无法拽回
+        let targetX = deltaX + parseInt(currentX)
+        let targetY = deltaY + parseInt(currentY)
+        targetX = Math.max(minDialogLeft, targetX)
+        targetX = Math.min(maxDialogLeft, targetX)
+        targetY = Math.max(minDialogTop, targetY)
+        targetY = Math.min(maxDialogTop, targetY)
+        dialogWrapperRef.value.style.cssText
+          += `;left: ${targetX}px; top: ${targetY}px`
+      }
+      // 注册mouseup，注销mousemove、mouseup并取消禁止选中
+      const mouseup = () => {
+        document.removeEventListener('mousemove', mousemove)
+        document.removeEventListener('mouseup', mouseup)
+        dialogWrapperRef.value.style.userSelect = ''
+      }
+      document.addEventListener('mousemove', mousemove)
+      document.addEventListener('mouseup', mouseup)
     }
-    // 注册mouseup，注销mousemove、mouseup并取消禁止选中
-    const mouseup = () => {
-      document.removeEventListener('mousemove', mousemove)
-      document.removeEventListener('mouseup', mouseup)
-      dialogWrapperRef.value.style.userSelect = ''
-    }
-    document.addEventListener('mousemove', mousemove)
-    document.addEventListener('mouseup', mouseup)
+    dialogHeaderRef.value.addEventListener('mousedown', mousedown)
   }
-  dialogHeaderRef.value.addEventListener('mousedown', mousedown)
-
+  props.draggable && onMounted(handleDrag)
+  watch(() => props.draggable, handleDrag)
 }
 
 export default {
@@ -171,9 +174,7 @@ export default {
       context.emit('visibleChange', val)
     })
     useKeyboard(props, { close })
-    onMounted(() => {
-      useDrag(props, { dialogWrapperRef, dialogHeaderRef })
-    })
+    useDrag(props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
     return { close, onClickMask, ok, cancel, dialogWidth, showDialog, dialogWrapperRef, dialogHeaderRef }
   }
 }
@@ -213,10 +214,9 @@ $border-color: #d9d9d9;
     transform: translate(-50%, -50%);
     z-index: 999;
     width: 100%;
-    pointer-events: none;
 
-    &.t-dialog-fullscreen {
-      height: 100%;
+    &.t-dialog-fullscreen .t-dialog {
+      height: 100vh;
       overflow-x: hidden;
       overflow-y: auto;
     }
