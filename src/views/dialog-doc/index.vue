@@ -7,6 +7,7 @@
     <Demo :component="draggableDemo"></Demo>
     <Demo :component="overflowDemo"></Demo>
     <Demo :component="transitionDemo"></Demo>
+    <Demo :component="fullscreenDemo"></Demo>
   </div>
 </template>
 
@@ -18,12 +19,13 @@ import closableDemo from './components/closable-demo.vue'
 import draggableDemo from './components/draggable-demo.vue'
 import overflowDemo from './components/overflow-demo.vue'
 import transitionDemo from './components/transition-demo.vue'
+import fullscreenDemo from './components/fullscreen-demo.vue'
 
 export default {
   name: "dialog-doc",
   components: { Demo },
   setup() {
-    return { normalDemo, customDemo, closableDemo, draggableDemo, overflowDemo, transitionDemo }
+    return { normalDemo, customDemo, closableDemo, draggableDemo, overflowDemo, transitionDemo, fullscreenDemo }
   }
 }
 </script>

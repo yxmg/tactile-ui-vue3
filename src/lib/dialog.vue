@@ -156,6 +156,11 @@ export default {
       currentVisible.value = visible
       context.emit('visibleChange', visible)
     })
+    watch(() => currentVisible.value, (visible) => {
+      if (props.fullscreen) {
+        document.documentElement.style.overflow = visible ? 'hidden' : ''
+      }
+    })
     const dialogWrapperRef = ref<HTMLDivElement>(null)
     const dialogHeaderRef = ref<HTMLDivElement>(null)
     const close = (otherClose = false) => {
