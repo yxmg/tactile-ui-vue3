@@ -43,14 +43,13 @@
 </template>
 
 <script>
-import Switch from '../../../lib/switch.vue'
 import Button from '../../../lib/button.vue'
 import Dialog from '../../../lib/dialog.vue'
 import { ref } from 'vue'
 
 export default {
-  name: "normal",
-  components: { Switch, Button, Dialog },
+  name: "closable",
+  components: { Button, Dialog },
   setup() {
     const dialog1 = ref(null)
     const confirmDelete = () => {

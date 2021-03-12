@@ -111,9 +111,9 @@ const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
       document.addEventListener('mousemove', mousemove)
       document.addEventListener('mouseup', mouseup)
     }
-    dialogHeaderRef.value.addEventListener('mousedown', mousedown)
+    dialogHeaderRef.value.onmousedown = props.draggable ? mousedown : null
   }
-  props.draggable && onMounted(handleDrag)
+  onMounted(handleDrag)
   watch(() => props.draggable, handleDrag)
 }
 

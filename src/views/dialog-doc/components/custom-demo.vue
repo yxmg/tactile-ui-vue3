@@ -39,7 +39,7 @@ import Dialog from '../../../lib/dialog.vue'
 import { ref } from 'vue'
 
 export default {
-  name: "normal",
+  name: "custom",
   components: { Switch, Button, Dialog },
   setup() {
     const dialog1 = ref(null)

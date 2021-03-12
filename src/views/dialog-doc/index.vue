@@ -4,6 +4,7 @@
     <Demo :component="normalDemo"></Demo>
     <Demo :component="customDemo"></Demo>
     <Demo :component="closableDemo"></Demo>
+    <Demo :component="draggableDemo"></Demo>
   </div>
 </template>
 
@@ -12,12 +13,13 @@ import Demo from '../../components/demo.vue'
 import normalDemo from './components/normal-demo.vue'
 import customDemo from './components/custom-demo.vue'
 import closableDemo from './components/closable-demo.vue'
+import draggableDemo from './components/draggable-demo.vue'
 
 export default {
   name: "dialog-doc",
   components: { Demo },
   setup() {
-    return { normalDemo, customDemo, closableDemo }
+    return { normalDemo, customDemo, closableDemo, draggableDemo }
   }
 }
 </script>
