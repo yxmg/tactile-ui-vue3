@@ -1,12 +1,12 @@
 <template>
-  <div class="modal-trigger" @click="showDialog">
+  <div class="modal-trigger" @click="showDialog" v-if="triggerSlot">
     <slot name="trigger"></slot>
   </div>
   <Teleport :to="mountedNode">
     <transition name="fade" appear>
       <div
         class="t-dialog-mask"
-        v-if="!hideMask && !fullscreen && visible"
+        v-if="!hideMask && !fullscreen && currentVisible"
         @click="onClickMask"
       />
     </transition>
@@ -18,7 +18,7 @@
       :class="[dialogClass, { 't-dialog-fullscreen' : fullscreen, 't-dialog-draggable': draggable }]"
     >
       <transition :name="transition" appear>
-        <div class="t-dialog" v-show="visible">
+        <div class="t-dialog" v-show="currentVisible">
           <div class="t-dialog-header" v-if="!hideHeader" ref="dialogHeaderRef">
             <slot name="title">
               <span class="t-dialog-title">{{ title }}</span>
@@ -147,10 +147,19 @@ export default {
   emits: ['update:visible', 'visibleChange'],
   components: { Button },
   setup(props, context) {
+    const currentVisible = ref(props.visible)
+    watch(() => props.visible, (visible) => {
+      currentVisible.value = visible
+      context.emit('visibleChange', visible)
+    })
     const dialogWrapperRef = ref<HTMLDivElement>(null)
     const dialogHeaderRef = ref<HTMLDivElement>(null)
     const close = () => {
-      props.visible && context.emit('update:visible', false)
+      if (!currentVisible.value) {
+        return
+      }
+      context.emit('update:visible', false)
+      currentVisible.value = false
     }
     const onClickMask = () => {
       props.maskClosable && close()
@@ -170,13 +179,23 @@ export default {
     })
     const showDialog = () => {
       context.emit('update:visible', true)
+      currentVisible.value = true
     }
-    watch(() => props.activeKey, (val) => {
-      context.emit('visibleChange', val)
-    })
+    const triggerSlot = context.slots.trigger && context.slots.trigger()
     useKeyboard(props, { close })
     useDrag(props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
-    return { close, onClickMask, ok, cancel, dialogWidth, showDialog, dialogWrapperRef, dialogHeaderRef }
+    return {
+      currentVisible,
+      close,
+      onClickMask,
+      ok,
+      cancel,
+      dialogWidth,
+      showDialog,
+      dialogWrapperRef,
+      dialogHeaderRef,
+      triggerSlot
+    }
   }
 }
 </script>
@@ -288,6 +307,10 @@ $border-color: #d9d9d9;
       transform: translate(-50%, -50%) rotate(45deg);
     }
   }
+}
+
+.modal-trigger {
+  display: inline-block;
 }
 </style>
 <style>
