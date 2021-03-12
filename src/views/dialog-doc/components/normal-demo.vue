@@ -1,11 +1,11 @@
 <demo-sign>基本用法</demo-sign>
 <template>
-  <Button @click="visible=true">打开</Button>
+  <Button @click="visible=true">外部触发器</Button>
   <Dialog title="基本用法" v-model:visible="visible">visible受控</Dialog>
 
   <Dialog title="基本用法">
     <template #trigger>
-      <Button>触发器</Button>
+      <Button>slot触发器</Button>
     </template>
     visible不受控
   </Dialog>
