@@ -1,5 +1,5 @@
 <template>
-  <div class="switch-doc">
+  <div class="tabs-doc">
     <h1>Tabs 组件示例 </h1>
     <Demo :component="normalDemo"></Demo>
     <Demo :component="iconDemo"></Demo>
@@ -31,8 +31,3 @@ export default {
   }
 }
 </script>
-<style>
-.t-switch {
-  margin-right: 6px;
-}
-</style>
