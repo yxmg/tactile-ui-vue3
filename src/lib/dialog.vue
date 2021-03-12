@@ -22,15 +22,15 @@
             <slot name="title">
               <span class="t-dialog-title">{{ title }}</span>
             </slot>
-            <span class="t-dialog-close" @click="close" v-if="!hideClose"></span>
+            <span v-if="!hideClose && otherClosable" class="t-dialog-close" @click="close"></span>
           </div>
           <div class="t-dialog-content">
             <slot/>
           </div>
           <div class="t-dialog-footer" v-if="!hideFooter">
             <slot name="footer">
-              <Button @click="cancel">取消</Button>
-              <Button theme="primary" @click="ok">确认</Button>
+              <Button @click="cancel">{{ cancelText }}</Button>
+              <Button theme="primary" @click="ok" :loading="okLoading">{{ okText }}</Button>
             </slot>
           </div>
         </div>
@@ -47,7 +47,7 @@ const useKeyboard = (props, { close }) => {
   const escEvent = (event) => {
     const key = event.key || event.keyCode
     if (key === 'Escape' || key === 27) {
-      props.escClosable && close()
+      props.escClosable && close(true)
     }
   }
   const addEscEvent = () => {
@@ -123,6 +123,8 @@ export default {
     width: { type: [Number, String], default: 500 },
     visible: { type: Boolean, default: false },
     title: { type: String, default: '' },
+    okText: { type: String, default: '确认' },
+    cancelText: { type: String, default: '取消' },
     dialogClass: String,
     hideMask: { type: Boolean, default: false },
     hideHeader: { type: Boolean, default: false },
@@ -132,14 +134,17 @@ export default {
     fullscreen: { type: Boolean, default: false },
     maskClosable: { type: Boolean, default: true },
     escClosable: { type: Boolean, default: true },
+    otherClosable: { type: Boolean, default: true },
     draggable: { type: Boolean, default: false },
     transition: { type: String, default: 'dialog-transition' },
     ok: {
-      type: Function, default: () => {
+      type: Function,
+      default: () => {
       }
     },
     cancel: {
-      type: Function, default: () => {
+      type: Function,
+      default: () => {
       }
     }
   },
@@ -153,20 +158,29 @@ export default {
     })
     const dialogWrapperRef = ref<HTMLDivElement>(null)
     const dialogHeaderRef = ref<HTMLDivElement>(null)
-    const close = () => {
-      if (!currentVisible.value) {
+    const close = (otherClose = false) => {
+      if (!props.otherClosable && otherClose) {
         return
       }
       context.emit('update:visible', false)
       currentVisible.value = false
     }
     const onClickMask = () => {
-      props.maskClosable && close()
+      props.maskClosable && close(true)
     }
+    const okLoading = ref(false)
     const ok = () => {
-      if (props.ok() !== false) {
-        close()
-      }
+      okLoading.value = true
+      Promise.resolve(props.ok())
+        .then((result) => {
+          console.log(3, "3")
+          if (result !== false) {
+            close()
+          }
+        })
+        .finally(() => {
+          okLoading.value = false
+        })
     }
     const cancel = () => {
       if (props.cancel() !== false) {
@@ -193,7 +207,8 @@ export default {
       open,
       dialogWrapperRef,
       dialogHeaderRef,
-      triggerSlot
+      triggerSlot,
+      okLoading
     }
   }
 }
