@@ -13,12 +13,13 @@
 
     <div
       class="t-dialog-wrapper"
+      ref="dialogWrapperRef"
       :style="{ width: fullscreen ?  '100%' : dialogWidth }"
-      :class="[dialogClass, { 't-dialog-fullscreen' : fullscreen }]"
+      :class="[dialogClass, { 't-dialog-fullscreen' : fullscreen, 't-dialog-draggable': draggable }]"
     >
       <transition name="dialog-transition">
         <div class="t-dialog" v-show="visible">
-          <div class="t-dialog-header" v-if="!hideHeader">
+          <div class="t-dialog-header" v-if="!hideHeader" ref="dialogHeaderRef">
             <slot name="title">
               <span class="t-dialog-title">{{ title }}</span>
             </slot>
@@ -41,7 +42,7 @@
 
 <script lang="ts">
 import Button from './button.vue'
-import {computed, watch, onBeforeUnmount, onMounted} from 'vue'
+import {computed, watch, onBeforeUnmount, onMounted, ref} from 'vue'
 
 const useKeyboard = (props, { close }) => {
   const escEvent = (event) => {
@@ -59,6 +60,60 @@ const useKeyboard = (props, { close }) => {
   onMounted(addEscEvent)
   onBeforeUnmount(removeEscEvent)
 }
+// TODO：视情况封装
+const useDrag = (props, { dialogWrapperRef, dialogHeaderRef }) => {
+  // 注册mousedown，获取拖拽初态
+  const mousedown = (event) => {
+    const distanceX = event.clientX - dialogHeaderRef.value.offsetLeft
+    const distanceY = event.clientY - dialogHeaderRef.value.offsetTop
+    const { left: currentX, top: currentY } = getComputedStyle(dialogWrapperRef.value)
+    // 禁止选中，避免触发原生选中
+    dialogWrapperRef.value.style.userSelect = 'none'
+    // 计算位移边界
+    const screenWidth = document.documentElement.clientWidth
+    const screenHeight = document.documentElement.clientHeight
+    const dialogWrapperWidth = dialogWrapperRef.value.clientWidth
+    const dialogWrapperHeight = dialogWrapperRef.value.clientHeight
+    const {
+      top: dialogWrapperViewTop,
+      left: dialogWrapperViewLeft
+    } = dialogWrapperRef.value.getBoundingClientRect()
+    // 修正transform影响
+    const transformX = parseInt(dialogWrapperViewLeft) - parseInt(currentX)
+    const transformY = parseInt(dialogWrapperViewTop) - parseInt(currentY)
+
+    const maxDialogTop = screenHeight - dialogWrapperHeight / 2 - transformY
+    const minDialogTop = -transformY
+    const maxDialogLeft = screenWidth - dialogWrapperWidth / 2 - transformX
+    const minDialogLeft = -(dialogWrapperWidth / 2) - transformX
+
+    const mousemove = (event) => {
+      // 注册mousemove，实时计算位移终态
+      const deltaX = event.clientX - distanceX
+      const deltaY = event.clientY - distanceY
+
+      // 限制位移，避免用户拽出屏幕无法拽回
+      let targetX = deltaX + parseInt(currentX)
+      let targetY = deltaY + parseInt(currentY)
+      targetX = Math.max(minDialogLeft, targetX)
+      targetX = Math.min(maxDialogLeft, targetX)
+      targetY = Math.max(minDialogTop, targetY)
+      targetY = Math.min(maxDialogTop, targetY)
+      dialogWrapperRef.value.style.cssText
+        += `;left: ${targetX}px; top: ${targetY}px`
+    }
+    // 注册mouseup，注销mousemove、mouseup并取消禁止选中
+    const mouseup = () => {
+      document.removeEventListener('mousemove', mousemove)
+      document.removeEventListener('mouseup', mouseup)
+      dialogWrapperRef.value.style.userSelect = ''
+    }
+    document.addEventListener('mousemove', mousemove)
+    document.addEventListener('mouseup', mouseup)
+  }
+  dialogHeaderRef.value.addEventListener('mousedown', mousedown)
+
+}
 
 export default {
   name: "Dialog",
@@ -75,6 +130,7 @@ export default {
     fullscreen: { type: Boolean, default: false },
     maskClosable: { type: Boolean, default: false },
     escClosable: { type: Boolean, default: true },
+    draggable: { type: Boolean, default: false },
     ok: {
       type: Function, default: () => {
       }
@@ -87,6 +143,8 @@ export default {
   emits: ['update:visible', 'visibleChange'],
   components: { Button },
   setup(props, context) {
+    const dialogWrapperRef = ref<HTMLDivElement>(null)
+    const dialogHeaderRef = ref<HTMLDivElement>(null)
     const close = () => {
       props.visible && context.emit('update:visible', false)
     }
@@ -113,7 +171,10 @@ export default {
       context.emit('visibleChange', val)
     })
     useKeyboard(props, { close })
-    return { close, onClickMask, ok, cancel, dialogWidth, showDialog }
+    onMounted(() => {
+      useDrag(props, { dialogWrapperRef, dialogHeaderRef })
+    })
+    return { close, onClickMask, ok, cancel, dialogWidth, showDialog, dialogWrapperRef, dialogHeaderRef }
   }
 }
 </script>
@@ -160,8 +221,19 @@ $border-color: #d9d9d9;
       overflow-y: auto;
     }
 
+    &.t-dialog-draggable {
+      .t-dialog-header {
+        cursor: move;
+      }
+    }
+
     &:not(.t-dialog-fullscreen) {
       max-width: 90%;
+
+      .t-dialog-content {
+        max-height: 80vh;
+        overflow: auto;
+      }
     }
   }
 
