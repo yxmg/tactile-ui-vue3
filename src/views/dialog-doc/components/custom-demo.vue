@@ -17,11 +17,11 @@
     </template>
     是否确认删除？
   </Dialog>
-  <Dialog title="自定义宽度" :width="200">
+  <Dialog title="自定义宽度" :width="250">
     <template #trigger>
       <Button>自定义宽度</Button>
     </template>
-    宽度：200px
+    宽度：250px
   </Dialog>
 
   <Dialog title="隐藏footer" hide-footer>

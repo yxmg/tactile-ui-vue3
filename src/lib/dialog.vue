@@ -271,7 +271,6 @@ $border-color: #d9d9d9;
 
       .t-dialog-content {
         max-height: 80vh;
-        overflow: auto;
       }
     }
   }
@@ -288,6 +287,7 @@ $border-color: #d9d9d9;
   &-content {
     padding: 12px 16px;
     flex: auto;
+    overflow: auto;
   }
 
   &-footer {
