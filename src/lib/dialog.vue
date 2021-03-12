@@ -59,11 +59,12 @@ const useKeyboard = (props, { close }) => {
   onMounted(addEscEvent)
   onBeforeUnmount(removeEscEvent)
 }
-// TODO：视情况封装
+// TODO：代码有点丑，后续优化
 const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch }) => {
   const handleDrag = () => {
     // 注册mousedown，获取拖拽初态
     const mousedown = (event) => {
+      event = event.touches ? event.touches[0] : event
       const distanceX = event.clientX - dialogHeaderRef.value.offsetLeft
       const distanceY = event.clientY - dialogHeaderRef.value.offsetTop
       const { left: currentX, top: currentY } = getComputedStyle(dialogWrapperRef.value)
@@ -88,6 +89,8 @@ const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
       const minDialogLeft = -(dialogWrapperWidth / 2) - transformX
 
       const mousemove = (event) => {
+        event.preventDefault()
+        event = event.touches ? event.touches[0] : event
         // 注册mousemove，实时计算位移终态
         const deltaX = event.clientX - distanceX
         const deltaY = event.clientY - distanceY
@@ -106,12 +109,22 @@ const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
       const mouseup = () => {
         document.removeEventListener('mousemove', mousemove)
         document.removeEventListener('mouseup', mouseup)
+        // 移动端
+        document.removeEventListener('touchmove', mousemove)
+        document.removeEventListener('touchend', mouseup)
+        document.removeEventListener('touchcancel', mouseup)
         dialogWrapperRef.value.style.userSelect = ''
       }
       document.addEventListener('mousemove', mousemove)
       document.addEventListener('mouseup', mouseup)
+      // 移动端
+      document.addEventListener('touchmove', mousemove, { passive: false })
+      document.addEventListener('touchend', mouseup)
+      document.addEventListener('touchcancel', mouseup)
     }
     dialogHeaderRef.value.onmousedown = props.draggable ? mousedown : null
+    // 移动端
+    dialogHeaderRef.value.ontouchstart = props.draggable ? mousedown : null
   }
   onMounted(handleDrag)
   watch(() => props.draggable, handleDrag)
