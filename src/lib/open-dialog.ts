@@ -19,11 +19,11 @@ export const openDialog = (options) => {
               div.remove()
             }
           },
-          ok, cancel, maskClosable
+          ...options
         },
         {
-          default: content,
-          title
+          default: () => options.content,
+          title: () => options.title
         })
     }
   })

@@ -120,6 +120,7 @@ const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
 export default {
   name: "Dialog",
   props: {
+    content: String,
     width: { type: [Number, String], default: 500 },
     visible: { type: Boolean, default: false },
     title: { type: String, default: '' },
