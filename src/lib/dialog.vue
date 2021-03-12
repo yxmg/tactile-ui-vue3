@@ -2,15 +2,22 @@
   <div class="modal-trigger" @click="showDialog">
     <slot name="trigger"></slot>
   </div>
-  <template v-if="visible">
-    <Teleport :to="mountedNode">
-      <div class="t-dialog-mask" v-if="!hideMask || fullscreen" @click="onClickMask"></div>
+  <Teleport :to="mountedNode">
+    <transition name="fade">
       <div
-        class="t-dialog-wrapper"
-        :style="{ width: fullscreen ?  '100%' : dialogWidth }"
-        :class="[dialogClass, { 't-dialog-fullscreen' : fullscreen }]"
-      >
-        <div class="t-dialog">
+        class="t-dialog-mask"
+        v-if="!hideMask && !fullscreen && visible"
+        @click="onClickMask"
+      />
+    </transition>
+
+    <div
+      class="t-dialog-wrapper"
+      :style="{ width: fullscreen ?  '100%' : dialogWidth }"
+      :class="[dialogClass, { 't-dialog-fullscreen' : fullscreen }]"
+    >
+      <transition name="dialog-transition">
+        <div class="t-dialog" v-show="visible">
           <div class="t-dialog-header" v-if="!hideHeader">
             <slot name="title">
               <span class="t-dialog-title">{{ title }}</span>
@@ -27,29 +34,47 @@
             </slot>
           </div>
         </div>
-      </div>
-    </Teleport>
-  </template>
+      </transition>
+    </div>
+  </Teleport>
 </template>
 
 <script lang="ts">
 import Button from './button.vue'
-import {computed} from 'vue'
+import {computed, watch, onBeforeUnmount, onMounted} from 'vue'
+
+const useKeyboard = (props, { close }) => {
+  const escEvent = (event) => {
+    const key = event.key || event.keyCode
+    if (key === 'Escape' || key === 27) {
+      props.escClosable && close()
+    }
+  }
+  const addEscEvent = () => {
+    document.addEventListener('keydown', escEvent)
+  }
+  const removeEscEvent = () => {
+    document.removeEventListener('keydown', escEvent)
+  }
+  onMounted(addEscEvent)
+  onBeforeUnmount(removeEscEvent)
+}
 
 export default {
   name: "Dialog",
   props: {
     width: { type: [Number, String], default: 500 },
     visible: { type: Boolean, default: false },
+    title: { type: String, default: '' },
     dialogClass: String,
     hideMask: { type: Boolean, default: false },
     hideHeader: { type: Boolean, default: false },
     hideFooter: { type: Boolean, default: false },
     hideClose: { type: Boolean, default: false },
-    maskClosable: { type: Boolean, default: false },
     mountedNode: { type: String, default: 'body' },
-    title: { type: String, default: '' },
     fullscreen: { type: Boolean, default: false },
+    maskClosable: { type: Boolean, default: false },
+    escClosable: { type: Boolean, default: true },
     ok: {
       type: Function, default: () => {
       }
@@ -59,10 +84,11 @@ export default {
       }
     }
   },
+  emits: ['update:visible', 'visibleChange'],
   components: { Button },
   setup(props, context) {
     const close = () => {
-      context.emit('update:visible', false)
+      props.visible && context.emit('update:visible', false)
     }
     const onClickMask = () => {
       props.maskClosable && close()
@@ -83,6 +109,10 @@ export default {
     const showDialog = () => {
       context.emit('update:visible', true)
     }
+    watch(() => props.activeKey, (val) => {
+      context.emit('visibleChange', val)
+    })
+    useKeyboard(props, { close })
     return { close, onClickMask, ok, cancel, dialogWidth, showDialog }
   }
 }
@@ -100,6 +130,8 @@ $border-color: #d9d9d9;
   width: 100%;
   height: 100%;
   min-width: 15em;
+  transition: .3s cubic-bezier(.25, .8, .25, 1);
+  pointer-events: auto;
 
   &-mask {
     position: fixed;
@@ -109,6 +141,8 @@ $border-color: #d9d9d9;
     height: 100%;
     background: fade_out(black, 0.5);
     z-index: 10;
+    transition: opacity .3s cubic-bezier(.25, .8, .25, 1);
+    will-change: opacity;
   }
 
   &-wrapper {
@@ -118,6 +152,7 @@ $border-color: #d9d9d9;
     transform: translate(-50%, -50%);
     z-index: 999;
     width: 100%;
+    pointer-events: none;
 
     &.t-dialog-fullscreen {
       height: 100%;
@@ -180,5 +215,23 @@ $border-color: #d9d9d9;
       transform: translate(-50%, -50%) rotate(45deg);
     }
   }
+}
+</style>
+<style>
+.fade-enter-active, .fade-enter-active {
+  transition: .3s cubic-bezier(.25, .8, .5, 1);
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0
+}
+
+.dialog-transition-enter-from, .dialog-transition-leave-to {
+  transform: scale(.5);
+  opacity: 0
+}
+
+.dialog-transition-enter-to, .dialog-transition-leave {
+  opacity: 1
 }
 </style>
