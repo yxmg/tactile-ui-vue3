@@ -57,11 +57,10 @@ export default {
     let countdown = ref(3)
     const asyncOk = () => {
       return new Promise((resolve) => {
-        // FIXME: 「@vue/compiler-core」的「baseParse」编译文件内容出错，不能用小于号...
-        for (let i = 1; countdown.value >= i; i++) {
+        for (let i = 1; i <= countdown.value; i++) {
           setTimeout(() => {
             countdown.value--
-            if (0 >= countdown.value) {
+            if (countdown.value <= 0) {
               countdown.value = 3
               resolve()
             }

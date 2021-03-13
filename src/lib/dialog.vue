@@ -192,7 +192,6 @@ export default {
       okLoading.value = true
       Promise.resolve(props.ok())
         .then((result) => {
-          console.log(3, "3")
           if (result !== false) {
             close()
           }
