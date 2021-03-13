@@ -10,7 +10,7 @@
 
 <div align="center">
 
-Tactile[ˈtæktaɪl] UI, A tactile UI components based on Vue3 and Typescript.
+Tactile[ˈtæktaɪl] UI, 一个富有质感的UI组件库，基于Vue3和Typescript
 
 [![custom](https://img.shields.io/badge/UI--lib-tactile--ui-brightgreen)](https://github.com/yxmg/tactile-ui-vue3)
 [![npm package](https://img.shields.io/npm/v/tactile-ui-vue3?color=007ec6)](https://www.npmjs.com/package/tactile-ui-vue3)
@@ -22,23 +22,23 @@ Tactile[ˈtæktaɪl] UI, A tactile UI components based on Vue3 and Typescript.
 
 </div>
 
-> ~~FBI~~ Warning: The original intention of this project is to learn Vue3. At present, there are too few components and no unit testing. It is not recommended to be used in a production environment, but it can be used as a learning project or used in a small project. I will add this part as soon as possible~😄
+> ~~FBI~~ Warning: 本项目初衷是学习Vue3。目前组件数量太少且没有单元测试，不推荐在生产中使用，但可以将其作为学习项目或用于小型项目中。后续会尽快补充上这部分~😄
 
-English | [简体中文](./README-zh.md)
+[English](./README.md) | 简体中文
 
-## Features
+## 特性
 
-- Simple and easy-to-use component API
-- Lightweight, try not to rely on third-party libraries
-- High-quality Vue components out of the box.
+- 简单易用的组件API
+- 轻量，尽量不依赖第三方组件库
+- 开箱即用的高质量Vue组件。
 
-## Documentation
+## 文档
 
-[Documentation](https://yxmg.github.io/tactile-ui-vue3-site/#/)
+[文档地址](https://yxmg.github.io/tactile-ui-vue3-site/#/)
 
 ![doc preview](https://ae01.alicdn.com/kf/Uf711f3a83bea4de4845a0338fa629d6bf.jpg)
 
-## Install
+## 安装
 
 ```bash
 $ yarn add tactile-ui-vue3
@@ -48,10 +48,10 @@ or
 $ npm install tactile-ui-vue3 --save
 ```
 
-If you are in a bad network environment，you can try other registries and tools like [cnpm](https://github.com/cnpm/cnpm)
+如果您的网络环境很差，可以尝试使用其他工具，例如[cnpm](https://github.com/cnpm/cnpm)
 .
 
-## Import
+## 引入
 
 ```javascript
 // main.js
@@ -75,9 +75,7 @@ app.component(Tab.name, Tab)
 app.mount('#app')
 ```
 
-## Usage
-
-Now, let's use components
+## 用法
 
 ```html
 
@@ -91,13 +89,11 @@ Now, let's use components
 </t-switch>
 ```
 
-If you wanna explore more usages, here's a playground
-on [CodeSandBox.io](https://codesandbox.io/s/tactile-ui-vue3-playground-cdccd?file=/src/App.vue).
+如果你想探索更多用法, 可以在 [CodeSandBox.io](https://codesandbox.io/s/tactile-ui-vue3-playground-cdccd?file=/src/App.vue) 尽情尝试。
 
-## Note
+## 注意
 
-This UI library will reset some styles as followed. I strongly recommend you to add these styles to all of your projects
-for saving time to find CSS bugs :)
+该UI库将按照以下方式重置一些样式。强烈建议您将这些样式添加到所有项目中用于节省时间查找CSS错误:)
 
 ```css
 * {

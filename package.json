@@ -15,7 +15,8 @@
   "module": "dist/lib/tactile-ui.esm.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "cz": "npx cz"
   },
   "resolutions": {
     "node-sass": "npm:sass@1.26.11"
