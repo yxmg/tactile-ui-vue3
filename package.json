@@ -1,11 +1,11 @@
 {
-  "name": "tiny-ui-vue3",
-  "version": "0.0.5",
+  "name": "tactile-ui-vue3",
+  "version": "1.0.0",
   "files": [
     "dist/lib/*"
   ],
-  "main": "dist/lib/tiny-ui.js",
-  "module": "dist/lib/tiny-ui.esm.js",
+  "main": "dist/lib/tactile-ui.js",
+  "module": "dist/lib/tactile-ui.esm.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build"

@@ -1,4 +1,4 @@
-import './lib/tiny-ui.scss'
+import './lib/tactile-ui.scss'
 import './index.scss'
 import {createApp} from 'vue'
 import App from './App.vue'

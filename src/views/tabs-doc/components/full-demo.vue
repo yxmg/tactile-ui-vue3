@@ -6,7 +6,7 @@
   <Button @click="firstItemDisabled = !firstItemDisabled">
     {{ firstItemDisabled ? '启用' : '禁用' }}第1项
   </Button>
-  <a href="https://github.com/yxmg/tiny-ui-vue3" target="_blank">
+  <a href="https://github.com/yxmg/tactile-ui-vue3" target="_blank">
     <Button>给个Star🤩</Button>
   </a>
   <Tabs v-model:activeKey="activeKey" :vertical="isVertical">

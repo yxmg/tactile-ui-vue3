@@ -12,14 +12,14 @@ export default {
       globals: {
         vue: 'Vue'
       },
-      name: 'tinyUI',
-      file: 'dist/lib/tiny-ui.js',
+      name: 'tactileUI',
+      file: 'dist/lib/tactile-ui.js',
       format: 'umd',
       plugins: [terser()]
     },
     {
-      name: 'tinyUI',
-      file: 'dist/lib/tinyUI.esm.js',
+      name: 'tactileUI',
+      file: 'dist/lib/tactileUI.esm.js',
       format: 'es',
       plugins: [terser()]
     }

@@ -3,10 +3,10 @@
 npm 或 yarn 安装
 ```
 # npm
-$ npm install tiny-ui-vue3 --save
+$ npm install tactile-ui-vue3 --save
 
 # yarn
-$ yarn add tiny-ui-vue3
+$ yarn add tactile-ui-vue3
 ```
 
 ## 引入 & 使用
@@ -18,7 +18,7 @@ $ yarn add tiny-ui-vue3
   </div>
 </template>
 <script>
-import {Button, Tabs, Tab, Switch, Dialog, openDialog} from "tiny-ui-vue3"
+import {Button, Tabs, Tab, Switch, Dialog, openDialog} from "tactile-ui-vue3"
 export default {
   components: {Button}
 }
