@@ -131,7 +131,7 @@ const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
 }
 
 export default {
-  name: "Dialog",
+  name: "t-dialog",
   props: {
     content: String,
     width: { type: [Number, String], default: 500 },

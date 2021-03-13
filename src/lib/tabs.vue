@@ -325,7 +325,7 @@ const useTabNavSlide = (props, { navWrapperRef, navRef, activeNav }) => {
 
 
 export default {
-  name: "Tabs",
+  name: "t-tabs",
   props: {
     activeKey: [String, Number],
     forceRender: {

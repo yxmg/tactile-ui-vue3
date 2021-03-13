@@ -21,7 +21,7 @@
 import {computed, ref, watch} from 'vue'
 
 export default {
-  name: "Switch",
+  name: "t-switch",
   props: {
     checked: {
       type: [String, Number, Boolean],

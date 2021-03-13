@@ -16,7 +16,7 @@
 import {computed} from 'vue'
 
 export default {
-  name: "Button",
+  name: "t-button",
   props: {
     // 主题，可选值：default、primary、danger、success
     theme: {

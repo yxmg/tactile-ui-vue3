@@ -8,7 +8,7 @@
 
 <script lang="ts">
 export default {
-  name: "Tab",
+  name: "t-tab",
   props: {
     title: { type: String },
     content: { type: String },
