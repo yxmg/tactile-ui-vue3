@@ -55,20 +55,22 @@ If you are in a bad network environment，you can try other registries and tools
 // main.js
 
 // Import the library
-import { Button, Switch, Dialog, Tabs, Tab } from 'tiny-ui-vue3'
-import 'tiny-ui-vue3/dist/lib/tactile-ui.css'
-
-// Register components that you need 
-Vue.component(Button.name, Button)
-Vue.component(Switch.name, Switch)
-Vue.component(Dialog.name, Dialog)
-Vue.component(Tabs.name, Tabs)
-Vue.component(Tab.name, Tab)
+import { Button, Switch, Dialog, Tabs, Tab } from 'tactile-ui-vue3'
+import 'tactile-ui-vue3/dist/lib/tactile-ui.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+// Register components that you need 
+app.component(Button.name, Button)
+app.component(Switch.name, Switch)
+app.component(Dialog.name, Dialog)
+app.component(Tabs.name, Tabs)
+app.component(Tab.name, Tab)
+
+app.mount('#app')
 ```
 
 ## Usage
@@ -84,7 +86,7 @@ Now, let's use components
 </t-switch>
 ```
 
-If you wanna explore more usages, here's a playground on [CodeSandBox.io]().
+If you wanna explore more usages, here's a playground on [CodeSandBox.io](https://codesandbox.io/s/tactile-ui-vue3-playground-cdccd?file=/src/App.vue).
 
 ## Note
 This UI library will reset some styles as followed.
