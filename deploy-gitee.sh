@@ -10,3 +10,4 @@ git push -f origin main &&
 cd - &&
 echo "部署完成，请手动部署"
 start https://gitee.com/yxmg/tactile-ui-vue3-website/pages
+# https://yxmg.gitee.io/tactile-ui-vue3-website/#/doc/dialog
