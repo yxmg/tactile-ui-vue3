@@ -1,6 +1,13 @@
 {
   "name": "tactile-ui-vue3",
-  "version": "1.0.0",
+  "author": "yxmg",
+  "homepage": "https://yxmg.github.io/tactile-ui-vue3-site/#/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yxmg/tactile-ui-vue3.git"
+  },
+  "license": "MIT",
+  "version": "1.0.0-beta.1",
   "files": [
     "dist/lib/*"
   ],
