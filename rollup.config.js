@@ -19,7 +19,7 @@ export default {
     },
     {
       name: 'tactileUI',
-      file: 'dist/lib/tactileUI.esm.js',
+      file: 'dist/lib/tactile-ui.esm.js',
       format: 'es',
       plugins: [terser()]
     }

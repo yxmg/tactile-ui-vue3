@@ -612,39 +612,3 @@ $primary-color: #1890ff;
   }
 }
 </style>
-
-<style>
-/* slide-forward */
-.slide-forward-enter-active,
-.slide-forward-leave-active {
-  transition: .3s cubic-bezier(.25, .8, .5, 1);
-}
-
-.slide-forward-enter-from {
-  transform: translateX(100%)
-}
-
-.slide-forward-leave-to {
-  transform: translateX(-100%)
-}
-
-/* slide-backward */
-.slide-backward-enter-active, .slide-backward-leave-active {
-  transition: .3s cubic-bezier(.25, .8, .5, 1);
-}
-
-.slide-backward-enter-from {
-  transform: translateX(-100%)
-}
-
-.slide-backward-leave-to {
-  transform: translateX(100%)
-}
-
-.slide-forward-leave-form, .slide-forward-leave-to, .slide-backward-leave-from, .slide-backward-leave-to {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 1;
-}
-</style>

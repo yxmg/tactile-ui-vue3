@@ -11,3 +11,85 @@
   "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti",
   SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
 }
+// transition
+
+.fade-enter-active, .fade-enter-active {
+  transition: .3s cubic-bezier(.25, .8, .5, 1);
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0
+}
+
+.dialog-transition-enter-from, .dialog-transition-leave-to {
+  transform: scale(.5);
+  opacity: 0
+}
+
+.dialog-transition-enter-to, .dialog-transition-leave {
+  opacity: 1
+}
+
+.slide-top-enter-from, .slide-top-leave-to {
+  transform: translateY(100%);
+  opacity: 0
+}
+
+.slide-bottom-enter-from, .slide-bottom-leave-to {
+  transform: translateY(-100%);
+  opacity: 0
+}
+
+.slide-top-enter-to, .slide-top-leave,
+.slide-bottom-enter-to, .slide-bottom-leave {
+  opacity: 1
+}
+
+.slide-left-enter-from, .slide-left-leave-to {
+  transform: translateX(100%);
+  opacity: 0
+}
+
+.slide-right-enter-from, .slide-right-leave-to {
+  transform: translateX(-100%);
+  opacity: 0
+}
+
+.slide-left-enter-to, .slide-left-leave,
+.slide-right-enter-to, .slide-right-leave {
+  opacity: 1
+}
+
+/* slide-forward */
+.slide-forward-enter-active,
+.slide-forward-leave-active {
+  transition: .3s cubic-bezier(.25, .8, .5, 1);
+}
+
+.slide-forward-enter-from {
+  transform: translateX(100%)
+}
+
+.slide-forward-leave-to {
+  transform: translateX(-100%)
+}
+
+/* slide-backward */
+.slide-backward-enter-active, .slide-backward-leave-active {
+  transition: .3s cubic-bezier(.25, .8, .5, 1);
+}
+
+.slide-backward-enter-from {
+  transform: translateX(-100%)
+}
+
+.slide-backward-leave-to {
+  transform: translateX(100%)
+}
+
+.slide-forward-leave-form, .slide-forward-leave-to, .slide-backward-leave-from, .slide-backward-leave-to {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
