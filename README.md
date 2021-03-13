@@ -12,7 +12,13 @@
 
 Tactile[ˈtæktaɪl] UI, A tactile UI components based on Vue3 and Typescript.
 
-[![npm package](https://img.shields.io/npm/v/ant-design-vue.svg?style=flat-square)](https://www.npmjs.org/package/ant-design-vue)
+[![custom](https://img.shields.io/badge/UI--lib-tactile--ui-brightgreen)](https://github.com/yxmg/tactile-ui-vue3)
+[![npm package](https://img.shields.io/npm/v/tactile-ui-vue3?color=007ec6)](https://www.npmjs.com/package/tactile-ui-vue3)
+[![npm package](https://img.shields.io/npm/l/tactile-ui-vue3?color=%23007ec6)](https://www.npmjs.com/package/tactile-ui-vue3)
+[![npm package](https://img.shields.io/npm/dependency-version/tactile-ui-vue3/peer/vue)](https://www.npmjs.com/package/tactile-ui-vue3)
+[![npm package](https://img.shields.io/npm/dependency-version/tactile-ui-vue3/peer/@vue/compiler-sfc)](https://www.npmjs.com/package/tactile-ui-vue3)
+
+
 
 </div>
 
