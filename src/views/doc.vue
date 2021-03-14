@@ -69,13 +69,20 @@ export default {
 
   > .nav {
     flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+    background: #fff;
+  }
+
+  ::v-deep(.navigator) {
+    max-width: none;
+    padding: 0 100px 0 40px;
   }
 
   > .content {
     display: flex;
     flex-grow: 1;
     padding-top: 60px;
-    padding-left: 156px;
+    padding-left: 246px;
     @media (max-width: 600px) {
       padding-left: 0;
     }
@@ -89,19 +96,18 @@ export default {
   }
 
   aside {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
     flex-shrink: 0;
-    background: lightblue;
-    width: 150px;
+    width: 240px;
     position: fixed;
     z-index: 3;
     top: 0;
     left: 0;
-    padding: 80px 0 16px;
+    padding: 70px 0 16px;
     height: 100%;
 
     > h2 {
-      padding: 0 16px;
-      margin-bottom: 4px;
+      padding: 10px 16px;
     }
 
     > ol {
@@ -110,10 +116,11 @@ export default {
 
         > a {
           display: block;
-          padding: 4px 16px;
+          padding: 10px 24px;
 
           &.router-link-active {
-            background-color: #D4DFE6;
+            color: #FFB300;
+            background-color: fade_out(#FFB300, 0.8);
           }
         }
       }

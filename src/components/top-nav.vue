@@ -12,7 +12,7 @@
       </router-link>
       <div class="center-part"></div>
       <div class="right-part">
-        <router-link class="right-link" to="/doc">文档</router-link>
+        <router-link class="right-link doc-link" to="/doc">文档</router-link>
         <router-link class="right-link" to="/">关于我</router-link>
         <a class="icon-link" href="https://github.com/yxmg">
           <svg class="icon">
@@ -75,7 +75,11 @@ export default {
     padding: 0 20px;
     color: #b5562b;
 
-    &.active {
+    &:hover {
+      color: #7c0e3e
+    }
+
+    &.router-link-active {
       color: #7c0e3e
     }
   }
