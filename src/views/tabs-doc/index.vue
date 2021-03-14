@@ -1,6 +1,6 @@
 <template>
   <div class="tabs-doc">
-    <h1>Tabs 组件示例 </h1>
+    <h1>Tabs 标签页 </h1>
     <Demo :component="normalDemo"></Demo>
     <Demo :component="iconDemo"></Demo>
     <Demo :component="customTitleDemo"></Demo>

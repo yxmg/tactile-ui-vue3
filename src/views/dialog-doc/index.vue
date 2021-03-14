@@ -1,6 +1,6 @@
 <template>
   <div class="dialog-doc">
-    <h1>Dialog 组件示例 </h1>
+    <h1>Dialog 模态框 </h1>
     <Demo :component="normalDemo"></Demo>
     <Demo :component="customDemo"></Demo>
     <Demo :component="closableDemo"></Demo>

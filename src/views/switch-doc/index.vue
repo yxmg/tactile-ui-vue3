@@ -1,6 +1,6 @@
 <template>
   <div class="switch-doc">
-    <h1>Switch 组件示例 </h1>
+    <h1>Switch 开关 </h1>
     <Demo :component="normalDemo"></Demo>
     <Demo :component="colorDemo"></Demo>
     <Demo :component="valueDemo"></Demo>

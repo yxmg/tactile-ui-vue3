@@ -125,6 +125,7 @@ export default {
         > a {
           display: block;
           padding: 10px 24px;
+          transition: .3s cubic-bezier(.25, .8, .5, 1);
 
           &.router-link-active {
             color: #FFB300;

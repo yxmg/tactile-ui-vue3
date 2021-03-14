@@ -1,6 +1,6 @@
 <template>
   <div class="button-doc">
-    <h1>Button 组件示例 </h1>
+    <h1>Button 按钮 </h1>
     <Demo :component="themeDemo"></Demo>
     <Demo :component="iconDemo"></Demo>
     <Demo :component="sizeDemo"></Demo>
