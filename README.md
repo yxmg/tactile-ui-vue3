@@ -36,7 +36,7 @@ English | [简体中文](./README-zh.md)
 
 [Documentation](https://yxmg.github.io/tactile-ui-vue3-site/#/)
 
-![doc preview](https://ae01.alicdn.com/kf/Uf711f3a83bea4de4845a0338fa629d6bf.jpg)
+![doc preview](https://ae01.alicdn.com/kf/U126ef4a9cf484265a2068b56a169ed3aB.jpg)
 
 ## Install
 
