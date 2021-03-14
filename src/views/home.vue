@@ -13,7 +13,7 @@
         <div class="page-title-desc">一个富有质感的UI组件库，基于Vue3和Typescript</div>
         <div class="btn-group">
           <a class="home-btn primary" href="/#/doc/get-started">快速上手</a>
-          <div class="home-btn primary">扫码体验</div>
+          <a class="home-btn primary" href="https://github.com/yxmg/tactile-ui-vue3">Github</a>
         </div>
 
       </section>
@@ -197,5 +197,19 @@ export default {
 .container-lg {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .page-main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    > .road-map {
+      flex: auto;
+    }
+  }
+  .page-footer {
+    display: none;
+  }
 }
 </style>

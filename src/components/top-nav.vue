@@ -14,7 +14,7 @@
       <div class="right-part">
         <router-link class="right-link" to="/doc">文档</router-link>
         <router-link class="right-link" to="/">关于我</router-link>
-        <a class="icon-link" href="https://github.com/yxmg/tactile-ui-vue3">
+        <a class="icon-link" href="https://github.com/yxmg">
           <svg class="icon">
             <use :xlink:href="`#icon-github`"></use>
           </svg>
@@ -132,6 +132,7 @@ export default {
     background-color: #fff;
 
     .navigator {
+      height: 48px;
       justify-content: center;
     }
 
@@ -141,6 +142,11 @@ export default {
 
     .logo {
       margin-left: -16px;
+
+      .logo-img {
+        width: 32px;
+        height: 32px;
+      }
     }
 
 
