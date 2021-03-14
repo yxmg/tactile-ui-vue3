@@ -2,37 +2,39 @@
   <div class="page-doc">
     <top-nav class="nav" need-toggle-btn/>
     <div class="content">
-      <aside
-        ref="wrapper"
-        v-show="asideVisible"
-        @clickOutside="handleClickOutside"
-        data-outside-exclude=".toggle-aside-btn"
-      >
-        <h2>文档</h2>
-        <ol>
-          <li>
-            <router-link to="/doc/intro">关于Tactile UI</router-link>
-          </li>
-          <li>
-            <router-link to="/doc/get-started">快速上手</router-link>
-          </li>
-        </ol>
-        <h2>组件列表</h2>
-        <ol>
-          <li>
-            <router-link to="/doc/switch">Switch 组件</router-link>
-          </li>
-          <li>
-            <router-link to="/doc/button">Button 组件</router-link>
-          </li>
-          <li>
-            <router-link to="/doc/dialog">Dialog 组件</router-link>
-          </li>
-          <li>
-            <router-link to="/doc/tabs">Tabs 组件</router-link>
-          </li>
-        </ol>
-      </aside>
+      <transition name="slide-to-right">
+        <aside
+          ref="wrapper"
+          v-show="asideVisible"
+          @clickOutside="handleClickOutside"
+          data-outside-exclude=".toggle-aside-btn"
+        >
+          <h2>文档</h2>
+          <ol>
+            <li>
+              <router-link to="/doc/intro">关于Tactile UI</router-link>
+            </li>
+            <li>
+              <router-link to="/doc/get-started">快速上手</router-link>
+            </li>
+          </ol>
+          <h2>组件列表</h2>
+          <ol>
+            <li>
+              <router-link to="/doc/switch">Switch 组件</router-link>
+            </li>
+            <li>
+              <router-link to="/doc/button">Button 组件</router-link>
+            </li>
+            <li>
+              <router-link to="/doc/dialog">Dialog 组件</router-link>
+            </li>
+            <li>
+              <router-link to="/doc/tabs">Tabs 组件</router-link>
+            </li>
+          </ol>
+        </aside>
+      </transition>
       <main>
         <router-view></router-view>
       </main>
@@ -127,5 +129,17 @@ export default {
       }
     }
   }
+}
+</style>
+
+<style lang="scss">
+.slide-to-right-enter-active,
+.slide-to-right-leave-active {
+  transition: .3s cubic-bezier(.25, .8, .5, 1);
+}
+
+.slide-to-right-enter-from,
+.slide-to-right-leave-to {
+  transform: translateX(-100%)
 }
 </style>
