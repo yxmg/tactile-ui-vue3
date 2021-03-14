@@ -27,7 +27,7 @@ Tactile[ˈtæktaɪl] UI, A tactile UI components based on Vue3 and Typescript.
 English | [简体中文](./README-zh.md)
 
 ## Features
-
+- Mobile PC compatible
 - Simple and easy-to-use component API
 - Lightweight, try not to rely on third-party libraries
 - High-quality Vue components out of the box.

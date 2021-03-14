@@ -27,7 +27,7 @@ Tactile[ˈtæktaɪl] UI, 一个富有质感的UI组件库，基于Vue3和Typescr
 [English](./README.md) | 简体中文
 
 ## 特性
-
+- 移动PC兼容
 - 简单易用的组件API
 - 轻量，尽量不依赖第三方库
 - 开箱即用的高质量Vue组件。

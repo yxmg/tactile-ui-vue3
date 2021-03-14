@@ -7,11 +7,12 @@ Tactile UI, 一个富有质感的UI组件库，基于Vue3和Typescript
 <br>
 
 ## 特点
+- 移动PC兼容
 - 简单易用的组件API
 - 轻量，尽量不依赖第三方库
 - 开箱即用的高质量Vue组件。
 <br>
 <br>
 
-下一节：[开始使用](#/doc/get-started)
+下一节：[快速上手](#/doc/get-started)
 
