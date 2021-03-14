@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="650px" height="650px">
+  <g id="Road-Map" fill="none" fill-rule="evenodd">
+    <g id="Artboard-2">
+      <path id="road" stroke="#FEDB8F" stroke-width="2" d="M650 366H0M83 0v650m95-284v284m0-650v165.5M439 0v201.5a4 4 0 0 1-4 4H83m356 262V650M82.46 484.16L370.5 584.3m0 38.7H561"/>
+      <path id="road" stroke="#FFCCA2" stroke-width="3" d="M122.5 0v160a6 6 0 0 0 6 6h147a6 6 0 0 1 6 6v289c0 3.32 2.68 6 6 6H650"/>
+      <path id="road" stroke="#FFCCA2" stroke-width="3" d="M53.5 0v295.5a6 6 0 0 0 6 6h496c3.32 0 6 2.68 6 6V650"/>
+      <path id="road" stroke="#FFCCA2" stroke-width="3" d="M561.5 0v222c0 3.32-2.33 7.35-5.2 9L375.7 335.5c-2.87 1.65-5.2 5.7-5.2 9V650m0-650v85.5a6 6 0 0 1-6 6H0m562 0h88M53.5 650V440c0-3.31 1.9-7.88 4.27-10.21l64.44-63.5m.29-64.79V650M53 467H0"/>
+    </g>
+  </g>
+</svg>

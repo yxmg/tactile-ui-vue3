@@ -11,10 +11,10 @@
         <h2>文档</h2>
         <ol>
           <li>
-            <router-link to="/doc/intro">关于Tiny UI</router-link>
+            <router-link to="/doc/intro">关于Tactile UI</router-link>
           </li>
           <li>
-            <router-link to="/doc/get-started">开始使用</router-link>
+            <router-link to="/doc/get-started">快速上手</router-link>
           </li>
         </ol>
         <h2>组件列表</h2>
@@ -96,6 +96,7 @@ export default {
   }
 
   aside {
+    background-color: #fff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
     flex-shrink: 0;
     width: 240px;

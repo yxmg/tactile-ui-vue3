@@ -13,7 +13,7 @@
       <div class="center-part"></div>
       <div class="right-part">
         <router-link class="right-link doc-link" to="/doc">文档</router-link>
-        <router-link class="right-link" to="/">关于我</router-link>
+        <a class="right-link" href="https://juejin.cn/user/976022054115645">关于我</a>
         <a class="icon-link" href="https://github.com/yxmg">
           <svg class="icon">
             <use :xlink:href="`#icon-github`"></use>
@@ -136,6 +136,7 @@ export default {
     background-color: #fff;
 
     .navigator {
+      padding: 0 !important;
       height: 48px;
       justify-content: center;
     }
@@ -154,7 +155,7 @@ export default {
     }
 
 
-    > .toggle-aside-btn {
+    .toggle-aside-btn {
       display: inline-block;
     }
 
