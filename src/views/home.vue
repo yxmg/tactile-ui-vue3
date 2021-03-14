@@ -12,7 +12,7 @@
         <h2 class="page-title">Tactile UI</h2>
         <div class="page-title-desc">一个富有质感的UI组件库，基于Vue3和Typescript</div>
         <div class="btn-group">
-          <a class="home-btn primary" href="/#/doc/get-started">快速上手</a>
+          <a class="home-btn primary" href="/doc/get-started">快速上手</a>
           <a class="home-btn primary" href="https://github.com/yxmg/tactile-ui-vue3">Github</a>
         </div>
 
