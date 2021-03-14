@@ -1,8 +1,6 @@
 /**
  *Created by 夜雪暮歌 on 2021/2/25
  **/
-import path from 'path'
-import fs from 'fs'
 import marked from 'marked'
 
 const mdToJs = str => {
@@ -13,27 +11,16 @@ const idMdFile = (path: string) => path.endsWith('.md')
 
 export function mdTransform() {
   return {
-    // for dev
-    configureServer: [
-      async ({ app }) => {
-        app.use(async (ctx, next) => {
-          if (idMdFile(ctx.path)) {
-            ctx.type = 'js'
-            const filePath = path.join(process.cwd(), ctx.path)
-            ctx.body = mdToJs(fs.readFileSync(filePath).toString())
-          } else {
-            await next()
-          }
-        })
+    name: 'transform-md-file',
+    // for dev and build
+    transform(src, id) {
+      if (idMdFile(id)) {
+        return {
+          code: mdToJs(src),
+          map: null // provide source map if available
+        }
       }
-    ],
-    // for build
-    transforms: [
-      {
-        test: context => idMdFile(context.path),
-        transform: ({ code }) => mdToJs(code)
-      }
-    ]
+    }
   }
 }
 

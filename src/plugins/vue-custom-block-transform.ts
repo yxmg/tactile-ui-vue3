@@ -6,16 +6,18 @@ import fs from 'fs'
 import {parse} from '@vue/compiler-sfc'
 
 export default {
-  'demo-sign'(options) {
-    const { path } = options
+  name: 'demo-sign',
+  transform(code, id) {
+    if (!/vue&type=demo-sign/.test(id)) {
+      return
+    }
+    const path = id.split('?')[0]
     const file = fs.readFileSync(path).toString()
     const parsed = parse(file).descriptor
-    const title = parsed.customBlocks.find(block => block.type === 'demo-sign').content
-    const main = parsed.source
-
+    const main = parsed.source.replace(/<demo-sign>.*<\/demo-sign>/, '').trim()
     return `export default function (Component) {
       Component.__sourceCode = ${JSON.stringify(main)}
-      Component.__sourceCodeTitle = ${JSON.stringify(title)}
+      Component.__sourceCodeTitle = ${JSON.stringify(code)}
     }`.trim()
   }
 }
