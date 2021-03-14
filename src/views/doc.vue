@@ -42,17 +42,19 @@
         <router-view></router-view>
       </main>
     </div>
+    <back-to-top></back-to-top>
   </div>
 </template>
 
 <script lang="ts">
 import TopNav from '../components/top-nav.vue'
+import BackToTop from '../components/back-to-top.vue'
 import {inject, Ref} from "vue";
 import {useClickOutside} from '../plugins/use-click-outside'
 
 export default {
   name: "doc",
-  components: { TopNav },
+  components: { TopNav, BackToTop },
   setup() {
     const asideVisible = inject<Ref<boolean>>('asideVisible')
     const wrapper = useClickOutside()
