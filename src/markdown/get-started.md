@@ -25,4 +25,4 @@ export default {
 </script>
 ```
 
-下一节：[Switch组件](#/doc/switch)
+下一节：[在线演示](#/doc/playground)

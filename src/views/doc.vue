@@ -17,6 +17,9 @@
             <li>
               <router-link to="/doc/get-started">快速上手</router-link>
             </li>
+            <li>
+              <router-link to="/doc/playground">在线演示</router-link>
+            </li>
           </ol>
           <h2>组件列表</h2>
           <ol>

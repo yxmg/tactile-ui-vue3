@@ -8,6 +8,7 @@ import DialogDoc from "../views/dialog-doc/index.vue"
 import {generateMd} from './generate-md'
 import IntroMd from '../markdown/intro.md'
 import GetStartedMd from '../markdown/get-started.md'
+import PlaygroundMd from '../markdown/playground.md'
 
 const history = createWebHashHistory()
 const router = createRouter({
@@ -21,6 +22,7 @@ const router = createRouter({
       children: [
         { path: 'intro', component: generateMd(IntroMd) },
         { path: 'get-started', component: generateMd(GetStartedMd) },
+        { path: 'playground', component: generateMd(PlaygroundMd) },
         { path: 'switch', component: SwitchDoc },
         { path: 'button', component: ButtonDoc },
         { path: 'dialog', component: DialogDoc },
