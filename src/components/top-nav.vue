@@ -1,16 +1,25 @@
 <template>
   <div class="top-nav">
-    <span class="toggle-aside-btn" @click="toggleMenu" v-if="needToggleBtn">
+    <div class="navigator">
+      <span class="toggle-aside-btn" @click="toggleMenu" v-if="needToggleBtn">
       <i class="stroke"></i>
       <i class="stroke"></i>
       <i class="stroke"></i>
     </span>
-    <router-link class="logo" to="/">
-      <img class="img-logo" src="../assets/logo.png" alt="">
-    </router-link>
-
-    <div class="menu" v-if="needMenuBtn">
-      <router-link to="/doc">文档</router-link>
+      <router-link class="logo" to="/">
+        <img class="logo-img" src="../assets/logo.png" alt="">
+        <span class="logo-text">Tactile UI</span>
+      </router-link>
+      <div class="center-part"></div>
+      <div class="right-part">
+        <router-link class="right-link" to="/doc">文档</router-link>
+        <router-link class="right-link" to="/">关于我</router-link>
+        <a class="icon-link" href="https://github.com/yxmg/tactile-ui-vue3">
+          <svg class="icon">
+            <use :xlink:href="`#icon-github`"></use>
+          </svg>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -22,10 +31,6 @@ export default {
   name: "top-nav",
   props: {
     needToggleBtn: {
-      type: Boolean,
-      default: false
-    },
-    needMenuBtn: {
       type: Boolean,
       default: false
     }
@@ -48,15 +53,55 @@ export default {
   left: 0;
   width: 100%;
   z-index: 4;
-  display: flex;
-  align-items: center;
-  padding: 0 50px;
-  height: 64px;
 
-  .img-logo {
-    width: 48px;
-    height: 48px;
+  .navigator {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1200px;
+    height: 64px;
   }
+
+  .center-part {
+    flex: auto;
+  }
+
+  .right-part {
+    font-size: 16px;
+  }
+
+  .right-link {
+    padding: 0 20px;
+    color: #b5562b;
+
+    &.active {
+      color: #7c0e3e
+    }
+  }
+
+  .icon-link {
+    padding-left: 20px;
+    font-size: 24px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+
+    .logo-img {
+      width: 36px;
+      height: 36px;
+      margin-right: 5px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 600;
+      color: #b5562b;
+    }
+  }
+
 
   .toggle-aside-btn {
     position: absolute;
@@ -85,8 +130,17 @@ export default {
   @media (max-width: 600px) {
     box-shadow: 0 0 3px rgba(0, 0, 0, .25);
     background-color: #fff;
+
+    .navigator {
+      justify-content: center;
+    }
+
+    .right-part, .center-part {
+      display: none;
+    }
+
     .logo {
-      margin: 0 auto;
+      margin-left: -16px;
     }
 
 

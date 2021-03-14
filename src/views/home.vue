@@ -1,30 +1,50 @@
 <template>
-  <main class="page-home">
-    <div class="stripes">
-      <div class="stripe s1"></div>
-      <div class="stripe s2"></div>
-      <div class="stripe s3"></div>
-    </div>
-    <section class="content"></section>
-    <div class="road-map">
-      <div class="roads">
-        <div class="surface-roads"></div>
+  <div class="page-home">
+    <top-nav class="page-header"></top-nav>
+
+    <main class="page-main">
+      <div class="stripes">
+        <div class="stripe s1"></div>
+        <div class="stripe s2"></div>
+        <div class="stripe s3"></div>
       </div>
-    </div>
-    <div class="triangle">
-      <img src="../assets/triangle.svg" alt="">
-    </div>
-  </main>
+      <section class="content container-lg">
+        <h2 class="page-title">Tactile UI</h2>
+        <div class="page-title-desc">一个富有质感的UI组件库，基于Vue3和Typescript</div>
+        <div class="btn-group">
+          <a class="home-btn primary" href="/#/doc/get-started">快速上手</a>
+          <div class="home-btn primary">扫码体验</div>
+        </div>
+
+      </section>
+      <div class="road-map">
+        <div class="roads">
+          <div class="surface-roads"></div>
+        </div>
+      </div>
+      <div class="triangle" v-if="false">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 273" width="100%">
+          <polygon fill="#FFFFFF" points="1280 1 1280 273 0 273"></polygon>
+        </svg>
+      </div>
+    </main>
+    <footer class="page-footer">
+      &copy; 2021-2021 YXMG. All Rights Reserved.
+    </footer>
+  </div>
 </template>
 
 <script>
+import topNav from '../components/top-nav.vue'
+
 export default {
-  name: "home"
+  name: "home",
+  components: { topNav }
 }
 </script>
 
 <style lang="scss" scoped>
-.page-home {
+.page-main {
   position: relative;
   background: linear-gradient(-180deg, #f6bf4e 1%, #f9d281 23%, #fffdf3 71%);
   overflow: hidden;
@@ -94,13 +114,25 @@ export default {
 
   .content {
     position: relative;
-    margin: 190px auto 0;
-    max-width: 1040px;
+    margin-top: 190px;
+    max-width: 1200px;
     z-index: 1;
     text-align: center;
     will-change: transform;
     width: 100%;
-    padding: 0px 20px;
+    padding: 0 20px;
+
+    .page-title {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1;
+      color: #7c0e3e;
+    }
+
+    .page-title-desc {
+      margin-top: 15px;
+      color: #7c0e3e;
+    }
   }
 
   .triangle {
@@ -109,6 +141,38 @@ export default {
     left: 0;
     bottom: -8px;
     filter: drop-shadow(rgba(165, 140, 126, 0.15) 0 0 10px);
+  }
+
+  .btn-group {
+    margin-top: 25px;
+  }
+
+  .home-btn {
+    white-space: nowrap;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 14px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+    background: #fff;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+    color: #6772e5;
+    text-decoration: none;
+    transition: all .15s ease;
+    cursor: pointer;
+
+    &.primary {
+      color: #fff;
+      background: #6772e5;
+    }
+
+    & ~ .home-btn {
+      margin-left: 15px;
+    }
   }
 
   @keyframes roads {
@@ -120,5 +184,18 @@ export default {
       transform: translateY(0)
     }
   }
+}
+
+.page-footer {
+  width: 100%;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  text-align: center;
+  color: #525f7f;
+}
+
+.container-lg {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 </style>
