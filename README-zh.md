@@ -36,7 +36,7 @@ Tactile[ˈtæktaɪl] UI, 一个富有质感的UI组件库，基于Vue3和Typescr
 
 [文档地址](https://yxmg.github.io/tactile-ui-vue3-site/#/)
 
-![doc preview](https://ae01.alicdn.com/kf/Uf711f3a83bea4de4845a0338fa629d6bf.jpg)
+![doc preview](https://ae01.alicdn.com/kf/U126ef4a9cf484265a2068b56a169ed3aB.jpg)
 
 ## 安装
 
