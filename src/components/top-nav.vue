@@ -25,15 +25,12 @@
 </template>
 
 <script lang="ts">
-import {inject, Ref} from 'vue'
+import {inject, Ref, defineComponent} from 'vue'
 
-export default {
+export default defineComponent({
   name: "top-nav",
   props: {
-    needToggleBtn: {
-      type: Boolean,
-      default: false
-    }
+    needToggleBtn: { type: Boolean, default: false }
   },
   setup() {
     const asideVisible = inject<Ref<boolean>>('asideVisible')
@@ -42,7 +39,7 @@ export default {
     }
     return { asideVisible, toggleMenu }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

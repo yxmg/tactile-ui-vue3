@@ -9,16 +9,11 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, defineComponent } from 'vue'
 
-export default {
-  name: "back-to-top.vue",
-  props: {
-    scrollThreshold: {
-      type: Number,
-      default: 200
-    }
-  },
+export default defineComponent({
+  name: "BackToTop",
+  props: { scrollThreshold: { type: Number, default: 200 } },
   setup(props) {
     const visible = ref(false)
     const updateVisible = () => {
@@ -33,7 +28,7 @@ export default {
     }
     return { visible, scrollToTop }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
