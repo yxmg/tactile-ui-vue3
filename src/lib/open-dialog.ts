@@ -4,7 +4,8 @@
 import Dialog from './dialog.vue'
 import {createApp, h} from "vue";
 
-export const openDialog = (options) => {
+// TODO: options怎么处理类型
+export const openDialog = (options: any) => {
   const { title, content, ok, cancel, maskClosable } = options
   const div = document.createElement('div')
   document.body.appendChild(div)
@@ -13,7 +14,7 @@ export const openDialog = (options) => {
       return h(Dialog,
         {
           visible: true,
-          'onUpdate:visible': (newVisible) => {
+          'onUpdate:visible': (newVisible: boolean) => {
             if (!newVisible) {
               app.unmount(div)
               div.remove()

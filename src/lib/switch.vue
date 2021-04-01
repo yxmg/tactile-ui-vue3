@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts">
-import {computed, ref, watch} from 'vue'
+import {defineComponent, computed, ref, watch} from 'vue'
 
-export default {
+export default defineComponent({
   name: "t-switch",
   props: {
     checked: {
@@ -82,7 +82,7 @@ export default {
       [`t-switch-disabled`]: privateDisabled.value,
       [`t-switch-loading`]: props.loading
     }))
-    const handleKeyboard = (event) => {
+    const handleKeyboard = (event: KeyboardEvent) => {
       const KEY_CODE_MAP = { LEFT: 37, RIGHT: 39 }
       if (KEY_CODE_MAP.LEFT === event.keyCode && currentChecked.value === props.checkedValue) {
         toggleChecked(props.checkedValue)
@@ -93,7 +93,7 @@ export default {
 
     return { toggleChecked, switchStyle, switchClass, privateDisabled, currentChecked, handleKeyboard }
   }
-}
+})
 </script>
 
 <style lang="scss">
