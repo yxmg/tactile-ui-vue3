@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-import {computed} from 'vue'
+import {computed, defineComponent} from 'vue'
 
-export default {
+export default defineComponent({
   name: "t-button",
   props: {
     // 主题，可选值：default、primary、danger、success
@@ -70,7 +70,7 @@ export default {
     })
     return { classes }
   }
-}
+})
 </script>
 
 <style lang="scss">

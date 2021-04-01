@@ -41,13 +41,13 @@
 
 <script lang="ts">
 import Button from './button.vue'
-import {computed, watch, onBeforeUnmount, onMounted, ref} from 'vue'
+import {defineComponent, computed, watch, onBeforeUnmount, onMounted, ref, Ref, PropType} from 'vue'
 
-const useKeyboard = (props, { close }) => {
-  const escEvent = (event) => {
+const useKeyboard = (escClosable: boolean, { close }: { close: (otherClose: boolean) => void}) => {
+  const escEvent = (event: KeyboardEvent) => {
     const key = event.key || event.keyCode
     if (key === 'Escape' || key === 27) {
-      props.escClosable && close(true)
+      escClosable && close(true)
     }
   }
   const addEscEvent = () => {
@@ -60,13 +60,28 @@ const useKeyboard = (props, { close }) => {
   onBeforeUnmount(removeEscEvent)
 }
 // TODO：代码有点丑，后续优化
-const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch }) => {
+const useDrag = (
+  // TODO: 这里怎么处理类型=-=
+  // 1、watch放到外部处理
+  // 2、获取组件实例的Props类型，或许定义interface？
+  props: any,
+  { dialogWrapperRef, dialogHeaderRef }
+    : { dialogWrapperRef: Ref<HTMLDivElement | undefined>, dialogHeaderRef: Ref<HTMLDivElement | undefined> }
+) => {
   const handleDrag = () => {
+    if(!dialogHeaderRef.value || !dialogWrapperRef.value) {
+      return
+    }
     // 注册mousedown，获取拖拽初态
-    const mousedown = (event) => {
-      event = event.touches ? event.touches[0] : event
-      const distanceX = event.clientX - dialogHeaderRef.value.offsetLeft
-      const distanceY = event.clientY - dialogHeaderRef.value.offsetTop
+    const mousedown = (event: TouchEvent | MouseEvent) => {
+      if(!dialogHeaderRef.value || !dialogWrapperRef.value) {
+        return
+      }
+      const clientX = event instanceof TouchEvent ? event.touches[0].clientX : event.clientX
+      const clientY = event instanceof TouchEvent ? event.touches[0].clientY : event.clientY
+      // event = event instanceof TouchEvent && event.touches ? event.touches[0] : event
+      const distanceX = clientX - dialogHeaderRef.value.offsetLeft
+      const distanceY = clientY - dialogHeaderRef.value.offsetTop
       const { left: currentX, top: currentY } = getComputedStyle(dialogWrapperRef.value)
       // 禁止选中，避免触发原生选中
       dialogWrapperRef.value.style.userSelect = 'none'
@@ -80,20 +95,24 @@ const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
         left: dialogWrapperViewLeft
       } = dialogWrapperRef.value.getBoundingClientRect()
       // 修正transform影响
-      const transformX = parseInt(dialogWrapperViewLeft) - parseInt(currentX)
-      const transformY = parseInt(dialogWrapperViewTop) - parseInt(currentY)
+      const transformX = dialogWrapperViewLeft - parseInt(currentX)
+      const transformY = dialogWrapperViewTop - parseInt(currentY)
 
       const maxDialogTop = screenHeight - dialogWrapperHeight / 2 - transformY
       const minDialogTop = -transformY
       const maxDialogLeft = screenWidth - dialogWrapperWidth / 2 - transformX
       const minDialogLeft = -(dialogWrapperWidth / 2) - transformX
 
-      const mousemove = (event) => {
+      const mousemove = (event: TouchEvent | MouseEvent) => {
+        if(!dialogWrapperRef.value) {
+          return
+        }
         event.preventDefault()
-        event = event.touches ? event.touches[0] : event
+        const clientX = event instanceof TouchEvent ? event.touches[0].clientX : event.clientX
+        const clientY = event instanceof TouchEvent ? event.touches[0].clientY : event.clientY
         // 注册mousemove，实时计算位移终态
-        const deltaX = event.clientX - distanceX
-        const deltaY = event.clientY - distanceY
+        const deltaX = clientX - distanceX
+        const deltaY = clientY - distanceY
 
         // 限制位移，避免用户拽出屏幕无法拽回
         let targetX = deltaX + parseInt(currentX)
@@ -107,6 +126,9 @@ const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
       }
       // 注册mouseup，注销mousemove、mouseup并取消禁止选中
       const mouseup = () => {
+        if(!dialogWrapperRef.value) {
+        return
+      }
         document.removeEventListener('mousemove', mousemove)
         document.removeEventListener('mouseup', mouseup)
         // 移动端
@@ -130,7 +152,7 @@ const useDrag = (props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
   watch(() => props.draggable, handleDrag)
 }
 
-export default {
+export default defineComponent({
   name: "t-dialog",
   props: {
     content: String,
@@ -175,8 +197,8 @@ export default {
         document.documentElement.style.overflow = visible ? 'hidden' : ''
       }
     })
-    const dialogWrapperRef = ref<HTMLDivElement>(null)
-    const dialogHeaderRef = ref<HTMLDivElement>(null)
+    const dialogWrapperRef = ref<HTMLDivElement>()
+    const dialogHeaderRef = ref<HTMLDivElement>()
     const close = (otherClose = false) => {
       if (!props.otherClosable && otherClose) {
         return
@@ -213,8 +235,8 @@ export default {
       currentVisible.value = true
     }
     const triggerSlot = context.slots.trigger && context.slots.trigger()
-    useKeyboard(props, { close })
-    useDrag(props, { dialogWrapperRef, dialogHeaderRef, onMounted, watch })
+    useKeyboard(props.escClosable, { close })
+    useDrag(props, { dialogWrapperRef, dialogHeaderRef })
     return {
       currentVisible,
       close,
@@ -229,7 +251,7 @@ export default {
       okLoading
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
