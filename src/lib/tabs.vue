@@ -61,6 +61,7 @@
         <template v-else>
           <transition
             v-for="(slot, index) in expectDefaultSlots"
+            :key="slot.props.key"
             :name="computeTransition"
 
             @before-enter="onBeforeTransition"
@@ -76,7 +77,6 @@
             <component
               class="t-tabs-content-item"
               v-show="keyProps.includes(activeKey) ? slot.props.key === activeKey : index === 0"
-              :key="slot.props.key"
               :is="slot"
             />
           </transition>
@@ -89,23 +89,32 @@
 
 <script lang="ts">
 import Tab from './tab.vue'
-import {ref, computed, onMounted, watch, nextTick, h} from 'vue'
+import {ref, computed, onMounted, watch, nextTick, h, Ref, SetupContext, VNode, VNodeNormalizedChildren} from 'vue'
 
-const checkBooleanProp = (prop) => {
+const checkBooleanProp = (prop: any) => {
   return prop !== undefined && prop !== false
 }
 // Tab-slot处理
-const useTabSlot = (props, { isOverflow, navRef, navWrapperRef, nextTick, context }) => {
+const useTabSlot = (
+  props: any,
+  { isOverflow, navRef, navWrapperRef, context }:
+    {
+      isOverflow: Ref<boolean>,
+      navRef: Ref<HTMLDivElement>,
+      navWrapperRef: Ref<HTMLDivElement>,
+      context: SetupContext
+    }
+    ) => {
   // 筛选slot
   const formatSlots = () => {
-    const defaultSlots = context.slots.default()
-    const tempArr = []
+    const defaultSlots = context.slots.default ? context.slots.default() : []
+    const tempArr:(VNode)[] = []
     defaultSlots.forEach(slot => {
       const isVForNode = Array.isArray(slot.children)
       const isCommentNode = typeof slot.type === 'symbol'
       if (isVForNode) {
         // 展开v-for节点
-        tempArr.push(...slot.children)
+        tempArr.push(...(slot.children as any))
       } else if (!isCommentNode) {
         // 过滤注释节点
         tempArr.push(slot)
@@ -114,8 +123,8 @@ const useTabSlot = (props, { isOverflow, navRef, navWrapperRef, nextTick, contex
     return tempArr
   }
   const expectDefaultSlots = computed(formatSlots)
-  const checkSlotsLegality = (slots) => {
-    if (!slots.length || slots.some(slot => slot.type.name !== Tab.name)) {
+  const checkSlotsLegality = (slots: (VNode)[]) => {
+    if (!slots.length || slots.some(slot => slot.type !== Tab)) {
       throw new Error(`Tabs's children must be Tab`)
     }
   }
@@ -131,11 +140,11 @@ const useTabSlot = (props, { isOverflow, navRef, navWrapperRef, nextTick, contex
   watch(() => props.vertical, () => nextTick(checkOverflow))
 
   // 提取属性
-  const titleProps = ref(null)
-  const keyProps = ref(null)
-  const disabledProps = ref(null)
-  const iconProps = ref(null)
-  const titleSlots = ref(null)
+  const titleProps = ref()
+  const keyProps = ref()
+  const disabledProps = ref()
+  const iconProps = ref()
+  const titleSlots = ref()
   const extractData = () => {
     titleProps.value = expectDefaultSlots.value.map(item => item.props.title)
     keyProps.value = expectDefaultSlots.value.map(item => item.props.key)
@@ -253,7 +262,7 @@ const useTabTransition = (props, { keyProps, direction, tabContent, contentHeigh
   return { computeTransition, onBeforeTransition, onAfterTransition, onEnter }
 }
 // Tab-nav-slide切换
-const useTabNavSlide = (props, { navWrapperRef, navRef, activeNav }) => {
+const useTabNavSlide = (props: any, { navWrapperRef, navRef, activeNav }) => {
   const VERTICAL_MAP = {
     SCROLL_DISTANCE: 'scrollTop',
     SCROLL_DIMENSION: 'scrollHeight',
@@ -268,7 +277,7 @@ const useTabNavSlide = (props, { navWrapperRef, navRef, activeNav }) => {
     TRANSFORM: 'translateX',
     OFFSET_DISTANCE: 'offsetLeft'
   }
-  const slideTo = (delta, _direction) => {
+  const slideTo = (delta: number, _direction: string) => {
     const MAP = props.vertical ? VERTICAL_MAP : HORIZONTAL_MAP
     const navWrapperScrollDistance = navWrapperRef.value[MAP.SCROLL_DISTANCE]
     const navWrapperScrollDimension = navWrapperRef.value[MAP.SCROLL_DIMENSION]
@@ -291,7 +300,7 @@ const useTabNavSlide = (props, { navWrapperRef, navRef, activeNav }) => {
     navRef.value.style.transition = '.3s cubic-bezier(.25, .8, .5, 1)'
     navRef.value.style.transform = `${MAP.TRANSFORM}(${_direction === 'forward' ? -delta : delta}px)`
   }
-  const slidePage = (_direction) => {
+  const slidePage = (_direction: string) => {
     const MAP = props.vertical ? VERTICAL_MAP : HORIZONTAL_MAP
     // 获取移动距离 = navWrapper宽度
     const { [MAP.DIMENSION]: navWrapperDimension } = navWrapperRef.value.getBoundingClientRect()
@@ -348,7 +357,7 @@ export default {
       disabledProps,
       iconProps,
       titleSlots
-    } = useTabSlot(props, { isOverflow, navRef, navWrapperRef, nextTick, context })
+    } = useTabSlot(props, { isOverflow, navRef, navWrapperRef, context })
     const firstTab = expectDefaultSlots.value[0]
     const activeNav = ref<HTMLDivElement>(null)
     const indicatorRef = ref<HTMLDivElement>(null)
@@ -365,7 +374,7 @@ export default {
       onEnter
     } = useTabTransition(props, { keyProps, direction, tabContent, contentHeight })
     const { slidePage, slideToView } = useTabNavSlide(props, { navWrapperRef, navRef, activeNav })
-    const onTabClick = (event, key) => {
+    const onTabClick = (event: MouseEvent, key: string) => {
       if (key === props.activeKey) {
         return
       }

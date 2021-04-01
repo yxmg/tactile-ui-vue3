@@ -7,7 +7,8 @@
 </template>
 
 <script lang="ts">
-export default {
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: "t-tab",
   props: {
     title: { type: String },
@@ -17,7 +18,7 @@ export default {
       default: false
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
