@@ -34,7 +34,7 @@ English | [简体中文](./README-zh.md)
 
 ## Documentation
 
-[Documentation](https://yxmg.github.io/tactile-ui-vue3-site/#/)
+[Documentation](https://tactile-ui-vue3-site.vercel.app/#/)
 
 ![doc preview](https://ae01.alicdn.com/kf/U126ef4a9cf484265a2068b56a169ed3aB.jpg)
 
